@@ -1,0 +1,14 @@
+\begin{table}[H]
+\centering
+\caption{Parameter and activation shape comparison for attention, dense FFN, and the residual path.}
+\label{tab:ch01-the-dense-ffn-bottleneck}
+\begin{tabularx}{\textwidth}{p{0.22\textwidth}X p{0.22\textwidth}}
+\toprule
+Item & Planned content & Status \\
+\midrule
+Mechanism & Show that the dense feed-forward block is the natural place to introduce sparsity because every token pays for every hidden unit. & Placeholder \\
+Mini-example & Use a four-token batch with d-model=8 and an FFN expansion factor of 4; count multiply-adds for all tokens. & Placeholder \\
+Diagnostic & A small cost table proving that increasing H increases every token path. & Placeholder \\
+\bottomrule
+\end{tabularx}
+\end{table}

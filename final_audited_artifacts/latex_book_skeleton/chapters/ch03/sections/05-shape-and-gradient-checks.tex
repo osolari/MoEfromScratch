@@ -1,0 +1,22 @@
+\section{Shape and gradient checks}
+\label{sec:ch03-shape-and-gradient-checks}
+
+Make the first MoE layer testable before introducing more routing variants.
+
+\input{figures/ch03/fig-shape-and-gradient-checks}
+
+Run a two-layer smoke model and confirm all experts receive gradients when selected.
+
+\input{tables/ch03/tab-shape-and-gradient-checks}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch03/eq-shape-and-gradient-checks}
+
+\input{listings/ch03/lst-shape-and-gradient-checks}
+
+\begin{checkpointbox}
+Count selected expert IDs and check nonzero gradients for selected expert parameters.
+\end{checkpointbox}
+
+The next chapter simplifies to top-1 routing to teach sparse dispatch one expert at a time.

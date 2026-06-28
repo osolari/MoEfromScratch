@@ -1,0 +1,22 @@
+\section{The dense FFN bottleneck}
+\label{sec:ch01-the-dense-ffn-bottleneck}
+
+Show that the dense feed-forward block is the natural place to introduce sparsity because every token pays for every hidden unit.
+
+\input{figures/ch01/fig-the-dense-ffn-bottleneck}
+
+Use a four-token batch with d\_model=8 and an FFN expansion factor of 4; count multiply-adds for all tokens.
+
+\input{tables/ch01/tab-the-dense-ffn-bottleneck}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch01/eq-the-dense-ffn-bottleneck}
+
+\input{listings/ch01/lst-the-dense-ffn-bottleneck}
+
+\begin{checkpointbox}
+A small cost table proving that increasing H increases every token path.
+\end{checkpointbox}
+
+Once the bottleneck is visible, the next question is whether every token really needs the same FFN.

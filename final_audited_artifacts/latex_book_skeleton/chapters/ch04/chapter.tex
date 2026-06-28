@@ -1,0 +1,19 @@
+\chapter{Top-1 routing and Switch-style dispatch}
+\label{ch:ch04-top-1-routing-and-switch-style-dispatch}
+
+\ChapterCovers{
+\begin{itemize}
+  \item How top-1 routing sends each token to exactly one expert.
+  \item How capacity and dropped tokens appear when experts are overloaded.
+  \item How expert-load diagnostics make routing failures visible.
+\end{itemize}
+}
+
+Build the simplest sparse router and expose the expert-load problem.
+
+\input{chapters/ch04/sections/01-why-top-1-routing-is-the-simplest-sparse-case}
+\input{chapters/ch04/sections/02-assignment-masks-and-expert-buckets}
+\input{chapters/ch04/sections/03-dispatching-tokens-to-selected-experts}
+\input{chapters/ch04/sections/04-capacity-and-dropped-tokens}
+\input{chapters/ch04/sections/05-load-histograms-and-failure-modes}
+\input{chapters/ch04/sections/06-chapter-summary-and-handoff}

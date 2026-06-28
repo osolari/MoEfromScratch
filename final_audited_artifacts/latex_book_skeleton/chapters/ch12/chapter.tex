@@ -1,0 +1,19 @@
+\chapter{Inference, performance, and scaling beyond the toy model}
+\label{ch:ch12-inference-performance-and-scaling-beyond-the-toy-model}
+
+\ChapterCovers{
+\begin{itemize}
+  \item How MoE affects inference flow, batching, and active-parameter accounting.
+  \item Why expert parallelism and all-to-all communication appear at larger scale.
+  \item How to map MiniDeepSeekMoE concepts to production-scale MoE models responsibly.
+\end{itemize}
+}
+
+Connect the from-scratch implementation to systems concerns without turning the book into a distributed-systems text.
+
+\input{chapters/ch12/sections/01-autoregressive-inference-with-sparse-ffns}
+\input{chapters/ch12/sections/02-batching-routed-tokens-at-inference}
+\input{chapters/ch12/sections/03-compute-memory-and-active-parameter-accounting}
+\input{chapters/ch12/sections/04-expert-parallelism-and-all-to-all-communication}
+\input{chapters/ch12/sections/05-mapping-the-book-model-to-production-moe-families}
+\input{chapters/ch12/sections/06-book-summary-and-next-steps}

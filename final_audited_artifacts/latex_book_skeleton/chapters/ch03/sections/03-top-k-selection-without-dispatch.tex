@@ -1,0 +1,22 @@
+\section{Top-k selection without dispatch}
+\label{sec:ch03-top-k-selection-without-dispatch}
+
+Separate the selection problem from expert execution so readers can inspect router behavior first.
+
+\input{figures/ch03/fig-top-k-selection-without-dispatch}
+
+Compute top-2 expert IDs and scores for a four-token, four-expert score table.
+
+\input{tables/ch03/tab-top-k-selection-without-dispatch}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch03/eq-top-k-selection-without-dispatch}
+
+\input{listings/ch03/lst-top-k-selection-without-dispatch}
+
+\begin{checkpointbox}
+Verify that every token has exactly K selected expert IDs.
+\end{checkpointbox}
+
+Selection tells us where tokens should go; dispatch actually sends them there.

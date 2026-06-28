@@ -1,0 +1,66 @@
+\documentclass[10pt]{book}
+\usepackage[margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[section]{placeins}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,decorations.pathreplacing}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+\input{styles/colors}
+\input{styles/macros}
+\input{styles/tikzstyles}
+\begin{document}
+\frontmatter
+\begin{titlepage}
+\centering
+{\Huge\bfseries\color{BookNavy} MoE Models from Scratch\par}
+\vspace{1em}
+{\Large Phase 5 section-development skeleton\par}
+\vspace{2em}
+{\large MiniDeepSeekMoE section brief scaffold with standalone artifact placeholders\par}
+\vfill
+{\large Every figure, table, listing, and equation below is included via \texttt{\textbackslash input}.\par}
+\end{titlepage}
+\tableofcontents
+\mainmatter
+\input{chapters/ch01/chapter}
+\input{chapters/ch02/chapter}
+\input{chapters/ch03/chapter}
+\input{chapters/ch04/chapter}
+\input{chapters/ch05/chapter}
+\input{chapters/ch06/chapter}
+\input{chapters/ch07/chapter}
+\input{chapters/ch08/chapter}
+\input{chapters/ch09/chapter}
+\input{chapters/ch10/chapter}
+\input{chapters/ch11/chapter}
+\input{chapters/ch12/chapter}
+\appendix
+\chapter{LaTeX artifact and diagram rules}
+Document the color map, input-only artifact rule, label conventions, and TikZ patterns.
+\begin{notebox}
+This appendix is planned in Phase 4 and should be expanded during section development.
+\end{notebox}
+\chapter{Tensor shape checklist}
+Collect every tensor symbol and shape used in routing, dispatch, balancing, and diagnostics.
+\begin{notebox}
+This appendix is planned in Phase 4 and should be expanded during section development.
+\end{notebox}
+\chapter{Codebase smoke tests and reproducibility checklist}
+Provide a compact checklist for validating notebooks, scripts, tests, figures, and LaTeX builds.
+\begin{notebox}
+This appendix is planned in Phase 4 and should be expanded during section development.
+\end{notebox}
+\end{document}

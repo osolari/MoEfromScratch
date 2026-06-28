@@ -1,0 +1,19 @@
+\chapter{A dense Transformer baseline from scratch}
+\label{ch:ch02-a-dense-transformer-baseline-from-scratch}
+
+\ChapterCovers{
+\begin{itemize}
+  \item The tensor path through embeddings, causal attention, dense FFN, residuals, and logits.
+  \item A compact PyTorch baseline that trains and samples on a small dataset.
+  \item The baseline diagnostics needed to compare dense and sparse variants later.
+\end{itemize}
+}
+
+Build a minimal decoder-only language model before replacing the FFN with MoE.
+
+\input{chapters/ch02/sections/01-dataset-and-token-batches}
+\input{chapters/ch02/sections/02-token-and-position-embeddings}
+\input{chapters/ch02/sections/03-causal-self-attention-as-the-context-path}
+\input{chapters/ch02/sections/04-dense-feed-forward-block-as-the-replacement-target}
+\input{chapters/ch02/sections/05-training-loop-and-sampling-baseline}
+\input{chapters/ch02/sections/06-baseline-diagnostics-and-comparison-slots}

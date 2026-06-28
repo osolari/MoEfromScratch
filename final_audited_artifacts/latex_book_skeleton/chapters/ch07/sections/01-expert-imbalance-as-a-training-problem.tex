@@ -1,0 +1,22 @@
+\section{Expert imbalance as a training problem}
+\label{sec:ch07-expert-imbalance-as-a-training-problem}
+
+Show that a technically correct router can still collapse onto a small number of experts.
+
+\input{figures/ch07/fig-expert-imbalance-as-a-training-problem}
+
+Construct a score table where one expert receives most top-k selections.
+
+\input{tables/ch07/tab-expert-imbalance-as-a-training-problem}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch07/eq-expert-imbalance-as-a-training-problem}
+
+\input{listings/ch07/lst-expert-imbalance-as-a-training-problem}
+
+\begin{checkpointbox}
+Report max\_load/mean\_load and number of empty experts.
+\end{checkpointbox}
+
+An auxiliary loss can reward agreement between probability mass and actual expert load.

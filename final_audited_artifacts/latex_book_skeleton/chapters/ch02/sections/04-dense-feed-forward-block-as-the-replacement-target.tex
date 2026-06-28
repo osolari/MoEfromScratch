@@ -1,0 +1,22 @@
+\section{Dense feed-forward block as the replacement target}
+\label{sec:ch02-dense-feed-forward-block-as-the-replacement-target}
+
+Implement the dense FFN in a way that makes the later expert replacement obvious.
+
+\input{figures/ch02/fig-dense-feed-forward-block-as-the-replacement-target}
+
+Apply the same MLP to every token in a B*T flattened view.
+
+\input{tables/ch02/tab-dense-feed-forward-block-as-the-replacement-target}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch02/eq-dense-feed-forward-block-as-the-replacement-target}
+
+\input{listings/ch02/lst-dense-feed-forward-block-as-the-replacement-target}
+
+\begin{checkpointbox}
+Confirm FFN preserves the final D dimension.
+\end{checkpointbox}
+
+Attention and FFN combine inside a residual decoder block.

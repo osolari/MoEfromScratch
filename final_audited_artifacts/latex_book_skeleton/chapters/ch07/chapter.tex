@@ -1,0 +1,19 @@
+\chapter{Router training and load-balancing losses}
+\label{ch:ch07-router-training-and-load-balancing-losses}
+
+\ChapterCovers{
+\begin{itemize}
+  \item Why next-token loss alone may not balance expert use.
+  \item How auxiliary load-balancing losses and router regularizers are implemented.
+  \item How routing diagnostics become part of the training loop.
+\end{itemize}
+}
+
+Teach the router to avoid expert collapse before moving to auxiliary-loss-free balancing.
+
+\input{chapters/ch07/sections/01-expert-imbalance-as-a-training-problem}
+\input{chapters/ch07/sections/02-auxiliary-load-balancing-loss}
+\input{chapters/ch07/sections/03-integrating-auxiliary-loss-into-training}
+\input{chapters/ch07/sections/04-router-score-scale-and-z-loss}
+\input{chapters/ch07/sections/05-routing-dashboards-and-training-logs}
+\input{chapters/ch07/sections/06-chapter-summary-and-handoff}

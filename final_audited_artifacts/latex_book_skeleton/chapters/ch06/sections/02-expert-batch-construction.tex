@@ -1,0 +1,22 @@
+\section{Expert batch construction}
+\label{sec:ch06-expert-batch-construction}
+
+Build dense per-expert mini-batches from sparse token assignments.
+
+\input{figures/ch06/fig-expert-batch-construction}
+
+Create an expert batch tensor with shape (E, capacity, D).
+
+\input{tables/ch06/tab-expert-batch-construction}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch06/eq-expert-batch-construction}
+
+\input{listings/ch06/lst-expert-batch-construction}
+
+\begin{checkpointbox}
+Ensure each accepted route has exactly one expert slot.
+\end{checkpointbox}
+
+Fixed-size expert batches require a capacity rule.

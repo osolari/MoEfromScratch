@@ -1,0 +1,22 @@
+\section{Chapter summary and handoff}
+\label{sec:ch09-chapter-summary-and-handoff}
+
+Lock the final router behavior and document the invariants required by the complete model.
+
+\input{figures/ch09/fig-chapter-summary-and-handoff}
+
+Trace one token through score, bias, selected experts, unbiased gates, expert outputs, and metrics.
+
+\input{tables/ch09/tab-chapter-summary-and-handoff}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch09/eq-chapter-summary-and-handoff}
+
+\input{listings/ch09/lst-chapter-summary-and-handoff}
+
+\begin{checkpointbox}
+Reader checkpoint: explain why bias should not be included in combine weights.
+\end{checkpointbox}
+
+We can now build the full model with this routing block as the FFN replacement.

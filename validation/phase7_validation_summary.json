@@ -1,0 +1,32 @@
+{
+  "stats": {
+    "sections": 72,
+    "chapters": 12,
+    "figures_wrappers": 72,
+    "tables_wrappers": 72,
+    "listings_wrappers": 72,
+    "equations_wrappers": 72,
+    "tikz_figures": 59,
+    "includegraphics_figures": 13,
+    "figure_wrappers_with_H": 72,
+    "table_wrappers_with_H": 72,
+    "skill_zip_bytes": 560740,
+    "skill_references_checked": 92,
+    "standalone_section_skill_mds": 72,
+    "literal_skill_md_mirrors": 85,
+    "preview_pdf_pages": 85,
+    "float_order_probe_positions": [
+      100303,
+      101549,
+      101815,
+      102976,
+      103260
+    ],
+    "rendered_preview_pages": 10
+  },
+  "error_count": 0,
+  "warning_count": 0,
+  "errors": [],
+  "warnings": [],
+  "overall_pass": true
+}

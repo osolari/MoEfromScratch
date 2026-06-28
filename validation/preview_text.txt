@@ -1,0 +1,4581 @@
+MoE Models from Scratch
+Phase 5 section-development skeleton
+MiniDeepSeekMoE section brief scaffold with standalone artifact placeholders
+
+Every figure, table, listing, and equation below is included via \input.
+
+ii
+
+Contents
+1 From dense compute to conditional compute
+1.1 The dense FFN bottleneck . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 Conditional compute as the central idea . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.3 A tiny routing story . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.4 What from scratch means for this book . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.5 The MiniDeepSeekMoE build ladder . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+1
+2
+3
+4
+4
+5
+
+2 A dense Transformer baseline from scratch
+2.1 Dataset and token batches . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.2 Token and position embeddings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.3 Causal self-attention as the context path . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.4 Dense feed-forward block as the replacement target . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.5 Training loop and sampling baseline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.6 Baseline diagnostics and comparison slots . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+7
+8
+9
+10
+10
+11
+
+3 Experts, routers, and the first MoE layer
+3.1 Expert MLPs as named FFNs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.2 Router scores and tensor shapes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.3 Top-k selection without dispatch . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.4 Naive token-by-token dispatch . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.5 Shape and gradient checks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+13
+13
+14
+15
+16
+16
+17
+
+4 Top-1 routing and Switch-style dispatch
+4.1 Why top-1 routing is the simplest sparse case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.2 Assignment masks and expert buckets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.3 Dispatching tokens to selected experts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.4 Capacity and dropped tokens . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.5 Load histograms and failure modes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+19
+19
+20
+21
+21
+22
+24
+
+5 Top-2 routing and weighted expert combination
+5.1 Why top-2 changes the routing story . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.2 Normalizing selected router scores . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.3 Dispatch for two expert paths per token . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.4 Comparing top-1 and top-2 diagnostics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.5 Numerical stability in top-k gates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+25
+25
+26
+27
+28
+29
+30
+
+6 Vectorized dispatch, capacity, and routing efficiency
+6.1 Flattened tokens as the dispatch unit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.2 Expert batch construction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.3 Capacity factors and overflow policy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.4 Unpacking and weighted combine . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+31
+31
+32
+33
+34
+
+iii
+
+iv
+
+CONTENTS
+6.5
+6.6
+
+Equivalence tests against the naive layer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+34
+35
+
+7 Router training and load-balancing losses
+7.1 Expert imbalance as a training problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.2 Auxiliary load-balancing loss . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.3 Integrating auxiliary loss into training . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.4 Router score scale and z-loss . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.5 Routing dashboards and training logs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+37
+37
+38
+39
+40
+41
+42
+
+8 Shared experts and fine-grained routed experts
+8.1 The role of shared experts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.2 Fine-grained routed expert segmentation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.3 The MiniDeepSeekMoE layer contract . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.4 Combining shared and routed outputs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.5 Specialization diagnostics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+45
+45
+46
+47
+48
+48
+50
+
+9 Auxiliary-loss-free load balancing
+9.1 The limitation of auxiliary balancing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.2 Router bias as non-trainable state . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.3 Biased selection and unbiased combine . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.4 Dynamic bias update from expert load . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.5 Comparing balancing methods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+51
+51
+52
+53
+54
+55
+56
+
+10 Assembling MiniDeepSeekMoE end to end
+10.1 Configuration objects and model variants . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.2 Decoder block with dense prefix and MoE layers . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.3 Forward pass outputs and loss dictionary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.4 Training and sampling scripts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.5 Full-model smoke tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+57
+57
+58
+59
+60
+60
+61
+
+11 Training, diagnostics, and controlled experiments
+11.1 Experiment design for a from-scratch book . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.2 Dataset preparation and reproducibility . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.3 Loss curves and routing dashboards . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.4 Ablation matrix: dense, top-1, top-2, shared, and bias-balanced . . . . . . . . . . . . . . . . . . . .
+11.5 Interpreting expert behavior carefully . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.6 Chapter summary and handoff . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+63
+63
+64
+65
+67
+68
+68
+
+12 Inference, performance, and scaling beyond the toy model
+12.1 Autoregressive inference with sparse FFNs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.2 Batching routed tokens at inference . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.3 Compute, memory, and active-parameter accounting . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.4 Expert parallelism and all-to-all communication . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.5 Mapping the book model to production MoE families . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.6 Book summary and next steps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+71
+71
+72
+73
+74
+75
+76
+
+A LaTeX artifact and diagram rules
+
+77
+
+B Tensor shape checklist
+
+79
+
+C Codebase smoke tests and reproducibility checklist
+
+81
+
+Chapter 1
+
+From dense compute to conditional
+compute
+This chapter covers
+• Why dense Transformer feed-forward layers dominate parameter and compute growth.
+• How conditional compute changes the cost story without changing the decoder interface.
+• The MiniDeepSeekMoE roadmap that the rest of the book implements.
+Motivate MoE from the dense FFN bottleneck and establish the build ladder.
+
+1.1
+
+The dense FFN bottleneck
+
+Show that the dense feed-forward block is the natural place to introduce sparsity because every token pays for
+every hidden unit.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 1.1: The dense FFN bottleneck
+Figure 1.1: Dense decoder block with the FFN path highlighted as the always-on compute region.
+Use a four-token batch with d_model=8 and an FFN expansion factor of 4; count multiply-adds for all tokens.
+Table 1.1: Parameter and activation shape comparison for attention, dense FFN, and the residual path.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Show that the dense feed-forward block is the natural
+place to introduce sparsity because every token pays for
+every hidden unit.
+Use a four-token batch with d-model=8 and an FFN
+expansion factor of 4; count multiply-adds for all tokens.
+A small cost table proving that increasing H increases
+every token path.
+1
+
+Placeholder
+Placeholder
+Placeholder
+
+2
+
+CHAPTER 1. FROM DENSE COMPUTE TO CONDITIONAL COMPUTE
+The planned mechanics should introduce the equation before the implementation listing.
+Dense FFN cost estimate using D, H, and number of tokens N.
+
+(1.1)
+
+Listing 1.1: Planned code placeholder for the dense FFN bottleneck.
+def the_dense_ffn_bottleneck_placeholder(x, config):
+"""Chapter 1.1 placeholder.
+Planned purpose: Tiny function that estimates dense FFN parameters and per-token matrix multiplies.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+A small cost table proving that increasing H increases every token path.
+Once the bottleneck is visible, the next question is whether every token really needs the same FFN.
+
+1.2
+
+Conditional compute as the central idea
+
+Introduce MoE as selective FFN computation rather than a mysterious new model family.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 1.2: Conditional compute as the central idea
+Figure 1.2: Tokens split through a router into a sparse subset of experts, then recombine.
+Route four tokens to two of four available experts and compare activated parameters against total parameters.
+Table 1.2: Dense versus conditional-compute vocabulary: FFN, expert, router, active parameters, total parameters.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Introduce MoE as selective FFN computation rather
+than a mysterious new model family.
+Route four tokens to two of four available experts and
+compare activated parameters against total parameters.
+Compute the active fraction for E=4, K=2 and E=16,
+K=2.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Activated-parameter view: total expert bank versus top-k expert use per token.
+Listing 1.2: Planned code placeholder for conditional compute as the central idea.
+def conditional_compute_as_the_central_idea_placeholder(x, config):
+"""Chapter 1.2 placeholder.
+
+(1.2)
+
+3
+
+1.3. A TINY ROUTING STORY
+Planned purpose: Pseudocode that chooses expert IDs for tokens and reports active expert count.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Compute the active fraction for E=4, K=2 and E=16, K=2.
+Selective compute creates a new component: the router, which needs its own tensor contract.
+
+1.3
+
+A tiny routing story
+
+Give readers a concrete token-by-token routing example before any model code appears.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 1.3: A tiny routing story
+Figure 1.3: A storyboard of router scores, selected experts, expert outputs, and weighted combine.
+Use tokens [cat, sat, code, runs], four experts, and top-2 routing weights.
+
+Item
+
+Table 1.3: Toy router-score matrix with top-2 expert choices and normalized gates.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Give readers a concrete token-by-token routing example
+before any model code appears.
+Use tokens [cat, sat, code, runs], four experts, and top-2
+routing weights.
+Check that gates for each token sum to one after top-k
+normalization.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Weighted expert output y-t = sum gate-i expert-i(x-t).
+Listing 1.3: Planned code placeholder for a tiny routing story.
+def a_tiny_routing_story_placeholder(x, config):
+"""Chapter 1.3 placeholder.
+Planned purpose: Manual PyTorch tensor example that applies torch.topk and normalized weights.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Check that gates for each token sum to one after top-k normalization.
+This toy flow becomes the shape contract for every later implementation.
+
+(1.3)
+
+4
+
+CHAPTER 1. FROM DENSE COMPUTE TO CONDITIONAL COMPUTE
+
+1.4
+
+What from scratch means for this book
+
+Define the implementation boundary: small readable modules, explicit tensors, and diagnostics before optimization.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 1.4: What from scratch means for this book
+Figure 1.4: Layered build approach from scalar example to vectorized PyTorch to training script.
+Contrast a one-line library MoE call with a transparent router, dispatch, expert, and combine pipeline.
+Table 1.4: Included and excluded scope for the book, including distributed training and production kernels.
+Item
+Planned content
+Status
+Mechanism
+
+Define the implementation boundary: small readable
+modules, explicit tensors, and diagnostics before optimization.
+Contrast a one-line library MoE call with a transparent
+router, dispatch, expert, and combine pipeline.
+Checklist that every chapter must include shapes, a code
+path, and a verification artifact.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Interface invariant: MoE layer maps (B,T,D) to (B,T,D).
+
+(1.4)
+
+Listing 1.4: Planned code placeholder for what from scratch means for this book.
+def what_from_scratch_means_for_this_book_placeholder(x, config):
+"""Chapter 1.4 placeholder.
+Planned purpose: Skeleton class layout for Router, ExpertMLP, MoELayer, and MiniDeepSeekMoE.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Checklist that every chapter must include shapes, a code path, and a verification artifact.
+With the boundary defined, we can plan the exact model we will build.
+
+1.5
+
+The MiniDeepSeekMoE build ladder
+
+Preview the book path from dense baseline to shared experts, fine-grained experts, and router-bias balancing.
+
+5
+
+1.6. CHAPTER SUMMARY AND HANDOFF
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 1.5: The MiniDeepSeekMoE build ladder
+Figure 1.5: Roadmap ladder: dense baseline, top-1, top-2, capacity, auxiliary loss, shared experts, bias balancing,
+full model.
+Use the smoke-test configuration with two layers, four routed experts, and one shared expert.
+
+Table 1.5: Chapter-by-chapter implementation milestones and expected code outputs.
+Planned content
+Status
+
+Item
+Mechanism
+
+Mini-example
+Diagnostic
+
+Preview the book path from dense baseline to shared
+experts, fine-grained experts, and router-bias balancing.
+Use the smoke-test configuration with two layers, four
+routed experts, and one shared expert.
+Milestone checklist that marks which diagnostics appear
+by each chapter.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Final layer formula combining residual, shared expert output, and routed expert output.
+
+Listing 1.5: Planned code placeholder for the MiniDeepSeekMoE build ladder.
+def the_minideepseekmoe_build_ladder_placeholder(x, config):
+"""Chapter 1.5 placeholder.
+Planned purpose: Configuration dictionary for MiniDeepSeekMoE-Smoke and MiniDeepSeekMoE-16x2.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Milestone checklist that marks which diagnostics appear by each chapter.
+The first build step is a dense Transformer baseline that gives the MoE layer somewhere to live.
+
+1.6
+
+Chapter summary and handoff
+
+Close the motivation chapter with the vocabulary and constraints the reader will reuse.
+
+(1.5)
+
+6
+
+CHAPTER 1. FROM DENSE COMPUTE TO CONDITIONAL COMPUTE
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 1.6: Chapter summary and handoff
+Figure 1.6: Concept map linking tokens, router scores, top-k experts, gates, and combined output.
+Revisit the four-token example and label every object with its future tensor name.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 1.6: Glossary of first-use terms for the rest of the book.
+Planned content
+Status
+Close the motivation chapter with the vocabulary and
+constraints the reader will reuse.
+Revisit the four-token example and label every object
+with its future tensor name.
+Reader checkpoint: identify which part of the dense
+model will be replaced by MoE.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Shape summary for x, router-logits, topk-idx, gates, and y.
+Listing 1.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 1.6 placeholder.
+Planned purpose: Sanity-check function signatures that later chapters must satisfy.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: identify which part of the dense model will be replaced by MoE.
+Next we build the dense decoder baseline so the replacement is meaningful.
+
+(1.6)
+
+Chapter 2
+
+A dense Transformer baseline from
+scratch
+This chapter covers
+• The tensor path through embeddings, causal attention, dense FFN, residuals, and logits.
+• A compact PyTorch baseline that trains and samples on a small dataset.
+• The baseline diagnostics needed to compare dense and sparse variants later.
+Build a minimal decoder-only language model before replacing the FFN with MoE.
+
+2.1
+
+Dataset and token batches
+
+Create the small next-token prediction pipeline used for every model variant.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 2.1: Dataset and token batches
+Figure 2.1: Text to token IDs to input-target shifted batches.
+Load a short text corpus, tokenize it, and create B=2, T=8 training examples.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 2.1: Batch tensor shapes and dataloader responsibilities.
+Planned content
+Status
+Create the small next-token prediction pipeline used for
+every model variant.
+Load a short text corpus, tokenize it, and create B=2,
+T=8 training examples.
+Print the first input-target pair and decode it to verify
+shifting.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+7
+
+8
+
+CHAPTER 2. A DENSE TRANSFORMER BASELINE FROM SCRATCH
+
+Next-token objective index relation target[t] = input[t+1].
+
+(2.1)
+
+Listing 2.1: Planned code placeholder for dataset and token batches.
+def dataset_and_token_batches_placeholder(x, config):
+"""Chapter 2.1 placeholder.
+Planned purpose: Minimal get_batch function with input and target shifts.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Print the first input-target pair and decode it to verify shifting.
+Token IDs become vectors through embeddings and positions.
+
+2.2
+
+Token and position embeddings
+
+Implement the entry point that maps integer token IDs to dense vectors.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 2.2: Token and position embeddings
+Figure 2.2: Token IDs and position IDs summed into the model input tensor.
+Use vocab_size=32, block_size=8, and d_model=16 to inspect embedding shapes.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 2.2: Embedding parameter counts and output shapes.
+Planned content
+Status
+Implement the entry point that maps integer token IDs
+to dense vectors.
+Use vocab-size=32, block-size=8, and d-model=16 to
+inspect embedding shapes.
+Assert output shape and confirm gradients flow to both
+embedding tables.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+x = token-embedding(idx) + position-embedding(pos).
+Listing 2.2: Planned code placeholder for token and position embeddings.
+def token_and_position_embeddings_placeholder(x, config):
+"""Chapter 2.2 placeholder.
+Planned purpose: Embedding module forward pass returning x with shape (B,T,D).
+
+(2.2)
+
+9
+
+2.3. CAUSAL SELF-ATTENTION AS THE CONTEXT PATH
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Assert output shape and confirm gradients flow to both embedding tables.
+The embedded sequence now enters causal self-attention.
+
+2.3
+
+Causal self-attention as the context path
+
+Build enough attention to make the baseline a real decoder while keeping MoE focus on the FFN.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 2.3: Causal self-attention as the context path
+Figure 2.3: Causal mask applied to attention scores before softmax.
+Trace a single attention head with B=1, T=4, D=8.
+Table 2.3: Q, K, V, score, probability, and output shapes.
+Planned content
+Status
+
+Item
+Mechanism
+
+Build enough attention to make the baseline a real decoder while keeping MoE focus on the FFN.
+Trace a single attention head with B=1, T=4, D=8.
+Check that a token cannot attend to future positions.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Masked attention softmax(QK^T / sqrt(d-head))V.
+Listing 2.3: Planned code placeholder for causal self attention as the context path.
+def causal_self_attention_as_the_context_path_placeholder(x, config):
+"""Chapter 2.3 placeholder.
+Planned purpose: Compact multi-head causal attention module.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Check that a token cannot attend to future positions.
+After attention mixes context, the dense FFN transforms each token independently.
+
+(2.3)
+
+10
+
+CHAPTER 2. A DENSE TRANSFORMER BASELINE FROM SCRATCH
+
+2.4
+
+Dense feed-forward block as the replacement target
+
+Implement the dense FFN in a way that makes the later expert replacement obvious.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 2.4: Dense feed-forward block as the replacement target
+Figure 2.4: Dense FFN applied independently to each token row.
+Apply the same MLP to every token in a B*T flattened view.
+Table 2.4: Dense FFN parameters compared with one future expert MLP.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Implement the dense FFN in a way that makes the later
+expert replacement obvious.
+Apply the same MLP to every token in a B*T flattened
+view.
+Confirm FFN preserves the final D dimension.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+FFN(x) = W-2 activation(W-1 x + b-1) + b-2.
+
+Listing 2.4: Planned code placeholder for dense feed forward block as the replacement target.
+def dense_feed_forward_block_as_the_replacement_target_placeholder(x, config):
+"""Chapter 2.4 placeholder.
+Planned purpose: FeedForward module with Linear, activation, Linear.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Confirm FFN preserves the final D dimension.
+Attention and FFN combine inside a residual decoder block.
+
+2.5
+
+Training loop and sampling baseline
+
+Train the dense model long enough to create a trustworthy comparison anchor.
+
+(2.4)
+
+11
+
+2.6. BASELINE DIAGNOSTICS AND COMPARISON SLOTS
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 2.5: Training loop and sampling baseline
+Figure 2.5: Training loop pipeline: batch, forward, loss, backward, optimizer, sample.
+Run a smoke train for a few iterations and sample a short continuation.
+
+Table 2.5: Baseline configuration fields and default smoke-test values.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Train the dense model long enough to create a trustworthy comparison anchor.
+Run a smoke train for a few iterations and sample a
+short continuation.
+Track train and validation loss plus samples at fixed
+intervals.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+Cross-entropy over shifted logits and targets.
+
+Listing 2.5: Planned code placeholder for training loop and sampling baseline.
+def training_loop_and_sampling_baseline_placeholder(x, config):
+"""Chapter 2.5 placeholder.
+Planned purpose: Train step with loss, backward pass, clipping, optimizer step, and logging.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Track train and validation loss plus samples at fixed intervals.
+Now that the dense baseline works, the next chapter isolates the expert and router pieces.
+
+2.6
+
+Baseline diagnostics and comparison slots
+
+Prepare diagnostic hooks that will later compare dense and sparse models fairly.
+
+(2.5)
+
+12
+
+CHAPTER 2. A DENSE TRANSFORMER BASELINE FROM SCRATCH
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 2.6: Dashboard placeholder for loss curves, parameter counts, and future routing metrics.
+Create a metrics dictionary with loss, tokens/sec, parameter count, and activation estimate.
+Table 2.6: Metrics available now versus metrics added by MoE layers.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Prepare diagnostic hooks that will later compare dense
+and sparse models fairly.
+Create a metrics dictionary with loss, tokens/sec, parameter count, and activation estimate.
+Write the first baseline row in the experiment comparison table.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Perplexity = exp(validation cross-entropy).
+Listing 2.6: Planned code placeholder for baseline diagnostics and comparison slots.
+def baseline_diagnostics_and_comparison_slots_placeholder(x, config):
+"""Chapter 2.6 placeholder.
+Planned purpose: count_parameters and estimate_active_parameters helper functions.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Write the first baseline row in the experiment comparison table.
+The next chapter replaces the dense FFN with a small expert bank and a router.
+
+(2.6)
+
+Chapter 3
+
+Experts, routers, and the first MoE
+layer
+This chapter covers
+• How an expert is just an FFN with an expert identity.
+• How a router turns token states into expert scores.
+• How a naive loop implementation clarifies dispatch before optimization.
+Introduce the MoE layer as a transparent replacement for the dense FFN.
+
+3.1
+
+Expert MLPs as named FFNs
+
+Demystify experts by deriving them directly from the dense FFN module.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 3.1: Expert MLPs as named FFNs
+Figure 3.1: One dense FFN replaced by a bank of same-shape expert MLPs.
+Clone the dense FFN four times and label the copies expert 0 through expert 3.
+
+Item
+
+Table 3.1: Dense FFN versus expert bank parameters, active parameters, and outputs.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Demystify experts by deriving them directly from the
+dense FFN module.
+Clone the dense FFN four times and label the copies
+expert 0 through expert 3.
+Run all experts on the same token and compare output
+shapes.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+13
+
+14
+
+CHAPTER 3. EXPERTS, ROUTERS, AND THE FIRST MOE LAYER
+
+expert-i(x) maps R^D to R^D for every expert i.
+
+(3.1)
+
+Listing 3.1: Planned code placeholder for expert MLPs as named FFNs.
+def expert_mlps_as_named_ffns_placeholder(x, config):
+"""Chapter 3.1 placeholder.
+Planned purpose: ExpertMLP class with the same input-output contract as the dense FFN.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Run all experts on the same token and compare output shapes.
+Experts need a token-dependent selection mechanism: the router.
+
+3.2
+
+Router scores and tensor shapes
+
+Define router logits, router probabilities, and the flattening convention used throughout the book.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 3.2: Router scores and tensor shapes
+Figure 3.2: Flattened token matrix multiplied by a router projection to produce an N by E score table.
+Flatten x from (B,T,D) to (N,D) and compute router_logits with E=4 experts.
+
+Item
+
+Table 3.2: Router tensor shape contract for x, x-flat, logits, scores, topk-idx, and gates.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Define router logits, router probabilities, and the flattening convention used throughout the book.
+Flatten x from (B,T,D) to (N,D) and compute routerlogits with E=4 experts.
+Assert that the expert dimension equals n-experts and
+token dimension equals B*T.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+router-logits = x-flat W-r + b-r.
+Listing 3.2: Planned code placeholder for router scores and tensor shapes.
+def router_scores_and_tensor_shapes_placeholder(x, config):
+"""Chapter 3.2 placeholder.
+Planned purpose: Router module that returns logits and score tensors.
+
+(3.2)
+
+15
+
+3.3. TOP-K SELECTION WITHOUT DISPATCH
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Assert that the expert dimension equals n_experts and token dimension equals B*T.
+Scores become sparse when we select only the top experts per token.
+
+3.3
+
+Top-k selection without dispatch
+
+Separate the selection problem from expert execution so readers can inspect router behavior first.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 3.3: Top-k selection without dispatch
+Figure 3.3: Score matrix with the top-k entries highlighted in each row.
+Compute top-2 expert IDs and scores for a four-token, four-expert score table.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 3.3: Manual top-k results for the toy score table.
+Planned content
+Separate the selection problem from expert execution so
+readers can inspect router behavior first.
+Compute top-2 expert IDs and scores for a four-token,
+four-expert score table.
+Verify that every token has exactly K selected expert
+IDs.
+
+Status
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+S-t = topk(score-t, K), one selected set per token.
+Listing 3.3: Planned code placeholder for top k selection without dispatch.
+def top_k_selection_without_dispatch_placeholder(x, config):
+"""Chapter 3.3 placeholder.
+Planned purpose: torch.topk example that returns topk_score and topk_idx.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Verify that every token has exactly K selected expert IDs.
+Selection tells us where tokens should go; dispatch actually sends them there.
+
+(3.3)
+
+16
+
+CHAPTER 3. EXPERTS, ROUTERS, AND THE FIRST MOE LAYER
+
+3.4
+
+Naive token-by-token dispatch
+
+Implement dispatch with loops first so the control flow is unmistakable.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 3.4: Naive token-by-token dispatch
+Figure 3.4: Loop-based dispatch arrows from token rows to selected expert calls.
+For each token and selected expert, call the expert and add gate-weighted output.
+Table 3.4: Naive dispatch variables and their role in the loop.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Implement dispatch with loops first so the control flow
+is unmistakable.
+For each token and selected expert, call the expert and
+add gate-weighted output.
+Compare output shape to dense FFN output and inspect
+gates per token.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+routed-out-t = sum-{j=1}^K gate-{tj} expert-{idx-{tj}}(x-t).
+
+Listing 3.4: Planned code placeholder for naive token by token dispatch.
+def naive_token_by_token_dispatch_placeholder(x, config):
+"""Chapter 3.4 placeholder.
+Planned purpose: NaiveMoELayer forward pass using explicit token and expert loops.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Compare output shape to dense FFN output and inspect gates per token.
+The naive layer works, but the router choices are still fragile; top-1 routing exposes this clearly.
+
+3.5
+
+Shape and gradient checks
+
+Make the first MoE layer testable before introducing more routing variants.
+
+(3.4)
+
+17
+
+3.6. CHAPTER SUMMARY AND HANDOFF
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 3.5: Shape and gradient checks
+Figure 3.5: Gradient flow diagram from loss through combine weights into router and selected experts.
+Run a two-layer smoke model and confirm all experts receive gradients when selected.
+
+Table 3.5: Test cases for shapes, gate sums, selected expert counts, and gradients.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Make the first MoE layer testable before introducing
+more routing variants.
+Run a two-layer smoke model and confirm all experts
+receive gradients when selected.
+Count selected expert IDs and check nonzero gradients
+for selected expert parameters.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+Loss gradient reaches gate and expert paths through the weighted sum.
+
+Listing 3.5: Planned code placeholder for shape and gradient checks.
+def shape_and_gradient_checks_placeholder(x, config):
+"""Chapter 3.5 placeholder.
+Planned purpose: Unit tests for MoELayer output shape and gradient presence.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Count selected expert IDs and check nonzero gradients for selected expert parameters.
+The next chapter simplifies to top-1 routing to teach sparse dispatch one expert at a time.
+
+3.6
+
+Chapter summary and handoff
+
+Summarize the first complete MoE layer and prepare for routing variants.
+
+(3.5)
+
+18
+
+CHAPTER 3. EXPERTS, ROUTERS, AND THE FIRST MOE LAYER
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 3.6: Chapter summary and handoff
+Figure 3.6: End-to-end first MoE layer pipeline.
+Re-run the four-token example through ExpertMLP, Router, top-k, dispatch, and combine.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 3.6: Completed components and known limitations.
+Planned content
+Status
+Summarize the first complete MoE layer and prepare for
+routing variants.
+Re-run the four-token example through ExpertMLP,
+Router, top-k, dispatch, and combine.
+Reader checkpoint: identify where routing, expert computation, and combine happen in code.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+MoE layer invariant y has the same shape as x.
+Listing 3.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 3.6 placeholder.
+Planned purpose: Minimal integration snippet replacing DenseFFN with NaiveMoELayer.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: identify where routing, expert computation, and combine happen in code.
+Top-1 routing is the cleanest way to see sparse expert assignment and load imbalance.
+
+(3.6)
+
+Chapter 4
+
+Top-1 routing and Switch-style dispatch
+This chapter covers
+• How top-1 routing sends each token to exactly one expert.
+• How capacity and dropped tokens appear when experts are overloaded.
+• How expert-load diagnostics make routing failures visible.
+Build the simplest sparse router and expose the expert-load problem.
+
+4.1
+
+Why top-1 routing is the simplest sparse case
+
+Use one-expert-per-token routing to reduce the dispatch problem to assignment plus combine.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 4.1: Why top-1 routing is the simplest sparse case
+Figure 4.1: Token rows each connected to one selected expert.
+Route six tokens to four experts with K=1 and mark each token assignment.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 4.1: Top-1 routing variables compared with top-k routing variables.
+Planned content
+Status
+Use one-expert-per-token routing to reduce the dispatch
+problem to assignment plus combine.
+Route six tokens to four experts with K=1 and mark
+each token assignment.
+Verify each token has one expert and one scalar gate.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+expert-idx-t = argmax-i score-{t,i}.
+19
+
+(4.1)
+
+20
+
+CHAPTER 4. TOP-1 ROUTING AND SWITCH-STYLE DISPATCH
+Listing 4.1: Planned code placeholder for why top 1 routing is the simplest sparse case.
+
+def why_top_1_routing_is_the_simplest_sparse_case_placeholder(x, config):
+"""Chapter 4.1 placeholder.
+Planned purpose: Top1Router forward pass returning expert_idx and gate.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Verify each token has one expert and one scalar gate.
+The single expert ID can be converted into an assignment mask.
+
+4.2
+
+Assignment masks and expert buckets
+
+Convert token expert IDs into per-expert token groups.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 4.2: Assignment masks and expert buckets
+Figure 4.2: Assignment mask as a sparse N by E matrix and as expert buckets.
+Bucket six token indices into four expert lists.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 4.2: Mask representation versus bucket representation trade-offs.
+Planned content
+Status
+Convert token expert IDs into per-expert token groups.
+Bucket six token indices into four expert lists.
+Sum the mask across experts to confirm each token is
+assigned once.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+mask-{t,i} = 1 when expert-idx-t = i.
+Listing 4.2: Planned code placeholder for assignment masks and expert buckets.
+def assignment_masks_and_expert_buckets_placeholder(x, config):
+"""Chapter 4.2 placeholder.
+Planned purpose: Build expert_to_token_indices from top-1 expert IDs.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+(4.2)
+
+21
+
+4.3. DISPATCHING TOKENS TO SELECTED EXPERTS
+Checkpoint
+Sum the mask across experts to confirm each token is assigned once.
+Once tokens are bucketed, expert modules process only their assigned tokens.
+
+4.3
+
+Dispatching tokens to selected experts
+
+Run each expert only on the tokens assigned to it and scatter outputs back to token order.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 4.3: Dispatching tokens to selected experts
+Figure 4.3: Gather tokens into expert batches, process, then scatter back.
+Expert 0 receives token rows [0,3], expert 1 receives [1], and empty experts are skipped.
+Table 4.3: Gather, expert batch, and scatter tensor shapes.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Run each expert only on the tokens assigned to it and
+scatter outputs back to token order.
+Expert 0 receives token rows [0,3], expert 1 receives [1],
+and empty experts are skipped.
+Assert output rows return to the original token order.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+output[token-indices-i] = expert-i(x[token-indices-i]).
+Listing 4.3: Planned code placeholder for dispatching tokens to selected experts.
+def dispatching_tokens_to_selected_experts_placeholder(x, config):
+"""Chapter 4.3 placeholder.
+Planned purpose: Top1MoELayer dispatch and scatter implementation.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Assert output rows return to the original token order.
+Routing can overload an expert, so we need to define expert capacity.
+
+4.4
+
+Capacity and dropped tokens
+
+Introduce the capacity factor and the consequences of too many tokens choosing the same expert.
+
+(4.3)
+
+22
+
+CHAPTER 4. TOP-1 ROUTING AND SWITCH-STYLE DISPATCH
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 4.4: Capacity and dropped tokens
+Figure 4.4: Overloaded expert bucket with accepted and dropped token slots.
+Set capacity=2 for four experts and show what happens when four tokens select expert 0.
+
+Table 4.4: Capacity factor, expert capacity, accepted tokens, dropped tokens, and residual fallback.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Introduce the capacity factor and the consequences of
+too many tokens choosing the same expert.
+Set capacity=2 for four experts and show what happens
+when four tokens select expert 0.
+Report dropped-token-count and per-expert accepted
+counts.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+capacity = ceil(capacity-factor * N / E).
+
+Listing 4.4: Planned code placeholder for capacity and dropped tokens.
+def capacity_and_dropped_tokens_placeholder(x, config):
+"""Chapter 4.4 placeholder.
+Planned purpose: Capacity-aware top-1 dispatch with dropped-token accounting.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Report dropped_token_count and per-expert accepted counts.
+Capacity exposes routing imbalance; histograms make the imbalance easy to see.
+
+4.5
+
+Load histograms and failure modes
+
+Make expert collapse and underuse visible with simple diagnostics.
+
+(4.4)
+
+23
+
+4.5. LOAD HISTOGRAMS AND FAILURE MODES
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 4.5: Expert-load histogram with one overloaded expert highlighted in imbalance red.
+Create a synthetic router that sends most tokens to one expert and plot the load.
+
+Item
+
+Table 4.5: Failure modes: expert collapse, empty experts, high drop rate, low entropy.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Make expert collapse and underuse visible with simple
+diagnostics.
+Create a synthetic router that sends most tokens to one
+expert and plot the load.
+Save a histogram and a warning if max load is much
+larger than average load.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+load-fraction-i = count-i / N.
+Listing 4.5: Planned code placeholder for load histograms and failure modes.
+def load_histograms_and_failure_modes_placeholder(x, config):
+"""Chapter 4.5 placeholder.
+Planned purpose: Function that computes expert_load, load_fraction, and routing_entropy.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Save a histogram and a warning if max load is much larger than average load.
+Top-1 is simple but brittle; top-2 routing gives each token a backup path and a weighted combine.
+
+(4.5)
+
+24
+
+CHAPTER 4. TOP-1 ROUTING AND SWITCH-STYLE DISPATCH
+
+4.6
+
+Chapter summary and handoff
+
+Consolidate top-1 routing as a working sparse layer and name its limitations.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 4.6: Chapter summary and handoff
+Figure 4.6: Top-1 MoE block inside the Transformer decoder layer.
+Run the top-1 layer inside the dense decoder block and log load statistics.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 4.6: What top-1 solved versus what remains for top-2 routing.
+Planned content
+Status
+Consolidate top-1 routing as a working sparse layer and
+name its limitations.
+Run the top-1 layer inside the dense decoder block and
+log load statistics.
+Compare validation loss smoke run with dense baseline,
+without claiming quality superiority.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Top-1 output as one gated expert output per token.
+Listing 4.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 4.6 placeholder.
+Planned purpose: Replace DenseFFN with Top1MoELayer in the baseline block.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Compare validation loss smoke run with dense baseline, without claiming quality superiority.
+The next chapter generalizes the same layer to top-2 weighted expert combinations.
+
+(4.6)
+
+Chapter 5
+
+Top-2 routing and weighted expert
+combination
+This chapter covers
+• How top-2 routing keeps sparse compute while reducing one-expert brittleness.
+• How selected scores become normalized gates for weighted expert outputs.
+• How to compare top-1 and top-2 layers with the same diagnostics.
+Generalize sparse routing so each token can combine two expert transformations.
+
+5.1
+
+Why top-2 changes the routing story
+
+Explain top-2 routing as sparse ensemble behavior at the token level.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 5.1: Why top-2 changes the routing story
+Figure 5.1: Token routes split into two weighted paths.
+Use four tokens and four experts; each token chooses two experts with different weights.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 5.1: Top-1 versus top-2 routing behavior, cost, and diagnostics.
+Planned content
+Status
+Explain top-2 routing as sparse ensemble behavior at
+the token level.
+Use four tokens and four experts; each token chooses
+two experts with different weights.
+Compare active expert calls per token for K=1 and
+K=2.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+25
+
+26
+
+CHAPTER 5. TOP-2 ROUTING AND WEIGHTED EXPERT COMBINATION
+
+Each selected set S-t contains K=2 expert IDs.
+
+(5.1)
+
+Listing 5.1: Planned code placeholder for why top 2 changes the routing story.
+def why_top_2_changes_the_routing_story_placeholder(x, config):
+"""Chapter 5.1 placeholder.
+Planned purpose: Config switch from K=1 to K=2 and resulting tensor shapes.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Compare active expert calls per token for K=1 and K=2.
+To make top-2 work, selected scores must become stable combine weights.
+
+5.2
+
+Normalizing selected router scores
+
+Turn top-2 scores into gates that sum to one for each token.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 5.2: Normalizing selected router scores
+Figure 5.2: Top-2 score row transformed into a two-weight gate vector.
+Normalize selected scores [0.8, 0.2] and [0.51, 0.49] and compare combines.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 5.2: Raw scores, selected scores, normalized gates, and gate sums.
+Planned content
+Status
+Turn top-2 scores into gates that sum to one for each
+token.
+Normalize selected scores [0.8, 0.2] and [0.51, 0.49] and
+compare combines.
+Assert torch.allclose(gates.sum(-1), ones).
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+gate-{tj} = score-{t,idx-{tj}} / sum-l score-{t,idx-{tl}}.
+Listing 5.2: Planned code placeholder for normalizing selected router scores.
+def normalizing_selected_router_scores_placeholder(x, config):
+"""Chapter 5.2 placeholder.
+Planned purpose: selected_scores / selected_scores.sum(dim=-1, keepdim=True).
+Replace this stub during section development.
+
+(5.2)
+
+27
+
+5.3. DISPATCH FOR TWO EXPERT PATHS PER TOKEN
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Assert torch.allclose(gates.sum(-1), ones).
+The normalized gates weight two expert outputs per token.
+
+5.3
+
+Dispatch for two expert paths per token
+
+Adapt the dispatch loop so each selected expert path contributes to the same output row.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 5.3: Dispatch for two expert paths per token
+Figure 5.3: Two paths per token gathered into expert batches and accumulated back.
+Token 0 goes to experts 1 and 3; both outputs are accumulated into output[0].
+
+Item
+
+Table 5.3: Data structures for topk-idx, gates, expert batches, and output accumulation.
+Planned content
+Status
+
+Mechanism
+
+Adapt the dispatch loop so each selected expert path
+contributes to the same output row.
+Token 0 goes to experts 1 and 3; both outputs are accumulated into output[0].
+Check output changes when gates are manually
+swapped.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+out-t += gate-{tj} expert-{idx-{tj}}(x-t).
+Listing 5.3: Planned code placeholder for dispatch for two expert paths per token.
+def dispatch_for_two_expert_paths_per_token_placeholder(x, config):
+"""Chapter 5.3 placeholder.
+Planned purpose: Top2MoELayer forward pass with nested selected-expert accumulation.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Check output changes when gates are manually swapped.
+Top-2 dispatch is correct but still slow; vectorization comes after the routing math is clear.
+
+(5.3)
+
+28
+
+CHAPTER 5. TOP-2 ROUTING AND WEIGHTED EXPERT COMBINATION
+
+5.4
+
+Comparing top-1 and top-2 diagnostics
+
+Use the same metrics to show how K changes load, drop rate, and routing entropy.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 5.4: Side-by-side expert load histograms for K=1 and K=2.
+Run the same random batch through top-1 and top-2 routers with the same scores.
+
+Item
+
+Table 5.4: Comparison rows for active calls, max load, entropy, and gate concentration.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Use the same metrics to show how K changes load, drop
+rate, and routing entropy.
+Run the same random batch through top-1 and top-2
+routers with the same scores.
+Save a comparison table and one histogram per routing
+mode.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Active expert calls equal N*K before capacity limits.
+Listing 5.4: Planned code placeholder for comparing top 1 and top 2 diagnostics.
+def comparing_top_1_and_top_2_diagnostics_placeholder(x, config):
+"""Chapter 5.4 placeholder.
+Planned purpose: compare_routing_modes(router_scores, k_values=[1,2]).
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+(5.4)
+
+29
+
+5.5. NUMERICAL STABILITY IN TOP-K GATES
+Checkpoint
+Save a comparison table and one histogram per routing mode.
+Once routing variants share diagnostics, the next challenge is making dispatch less loop-heavy.
+
+5.5
+
+Numerical stability in top-k gates
+
+Prevent gate normalization edge cases before they become training bugs.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 5.5: Numerical stability in top-k gates
+Figure 5.5: Gate normalization failure and epsilon-stabilized path.
+Use tiny selected scores and demonstrate epsilon-safe normalization.
+Table 5.5: Potential failures: zero sums, dtype mismatch, overflow, and unintended detached gates.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Prevent gate normalization edge cases before they become training bugs.
+Use tiny selected scores and demonstrate epsilon-safe
+normalization.
+Unit tests for finite gates and gradients under small
+scores.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+gate = selected-scores / clamp(sum(selected-scores), eps).
+Listing 5.5: Planned code placeholder for numerical stability in top k gates.
+def numerical_stability_in_top_k_gates_placeholder(x, config):
+"""Chapter 5.5 placeholder.
+Planned purpose: stable_normalize_selected_scores function with epsilon and dtype checks.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Unit tests for finite gates and gradients under small scores.
+Now that top-2 is correct, we can rewrite the dispatch to scale beyond tiny examples.
+
+(5.5)
+
+30
+
+CHAPTER 5. TOP-2 ROUTING AND WEIGHTED EXPERT COMBINATION
+
+5.6
+
+Chapter summary and handoff
+
+Lock in the top-2 routing contract used by MiniDeepSeekMoE.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 5.6: Chapter summary and handoff
+Figure 5.6: Top-2 MoE layer end-to-end tensor map.
+Trace one token through score, top-2 indices, gates, two experts, and final output.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 5.6: Top-2 contracts that later chapters must preserve.
+Planned content
+Status
+Lock in the top-2 routing contract used by
+MiniDeepSeekMoE.
+Trace one token through score, top-2 indices, gates, two
+experts, and final output.
+Reader checkpoint: explain why gates sum to one after
+selecting top-k only.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+MoE output as a normalized weighted sum over two experts.
+
+(5.6)
+
+Listing 5.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 5.6 placeholder.
+Planned purpose: Test fixture that instantiates K=2 MoELayer and checks shape plus gate sums.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: explain why gates sum to one after selecting top-k only.
+The next chapter keeps the same math but changes the implementation to vectorized dispatch and capacityaware batching.
+
+Chapter 6
+
+Vectorized dispatch, capacity, and
+routing efficiency
+This chapter covers
+• How flattened tokens and expert batches make MoE dispatch vectorizable.
+• How capacity limits create predictable tensor sizes and overflow behavior.
+• How to test equivalence between naive and vectorized implementations.
+Move from readable loops to scalable tensor operations without changing the MoE math.
+
+6.1
+
+Flattened tokens as the dispatch unit
+
+Standardize on N=B*T flattened tokens so routing code ignores batch layout until the final reshape.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 6.1: Flattened tokens as the dispatch unit
+Figure 6.1: Batch-sequence grid flattened into a token table for routing.
+Flatten B=2, T=3, D=4 into N=6 token rows and recover B,T,D afterward.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 6.1: Mapping between batch index, time index, flat index, and token vector.
+Planned content
+Status
+Standardize on N=B*T flattened tokens so routing code
+ignores batch layout until the final reshape.
+Flatten B=2, T=3, D=4 into N=6 token rows and recover B,T,D afterward.
+Round-trip flatten/unflatten equality check.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+31
+
+32
+
+CHAPTER 6. VECTORIZED DISPATCH, CAPACITY, AND ROUTING EFFICIENCY
+
+n = b*T + t maps (b,t) to flat token index.
+
+(6.1)
+
+Listing 6.1: Planned code placeholder for flattened tokens as the dispatch unit.
+def flattened_tokens_as_the_dispatch_unit_placeholder(x, config):
+"""Chapter 6.1 placeholder.
+Planned purpose: flatten_tokens and unflatten_tokens helper functions.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Round-trip flatten/unflatten equality check.
+Flat token rows can be sorted or bucketed by expert assignment.
+
+6.2
+
+Expert batch construction
+
+Build dense per-expert mini-batches from sparse token assignments.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 6.2: Expert batch construction
+Figure 6.2: Sparse token assignments packed into a fixed-size expert batch grid.
+Create an expert batch tensor with shape (E, capacity, D).
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 6.2: expert-batch, combine-weights, token-indices, and slot-indices shapes.
+Planned content
+Status
+Build dense per-expert mini-batches from sparse token
+assignments.
+Create an expert batch tensor with shape (E, capacity,
+D).
+Ensure each accepted route has exactly one expert slot.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+expert-batch[i, slot, :] = x-flat[token-idx].
+Listing 6.2: Planned code placeholder for expert batch construction.
+def expert_batch_construction_placeholder(x, config):
+"""Chapter 6.2 placeholder.
+Planned purpose: pack_tokens_by_expert function for top-k assignments.
+Replace this stub during section development.
+
+(6.2)
+
+33
+
+6.3. CAPACITY FACTORS AND OVERFLOW POLICY
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Ensure each accepted route has exactly one expert slot.
+Fixed-size expert batches require a capacity rule.
+
+6.3
+
+Capacity factors and overflow policy
+
+Explain how capacity controls memory and what the implementation does with overflow routes.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 6.3: Capacity factors and overflow policy
+Figure 6.3: Capacity slots per expert with accepted, padded, and overflow routes.
+Use N=12, E=4, K=2 and capacity factors 1.0 and 1.25.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 6.3: Capacity factor scenarios and their accepted route counts.
+Planned content
+Status
+Explain how capacity controls memory and what the
+implementation does with overflow routes.
+Use N=12, E=4, K=2 and capacity factors 1.0 and 1.25.
+Log overflow route count and overflow fraction.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+capacity = ceil(capacity-factor * N*K / E).
+Listing 6.3: Planned code placeholder for capacity factors and overflow policy.
+def capacity_factors_and_overflow_policy_placeholder(x, config):
+"""Chapter 6.3 placeholder.
+Planned purpose: compute_expert_capacity and overflow mask code.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Log overflow route count and overflow fraction.
+After expert batches are processed, outputs must be unpacked and combined.
+
+(6.3)
+
+34
+
+CHAPTER 6. VECTORIZED DISPATCH, CAPACITY, AND ROUTING EFFICIENCY
+
+6.4
+
+Unpacking and weighted combine
+
+Scatter expert-batch outputs back to token rows and apply route weights correctly.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 6.4: Unpacking and weighted combine
+Figure 6.4: Expert outputs unpacked through token and slot indices into routed-out.
+One token receives two routes; one overflow route is skipped while the accepted route contributes.
+Table 6.4: Accepted route table: token, expert, slot, gate, and output contribution.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Scatter expert-batch outputs back to token rows and
+apply route weights correctly.
+One token receives two routes; one overflow route is
+skipped while the accepted route contributes.
+Compare vectorized output to naive output when capacity is large enough for no overflow.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+routed-out[token] += gate * expert-out[expert, slot].
+
+Listing 6.4: Planned code placeholder for unpacking and weighted combine.
+def unpacking_and_weighted_combine_placeholder(x, config):
+"""Chapter 6.4 placeholder.
+Planned purpose: unpack_expert_outputs function using index_add or scatter_add.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Compare vectorized output to naive output when capacity is large enough for no overflow.
+The implementation is faster, but correctness tests must guard against silent routing mistakes.
+
+6.5
+
+Equivalence tests against the naive layer
+
+Prove the vectorized implementation matches the simple implementation in the no-overflow case.
+
+(6.4)
+
+35
+
+6.6. CHAPTER SUMMARY AND HANDOFF
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 6.5: Equivalence tests against the naive layer
+Figure 6.5: Two implementation paths producing matching output tensors.
+Use fixed router scores and identical expert weights for both layers.
+
+Table 6.5: Test matrix for K, E, D, capacity factor, dtype, and overflow setting.
+Planned content
+Status
+
+Item
+Mechanism
+
+Prove the vectorized implementation matches the simple
+implementation in the no-overflow case.
+Use fixed router scores and identical expert weights for
+both layers.
+Fail if max-abs-diff exceeds tolerance in no-overflow settings.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+max-abs-diff = max(|y-naive - y-vec|).
+
+Listing 6.5: Planned code placeholder for equivalence tests against the naive layer.
+def equivalence_tests_against_the_naive_layer_placeholder(x, config):
+"""Chapter 6.5 placeholder.
+Planned purpose: pytest-style allclose test comparing naive and vectorized MoE.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Fail if max_abs_diff exceeds tolerance in no-overflow settings.
+With efficient dispatch available, we can focus on the training losses that shape router behavior.
+
+6.6
+
+Chapter summary and handoff
+
+Summarize the efficient routing pipeline and the new capacity diagnostics.
+
+(6.5)
+
+36
+
+CHAPTER 6. VECTORIZED DISPATCH, CAPACITY, AND ROUTING EFFICIENCY
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 6.6: Chapter summary and handoff
+Figure 6.6: Full vectorized dispatch pipeline.
+Trace one batch through flatten, top-k, pack, expert compute, unpack, and reshape.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 6.6: Naive versus vectorized implementation responsibilities.
+Planned content
+Status
+Summarize the efficient routing pipeline and the new
+capacity diagnostics.
+Trace one batch through flatten, top-k, pack, expert
+compute, unpack, and reshape.
+Reader checkpoint: identify where dropped routes enter
+the output calculation.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+No-overflow equivalence condition y-vec approx y-naive.
+Listing 6.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 6.6 placeholder.
+Planned purpose: VectorizedMoELayer forward skeleton with named helper calls.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: identify where dropped routes enter the output calculation.
+The next chapter adds router training objectives so experts are used more evenly.
+
+(6.6)
+
+Chapter 7
+
+Router training and load-balancing
+losses
+This chapter covers
+• Why next-token loss alone may not balance expert use.
+• How auxiliary load-balancing losses and router regularizers are implemented.
+• How routing diagnostics become part of the training loop.
+Teach the router to avoid expert collapse before moving to auxiliary-loss-free balancing.
+
+7.1
+
+Expert imbalance as a training problem
+
+Show that a technically correct router can still collapse onto a small number of experts.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 7.1: Collapsed routing histogram compared with balanced routing histogram.
+Construct a score table where one expert receives most top-k selections.
+37
+
+38
+
+CHAPTER 7. ROUTER TRAINING AND LOAD-BALANCING LOSSES
+Table 7.1: Symptoms of imbalance and the training behavior they affect.
+Planned content
+Status
+
+Item
+Mechanism
+
+Show that a technically correct router can still collapse
+onto a small number of experts.
+Construct a score table where one expert receives most
+top-k selections.
+Report max-load/mean-load and number of empty experts.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Target average load per expert is N*K/E routes.
+
+(7.1)
+
+Listing 7.1: Planned code placeholder for expert imbalance as a training problem.
+def expert_imbalance_as_a_training_problem_placeholder(x, config):
+"""Chapter 7.1 placeholder.
+Planned purpose: Synthetic imbalance generator for router-score diagnostics.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Report max_load/mean_load and number of empty experts.
+An auxiliary loss can reward agreement between probability mass and actual expert load.
+
+7.2
+
+Auxiliary load-balancing loss
+
+Implement the classic balancing baseline as a transparent, measurable loss term.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 7.2: Auxiliary load-balancing loss
+Figure 7.2: Two bars per expert: selected load and router probability mass.
+Compute expert load fractions and probability fractions for E=4 experts.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 7.2: Inputs and outputs of the auxiliary loss function.
+Planned content
+Status
+Implement the classic balancing baseline as a transparent, measurable loss term.
+Compute expert load fractions and probability fractions
+for E=4 experts.
+Check loss is lower for balanced synthetic routing than
+collapsed routing.
+
+Placeholder
+Placeholder
+Placeholder
+
+39
+
+7.3. INTEGRATING AUXILIARY LOSS INTO TRAINING
+The planned mechanics should introduce the equation before the implementation listing.
+Auxiliary loss proportional to E * sum-i load-i * prob-i.
+
+(7.2)
+
+Listing 7.2: Planned code placeholder for auxiliary load balancing loss.
+def auxiliary_load_balancing_loss_placeholder(x, config):
+"""Chapter 7.2 placeholder.
+Planned purpose: load_balancing_loss function returning scalar aux_loss and metrics.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Check loss is lower for balanced synthetic routing than collapsed routing.
+Auxiliary loss enters the total training objective with a coefficient.
+
+7.3
+
+Integrating auxiliary loss into training
+
+Add routing losses to the model output dictionary without hiding the main language-model loss.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 7.3: Integrating auxiliary loss into training
+Figure 7.3: Loss composition diagram from logits and router statistics to total loss.
+Return lm_loss, aux_loss, total_loss, and router_metrics from one forward pass.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 7.3: Loss terms, coefficients, default values, and logging names.
+Planned content
+Status
+Add routing losses to the model output dictionary without hiding the main language-model loss.
+Return lm-loss, aux-loss, total-loss, and router-metrics
+from one forward pass.
+Log individual losses separately so balancing cannot
+hide LM degradation.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+total-loss = lm-loss + lambda-aux * aux-loss.
+Listing 7.3: Planned code placeholder for integrating auxiliary loss into training.
+def integrating_auxiliary_loss_into_training_placeholder(x, config):
+"""Chapter 7.3 placeholder.
+
+(7.3)
+
+40
+
+CHAPTER 7. ROUTER TRAINING AND LOAD-BALANCING LOSSES
+Planned purpose: Training step that combines lm_loss + aux_coef * aux_loss.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Log individual losses separately so balancing cannot hide LM degradation.
+Load balancing is one router signal; score scale can also create instability.
+
+7.4
+
+Router score scale and z-loss
+
+Introduce a simple regularizer for overly large router logits or scores.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 7.4: Router score scale and z-loss
+Figure 7.4: Router logit scale affects probability sharpness before top-k selection.
+Compare a modest logit row with a very large logit row that creates near-hard routing.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 7.4: Router regularization options: z-loss, entropy, noise, and clipping.
+Planned content
+Status
+Introduce a simple regularizer for overly large router
+logits or scores.
+Compare a modest logit row with a very large logit row
+that creates near-hard routing.
+Track router score max, entropy, and z-loss over training.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+z-loss based on squared logsumexp of router logits.
+Listing 7.4: Planned code placeholder for router score scale and z loss.
+def router_score_scale_and_z_loss_placeholder(x, config):
+"""Chapter 7.4 placeholder.
+Planned purpose: router_z_loss function and optional coefficient in the training config.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Track router score max, entropy, and z-loss over training.
+The regularizers become useful only if the diagnostics are visible during training.
+
+(7.4)
+
+41
+
+7.5. ROUTING DASHBOARDS AND TRAINING LOGS
+
+7.5
+
+Routing dashboards and training logs
+
+Create the standard diagnostic views used for every later MoE experiment.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 7.5: Dashboard layout with loss curve, expert load histogram, gate entropy, and drop rate.
+Log one training batch with load histogram, gate entropy, drop count, and loss terms.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 7.5: Metric names, tensor source, frequency, and expected range.
+Planned content
+Status
+Create the standard diagnostic views used for every later
+MoE experiment.
+Log one training batch with load histogram, gate entropy, drop count, and loss terms.
+Generate a dashboard PDF or image after a short smoke
+run.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Routing entropy over normalized selected gates.
+Listing 7.5: Planned code placeholder for routing dashboards and training logs.
+def routing_dashboards_and_training_logs_placeholder(x, config):
+"""Chapter 7.5 placeholder.
+Planned purpose: collect_router_metrics and plot_router_dashboard helpers.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+(7.5)
+
+42
+
+CHAPTER 7. ROUTER TRAINING AND LOAD-BALANCING LOSSES
+Checkpoint
+Generate a dashboard PDF or image after a short smoke run.
+The next chapter changes the expert architecture itself by adding shared and fine-grained routed experts.
+
+7.6
+
+Chapter summary and handoff
+
+Frame auxiliary balancing as the baseline that auxiliary-loss-free balancing will later improve on.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 7.6: Before-and-after load histograms for auxiliary balancing.
+Compare training metrics with aux_coef=0 and aux_coef>0 in a smoke run.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 7.6: What auxiliary loss fixes and what trade-offs remain.
+Planned content
+Status
+Frame auxiliary balancing as the baseline that auxiliaryloss-free balancing will later improve on.
+Compare training metrics with aux-coef=0 and auxcoef>0 in a smoke run.
+Reader checkpoint: explain why aux-loss must be logged
+separately from LM loss.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Model objective includes both LM and routing terms in this chapter.
+Listing 7.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 7.6 placeholder.
+
+(7.6)
+
+7.6. CHAPTER SUMMARY AND HANDOFF
+
+43
+
+Planned purpose: Config presets for no-balancing and auxiliary-balancing runs.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: explain why aux_loss must be logged separately from LM loss.
+MiniDeepSeekMoE keeps the routing lessons but changes expert structure before changing the balancing
+method.
+
+44
+
+CHAPTER 7. ROUTER TRAINING AND LOAD-BALANCING LOSSES
+
+Chapter 8
+
+Shared experts and fine-grained routed
+experts
+This chapter covers
+• Why shared experts provide an always-on path for common knowledge.
+• Why fine-grained routed experts encourage more specialized sparse computation.
+• How shared and routed expert outputs combine in one MoE block.
+Implement the DeepSeekMoE-inspired expert structure for the reference model.
+
+8.1
+
+The role of shared experts
+
+Explain the always-on expert path as a way to separate common processing from routed specialization.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 8.1: The role of shared experts
+Figure 8.1: Parallel shared path and routed path merging at the MoE output.
+Every token goes through one shared expert while also routing to two routed experts.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 8.1: Shared expert path versus routed expert path responsibilities.
+Planned content
+Status
+Explain the always-on expert path as a way to separate
+common processing from routed specialization.
+Every token goes through one shared expert while also
+routing to two routed experts.
+Verify shared experts receive gradients for every token,
+not only selected tokens.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+45
+
+46
+
+CHAPTER 8. SHARED EXPERTS AND FINE-GRAINED ROUTED EXPERTS
+
+shared-out = sum-s shared-expert-s(x).
+
+(8.1)
+
+Listing 8.1: Planned code placeholder for the role of shared experts.
+def the_role_of_shared_experts_placeholder(x, config):
+"""Chapter 8.1 placeholder.
+Planned purpose: SharedExpertMLP module and shared_out calculation.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Verify shared experts receive gradients for every token, not only selected tokens.
+Routed experts can also be made finer-grained to increase specialization options.
+
+8.2
+
+Fine-grained routed expert segmentation
+
+Show how more smaller experts can replace fewer larger experts while preserving readable code.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 8.2: Fine-grained routed expert segmentation
+Figure 8.2: Large expert blocks split into finer expert tiles.
+Compare 4 large experts with hidden_dim=1024 to 16 smaller experts with hidden_dim=256.
+
+Item
+
+Table 8.2: Expert count, hidden dimension, total parameters, and active parameters.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Show how more smaller experts can replace fewer larger
+experts while preserving readable code.
+Compare 4 large experts with hidden-dim=1024 to 16
+smaller experts with hidden-dim=256.
+Compute total and active expert parameters for several
+segmentations.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Expert-bank parameter estimate E * (D*H-e + H-e*D).
+Listing 8.2: Planned code placeholder for fine grained routed expert segmentation.
+def fine_grained_routed_expert_segmentation_placeholder(x, config):
+"""Chapter 8.2 placeholder.
+Planned purpose: ExpertBank configuration that changes n_experts and expert_hidden_dim together.
+
+(8.2)
+
+47
+
+8.3. THE MINIDEEPSEEKMOE LAYER CONTRACT
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Compute total and active expert parameters for several segmentations.
+The reference layer combines fine-grained routed experts with shared experts.
+
+8.3
+
+The MiniDeepSeekMoE layer contract
+
+Define the final layer interface that later chapters assemble into the full model.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 8.3: The MiniDeepSeekMoE layer contract
+Figure 8.3: MiniDeepSeekMoE layer block with router, routed experts, shared experts, combine, and residual
+output.
+Use D=128, E=4 routed experts, one shared expert, and K=2 in the smoke config.
+Table 8.3: Final layer tensor contract and configuration fields.
+Planned content
+Status
+
+Item
+Mechanism
+
+Define the final layer interface that later chapters assemble into the full model.
+Use D=128, E=4 routed experts, one shared expert, and
+K=2 in the smoke config.
+Assert layer output shape equals input shape under
+smoke and default configs.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+y = x + shared-out + routed-out when the block is shown with residual context.
+
+(8.3)
+
+Listing 8.3: Planned code placeholder for the MiniDeepSeekMoE layer contract.
+def the_minideepseekmoe_layer_contract_placeholder(x, config):
+"""Chapter 8.3 placeholder.
+Planned purpose: MiniDeepSeekMoELayer __init__ showing router, routed experts, and shared experts.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Assert layer output shape equals input shape under smoke and default configs.
+The forward pass computes shared and routed paths side by side.
+
+48
+
+CHAPTER 8. SHARED EXPERTS AND FINE-GRAINED ROUTED EXPERTS
+
+8.4
+
+Combining shared and routed outputs
+
+Implement the forward pass that sums shared expert output and weighted routed output.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 8.4: Combining shared and routed outputs
+Figure 8.4: Shared output and routed weighted output merged before projection back to the decoder block.
+Trace one token through shared expert s0 and routed experts e2/e7.
+Table 8.4: Output components: shared-out, routed-out, residual, and final block output.
+Planned content
+Status
+
+Item
+
+Mechanism
+Mini-example
+Diagnostic
+
+Implement the forward pass that sums shared expert
+output and weighted routed output.
+Trace one token through shared expert s0 and routed
+experts e2/e7.
+Ablate shared-out to zero and routed-out to zero to confirm both paths affect output.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+moe-out-t = shared-out-t + sum-j gate-{tj} routed-expert-{idx-{tj}}(x-t).
+
+Listing 8.4: Planned code placeholder for combining shared and routed outputs.
+def combining_shared_and_routed_outputs_placeholder(x, config):
+"""Chapter 8.4 placeholder.
+Planned purpose: Forward pass for shared+routed MoE layer.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Ablate shared_out to zero and routed_out to zero to confirm both paths affect output.
+With two expert paths, diagnostics should separate shared and routed behavior.
+
+8.5
+
+Specialization diagnostics
+
+Plan diagnostics that reveal whether routed experts are used differently across tokens.
+
+(8.4)
+
+49
+
+8.5. SPECIALIZATION DIAGNOSTICS
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 8.5: Expert usage heatmap by token group or position bucket.
+Group tokens by simple categories or positions and inspect selected expert frequencies.
+
+Item
+
+Table 8.5: Specialization probes: token string, position, loss contribution, selected experts.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Plan diagnostics that reveal whether routed experts are
+used differently across tokens.
+Group tokens by simple categories or positions and inspect selected expert frequencies.
+Generate expert usage heatmaps without overclaiming
+semantic specialization.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Conditional usage frequency p(expert | token-group).
+
+(8.5)
+
+Listing 8.5: Planned code placeholder for specialization diagnostics.
+def specialization_diagnostics_placeholder(x, config):
+"""Chapter 8.5 placeholder.
+Planned purpose: collect_expert_usage_by_token helper.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Generate expert usage heatmaps without overclaiming semantic specialization.
+The layer architecture is now complete; the next chapter replaces auxiliary loss with dynamic router bias
+balancing.
+
+50
+
+CHAPTER 8. SHARED EXPERTS AND FINE-GRAINED ROUTED EXPERTS
+
+8.6
+
+Chapter summary and handoff
+
+Confirm that the final expert structure is implemented before changing balancing strategy.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 8.6: Chapter summary and handoff
+Figure 8.6: Completed MiniDeepSeekMoE layer with diagnostic outputs attached.
+Run one batch through MiniDeepSeekMoELayer and print all returned metrics.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 8.6: Components completed so far and balancing method still used.
+Planned content
+Status
+Confirm that the final expert structure is implemented
+before changing balancing strategy.
+Run one batch through MiniDeepSeekMoELayer and
+print all returned metrics.
+Reader checkpoint: distinguish shared expert compute
+from routed active compute.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Layer output decomposition into shared and routed components.
+Listing 8.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 8.6 placeholder.
+Planned purpose: Smoke test instantiating the final layer contract.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: distinguish shared expert compute from routed active compute.
+The next chapter keeps this architecture and changes how expert balance is enforced.
+
+(8.6)
+
+Chapter 9
+
+Auxiliary-loss-free load balancing
+This chapter covers
+• Why it is useful to separate load-balancing control from the language-model objective.
+• How dynamic router bias changes expert selection without becoming a trainable parameter.
+• How to compare auxiliary-loss and bias-balancing behavior with identical diagnostics.
+Replace auxiliary balancing with a router-bias mechanism that affects selection but not combine weights.
+
+9.1
+
+The limitation of auxiliary balancing
+
+Explain why a separate balancing mechanism is attractive after readers have implemented auxiliary losses.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 9.1: The limitation of auxiliary balancing
+Figure 9.1: Auxiliary loss path entering the optimization objective beside LM loss.
+Show total_loss changes when aux_coef changes even with the same LM loss.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 9.1: Auxiliary balancing benefits and trade-offs.
+Planned content
+Explain why a separate balancing mechanism is attractive after readers have implemented auxiliary losses.
+Show total-loss changes when aux-coef changes even
+with the same LM loss.
+Compare LM loss and load balance separately, not only
+total loss.
+
+Status
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+total-loss includes auxiliary term in the baseline approach.
+51
+
+(9.1)
+
+52
+
+CHAPTER 9. AUXILIARY-LOSS-FREE LOAD BALANCING
+Listing 9.1: Planned code placeholder for the limitation of auxiliary balancing.
+
+def the_limitation_of_auxiliary_balancing_placeholder(x, config):
+"""Chapter 9.1 placeholder.
+Planned purpose: Experiment config that toggles aux_loss on and off for the same model.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Compare LM loss and load balance separately, not only total loss.
+Router bias moves balance control into the selection rule rather than the loss.
+
+9.2
+
+Router bias as non-trainable state
+
+Define router bias as a per-expert control signal updated outside backpropagation.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 9.2: Router bias as non-trainable state
+Figure 9.2: Bias vector nudging the score table before top-k selection.
+Use four experts with bias values that rise for underused experts and fall for overused experts.
+Table 9.2: Router bias properties: shape, initialization, update timing, gradient status, checkpoint behavior.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Define router bias as a per-expert control signal updated
+outside backpropagation.
+Use four experts with bias values that rise for underused
+experts and fall for overused experts.
+Assert router-bias.requires-grad is false and optimizer
+does not update it.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+selection-score = score + router-bias.
+Listing 9.2: Planned code placeholder for router bias as non trainable state.
+def router_bias_as_non_trainable_state_placeholder(x, config):
+"""Chapter 9.2 placeholder.
+Planned purpose: Register router_bias as a buffer and exclude it from optimizer gradients.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+(9.2)
+
+53
+
+9.3. BIASED SELECTION AND UNBIASED COMBINE
+Checkpoint
+Assert router_bias.requires_grad is false and optimizer does not update it.
+The key implementation detail is that bias changes selection but not final gates.
+
+9.3
+
+Biased selection and unbiased combine
+
+Implement the central invariant of the final reference model.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 9.3: Biased selection and unbiased combine
+Figure 9.3: Two score streams: biased scores for top-k, unbiased scores for gate normalization.
+A token selects experts using score+bias, then gates are computed from the original selected scores.
+Table 9.3: Selection tensor versus combine tensor and where each is used.
+Planned content
+Status
+
+Item
+Mechanism
+
+Implement the central invariant of the final reference
+model.
+A token selects experts using score+bias, then gates are
+computed from the original selected scores.
+Unit test that changing bias can change expert IDs while
+gate values still come from raw scores.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+idx = topk(score + b); gate = normalize(score[idx]).
+
+(9.3)
+
+Listing 9.3: Planned code placeholder for biased selection and unbiased combine.
+def biased_selection_and_unbiased_combine_placeholder(x, config):
+"""Chapter 9.3 placeholder.
+Planned purpose: Router forward pass returning topk_idx from biased scores and gates from unbiased
+selected scores.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Unit test that changing bias can change expert IDs while gate values still come from raw scores.
+The bias vector needs an update rule based on observed expert load.
+
+54
+
+CHAPTER 9. AUXILIARY-LOSS-FREE LOAD BALANCING
+
+9.4
+
+Dynamic bias update from expert load
+
+Add a simple no-gradient update that nudges underused experts up and overused experts down.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 9.4: Feedback loop from observed expert histogram to router bias update.
+Compare observed loads [8,2,1,1] to target load 3 and update each bias.
+
+Item
+
+Table 9.4: Bias update hyperparameters: gamma, target load, update interval, clamp range.
+Planned content
+Status
+
+Mechanism
+
+Add a simple no-gradient update that nudges underused
+experts up and overused experts down.
+Compare observed loads [8,2,1,1] to target load 3 and
+update each bias.
+Track bias values over training beside expert loads.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+b-i <- b-i + gamma if load-i < target, otherwise b-i <- b-i - gamma.
+Listing 9.4: Planned code placeholder for dynamic bias update from expert load.
+def dynamic_bias_update_from_expert_load_placeholder(x, config):
+"""Chapter 9.4 placeholder.
+Planned purpose: update_router_bias(load, target, gamma) implemented under torch.no_grad().
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Track bias values over training beside expert loads.
+
+(9.4)
+
+55
+
+9.5. COMPARING BALANCING METHODS
+Now we can compare auxiliary balancing and bias balancing using the same model and metrics.
+
+9.5
+
+Comparing balancing methods
+
+Design a fair chapter experiment comparing no balance, auxiliary loss, and router-bias balancing.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 9.5: Three-panel comparison of expert load histograms and validation loss curves.
+Run three short smoke experiments with identical seeds and report the same diagnostics.
+Table 9.5: Experiment matrix with balancing method, objective terms, update rule, and expected diagnostics.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Design a fair chapter experiment comparing no balance,
+auxiliary loss, and router-bias balancing.
+Run three short smoke experiments with identical seeds
+and report the same diagnostics.
+Produce a table with LM loss, aux loss if used, load
+balance score, entropy, and drop rate.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Balance score based on max-load/mean-load or coefficient of variation.
+Listing 9.5: Planned code placeholder for comparing balancing methods.
+def comparing_balancing_methods_placeholder(x, config):
+"""Chapter 9.5 placeholder.
+Planned purpose: run_balancing_ablation.py command presets.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+(9.5)
+
+56
+
+CHAPTER 9. AUXILIARY-LOSS-FREE LOAD BALANCING
+Checkpoint
+Produce a table with LM loss, aux loss if used, load balance score, entropy, and drop rate.
+The next chapter assembles the full MiniDeepSeekMoE model around this final layer.
+
+9.6
+
+Chapter summary and handoff
+
+Lock the final router behavior and document the invariants required by the complete model.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 9.6: Chapter summary and handoff
+Figure 9.6: Final router contract diagram with selection and combine paths separated.
+Trace one token through score, bias, selected experts, unbiased gates, expert outputs, and metrics.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 9.6: Final router invariants and tests.
+Planned content
+Lock the final router behavior and document the invariants required by the complete model.
+Trace one token through score, bias, selected experts,
+unbiased gates, expert outputs, and metrics.
+Reader checkpoint: explain why bias should not be included in combine weights.
+
+Status
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Final routing formula for MiniDeepSeekMoE.
+Listing 9.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 9.6 placeholder.
+Planned purpose: RouterBiasBalancer smoke test covering update and no-gradient behavior.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: explain why bias should not be included in combine weights.
+We can now build the full model with this routing block as the FFN replacement.
+
+(9.6)
+
+Chapter 10
+
+Assembling MiniDeepSeekMoE end to
+end
+This chapter covers
+• How configuration objects control dense, top-k, shared expert, and balancing options.
+• How the decoder block returns logits, losses, and routing metrics cleanly.
+• How smoke tests protect the full model from hidden routing regressions.
+Integrate the final MoE layer into a complete decoder-only language model.
+
+10.1
+
+Configuration objects and model variants
+
+Move from chapter-specific modules to a unified configuration-driven model.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 10.1: Configuration objects and model variants
+Figure 10.1: Configuration tree controlling attention, FFN/MoE, routing, balancing, and diagnostics.
+Define DenseBaselineConfig, MiniDeepSeekMoESmokeConfig, and MiniDeepSeekMoE16x2Config.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 10.1: Final configuration fields and default values.
+Planned content
+Status
+Move from chapter-specific modules to a unified
+configuration-driven model.
+Define DenseBaselineConfig, MiniDeepSeekMoESmokeConfig, and MiniDeepSeekMoE16x2Config.
+Print model summary and assert required fields exist.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+57
+
+58
+
+CHAPTER 10. ASSEMBLING MINIDEEPSEEKMOE END TO END
+
+Variant identity as a tuple of depth, width, expert count, K, and balancing method.
+
+(10.1)
+
+Listing 10.1: Planned code placeholder for configuration objects and model variants.
+def configuration_objects_and_model_variants_placeholder(x, config):
+"""Chapter 10.1 placeholder.
+Planned purpose: Dataclass or simple config object for MiniDeepSeekMoE.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Print model summary and assert required fields exist.
+The decoder block can now instantiate dense or MoE FFN paths from config.
+
+10.2
+
+Decoder block with dense prefix and MoE layers
+
+Assemble layers so early dense computation can precede sparse MoE layers if configured.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 10.2: Decoder block with dense prefix and MoE layers
+Figure 10.2: Stack of decoder blocks showing dense prefix and repeated MoE layers.
+Use one dense prefix layer followed by MoE blocks in the default config.
+Table 10.2: Layer type by index for smoke, default, and larger teaching configs.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Assemble layers so early dense computation can precede
+sparse MoE layers if configured.
+Use one dense prefix layer followed by MoE blocks in
+the default config.
+List layer types during model initialization.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+block(x) = x + attention(norm(x)); x = x + ffn-or-moe(norm(x)).
+Listing 10.2: Planned code placeholder for decoder block with dense prefix and MoE layers.
+def decoder_block_with_dense_prefix_and_moe_layers_placeholder(x, config):
+"""Chapter 10.2 placeholder.
+Planned purpose: DecoderBlock factory that chooses DenseFFN or MiniDeepSeekMoELayer.
+Replace this stub during section development.
+
+(10.2)
+
+59
+
+10.3. FORWARD PASS OUTPUTS AND LOSS DICTIONARY
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+List layer types during model initialization.
+The model forward pass must carry routing metrics out of each MoE layer.
+
+10.3
+
+Forward pass outputs and loss dictionary
+
+Return logits and structured losses/metrics without making training code guess where values live.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 10.3: Forward pass outputs and loss dictionary
+Figure 10.3: Forward output dictionary with model outputs and nested per-layer router metrics.
+Forward pass returns logits, lm_loss, total_loss, router_metrics, and optional aux_loss.
+Table 10.3: Output dictionary keys, shapes, and when they are present.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Return logits and structured losses/metrics without
+making training code guess where values live.
+Forward pass returns logits, lm-loss, total-loss, routermetrics, and optional aux-loss.
+Unit test for output keys under dense, auxiliary, and
+bias modes.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+total-loss depends on selected balancing mode.
+Listing 10.3: Planned code placeholder for forward pass outputs and loss dictionary.
+def forward_pass_outputs_and_loss_dictionary_placeholder(x, config):
+"""Chapter 10.3 placeholder.
+Planned purpose: MiniDeepSeekMoE.forward implementation with metric aggregation.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Unit test for output keys under dense, auxiliary, and bias modes.
+Training and sampling scripts can now be shared across variants.
+
+(10.3)
+
+60
+
+CHAPTER 10. ASSEMBLING MINIDEEPSEEKMOE END TO END
+
+10.4
+
+Training and sampling scripts
+
+Create runnable scripts that match the source codebase style: minimal, readable, and chapter-scoped.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 10.4: Training and sampling scripts
+Figure 10.4: Script workflow from config to training to checkpoint to sample text.
+Run train.py with a smoke config and sample.py from the saved checkpoint.
+Table 10.4: Command-line arguments and their defaults.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Create runnable scripts that match the source codebase
+style: minimal, readable, and chapter-scoped.
+Run train.py with a smoke config and sample.py from
+the saved checkpoint.
+Verify checkpoint reload produces logits of the same
+shape.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Checkpoint state includes model, optimizer, config, and router bias buffers.
+Listing 10.4: Planned code placeholder for training and sampling scripts.
+def training_and_sampling_scripts_placeholder(x, config):
+"""Chapter 10.4 placeholder.
+Planned purpose: train.py main function with config loading, training loop, checkpointing, and
+sampling hook.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Verify checkpoint reload produces logits of the same shape.
+A full model needs full-model smoke tests before experiments are trusted.
+
+10.5
+
+Full-model smoke tests
+
+Create a test suite that catches shape, routing, balancing, and serialization failures.
+
+(10.4)
+
+61
+
+10.6. CHAPTER SUMMARY AND HANDOFF
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 10.5: Full-model smoke tests
+Figure 10.5: Smoke-test pipeline with pass/fail checkpoints after each stage.
+Run the smoke config on CPU for two forward/backward passes.
+
+Table 10.5: Test names, purpose, and expected runtime tier.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Create a test suite that catches shape, routing, balancing, and serialization failures.
+Run the smoke config on CPU for two forward/backward
+passes.
+CI-style console summary for all smoke tests.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+No NaNs and finite loss invariant.
+
+(10.5)
+
+Listing 10.5: Planned code placeholder for full model smoke tests.
+def full_model_smoke_tests_placeholder(x, config):
+"""Chapter 10.5 placeholder.
+Planned purpose: tests/test_minideepseekmoe_smoke.py with forward, backward, bias-update, and saveload tests.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+CI-style console summary for all smoke tests.
+With a complete tested implementation, the next chapter runs experiments and interprets diagnostics.
+
+10.6
+
+Chapter summary and handoff
+
+Summarize the complete implementation and separate code correctness from model quality.
+
+62
+
+CHAPTER 10. ASSEMBLING MINIDEEPSEEKMOE END TO END
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 10.6: Chapter summary and handoff
+Figure 10.6: End-to-end model architecture diagram from tokens to logits.
+Compare dense baseline and MiniDeepSeekMoE smoke configs by parameter count and active parameters.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 10.6: Final implementation files and their responsibilities.
+Planned content
+Status
+Summarize the complete implementation and separate
+code correctness from model quality.
+Compare dense baseline and MiniDeepSeekMoE smoke
+configs by parameter count and active parameters.
+Reader checkpoint: run the smoke model and inspect
+router metrics.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Active expert parameters per token for the final config.
+Listing 10.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 10.6 placeholder.
+Planned purpose: README quickstart commands for train and sample.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: run the smoke model and inspect router metrics.
+The next chapter turns the implementation into a controlled experiment framework.
+
+(10.6)
+
+Chapter 11
+
+Training, diagnostics, and controlled
+experiments
+This chapter covers
+• How to run small, reproducible experiments without overclaiming performance.
+• How to interpret routing diagnostics alongside language-model loss.
+• How ablations reveal the contribution of top-k, shared experts, and balancing methods.
+Use the model to answer concrete questions about routing, balance, and sparse capacity.
+
+11.1
+
+Experiment design for a from-scratch book
+
+Set realistic expectations for small-data experiments and define what can and cannot be concluded.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 11.1: Experiment funnel from smoke tests to short training runs to optional longer ablations.
+63
+
+64
+
+CHAPTER 11. TRAINING, DIAGNOSTICS, AND CONTROLLED EXPERIMENTS
+Use three smoke-scale runs to compare mechanics, not state-of-the-art quality.
+Table 11.1: Claim types allowed by each experiment scale.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Set realistic expectations for small-data experiments
+and define what can and cannot be concluded.
+Use three smoke-scale runs to compare mechanics, not
+state-of-the-art quality.
+Check that every experiment saves config, seed, logs,
+and git/code snapshot note.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Report mean and range across seeds when multiple seeds are used.
+
+Listing 11.1: Planned code placeholder for experiment design for a from scratch book.
+def experiment_design_for_a_from_scratch_book_placeholder(x, config):
+"""Chapter 11.1 placeholder.
+Planned purpose: Experiment manifest YAML with seeds, configs, and output directories.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Check that every experiment saves config, seed, logs, and git/code snapshot note.
+The data pipeline needs a repeatable preparation script.
+
+11.2
+
+Dataset preparation and reproducibility
+
+Make dataset setup deterministic and lightweight enough for readers to rerun.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 11.2: Dataset preparation and reproducibility
+Figure 11.2: Raw text to tokenized train/validation artifacts.
+Prepare a small corpus split into train and validation binary or tensor files.
+
+(11.1)
+
+65
+
+11.3. LOSS CURVES AND ROUTING DASHBOARDS
+Table 11.2: Dataset artifacts, paths, and regeneration commands.
+Planned content
+Status
+
+Item
+Mechanism
+
+Make dataset setup deterministic and lightweight
+enough for readers to rerun.
+Prepare a small corpus split into train and validation
+binary or tensor files.
+Print token counts, split sizes, and a decoded sample
+from each split.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+Train/validation split ratio and token count definitions.
+
+Listing 11.2: Planned code placeholder for dataset preparation and reproducibility.
+def dataset_preparation_and_reproducibility_placeholder(x, config):
+"""Chapter 11.2 placeholder.
+Planned purpose: prepare.py script with deterministic split and saved metadata.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Print token counts, split sizes, and a decoded sample from each split.
+
+Training logs must include both language and routing metrics.
+
+11.3
+
+Loss curves and routing dashboards
+
+Create consistent plots that make model behavior inspectable after every run.
+
+(11.2)
+
+66
+
+CHAPTER 11. TRAINING, DIAGNOSTICS, AND CONTROLLED EXPERIMENTS
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 11.3: Standard diagnostic dashboard layout for a chapter experiment.
+Plot validation loss, load balance score, entropy, and drop rate from one JSONL log.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 11.3: Plot names, source metrics, and interpretation cautions.
+Planned content
+Status
+Create consistent plots that make model behavior inspectable after every run.
+Plot validation loss, load balance score, entropy, and
+drop rate from one JSONL log.
+Save dashboard figures through LaTeX wrappers, never
+raw includegraphics in prose.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Load-balance score based on coefficient of variation across expert loads.
+Listing 11.3: Planned code placeholder for loss curves and routing dashboards.
+def loss_curves_and_routing_dashboards_placeholder(x, config):
+"""Chapter 11.3 placeholder.
+Planned purpose: plot_experiment_dashboard.py reading logs and saving PDF figures.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Save dashboard figures through LaTeX wrappers, never raw includegraphics in prose.
+With dashboards ready, ablation experiments can compare design choices.
+
+(11.3)
+
+67
+
+11.4. ABLATION MATRIX: DENSE, TOP-1, TOP-2, SHARED, AND BIAS-BALANCED
+
+11.4
+
+Ablation matrix: dense, top-1, top-2, shared, and bias-balanced
+
+Plan the central comparison table for the book without pretending small runs settle model quality.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 11.4: Ablation matrix with one row per model variant and columns for routing features.
+Run five variants for the same token budget and record comparable metrics.
+Table 11.4: Dense baseline versus MoE variants: parameters, active parameters, loss, load, entropy, drop rate.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Plan the central comparison table for the book without
+pretending small runs settle model quality.
+Run five variants for the same token budget and record
+comparable metrics.
+Flag any run with unstable loss, high drop rate, or extreme expert collapse.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Active parameter ratio for each sparse variant.
+
+(11.4)
+
+Listing 11.4: Planned code placeholder for ablation matrix dense top 1 top 2 shared and bias balanced.
+def ablation_matrix_dense_top_1_top_2_shared_and_bias_balanced_placeholder(x, config):
+"""Chapter 11.4 placeholder.
+Planned purpose: run_ablation_matrix.py that launches or documents variant commands.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+68
+
+CHAPTER 11. TRAINING, DIAGNOSTICS, AND CONTROLLED EXPERIMENTS
+Checkpoint
+Flag any run with unstable loss, high drop rate, or extreme expert collapse.
+Expert behavior should be interpreted with both numbers and examples.
+
+11.5
+
+Interpreting expert behavior carefully
+
+Teach readers to inspect expert usage without overclaiming that tiny experts learned semantic roles.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 11.5: Interpreting expert behavior carefully
+Figure 11.5: Token-by-token routing trace over a prompt.
+Look at expert IDs selected for a short prompt and compare across positions or token types.
+
+Item
+
+Table 11.5: Interpretation checklist: evidence, limitation, alternative explanation, next test.
+Planned content
+Status
+
+Mechanism
+
+Teach readers to inspect expert usage without overclaiming that tiny experts learned semantic roles.
+Look at expert IDs selected for a short prompt and compare across positions or token types.
+Generate a routing trace table and a usage heatmap.
+
+Mini-example
+Diagnostic
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Conditional expert frequency for a chosen token group.
+Listing 11.5: Planned code placeholder for interpreting expert behavior carefully.
+def interpreting_expert_behavior_carefully_placeholder(x, config):
+"""Chapter 11.5 placeholder.
+Planned purpose: trace_prompt_routing.py that prints token, top-k experts, and gates.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Generate a routing trace table and a usage heatmap.
+The final chapter steps back from experiments to discuss inference and scaling limits.
+
+11.6
+
+Chapter summary and handoff
+
+Close the experimental part by identifying what the book has demonstrated mechanically.
+
+(11.5)
+
+69
+
+11.6. CHAPTER SUMMARY AND HANDOFF
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 11.6: Chapter summary and handoff
+Figure 11.6: Experiment report card combining loss, active parameters, expert balance, and routing trace.
+Summarize one dense run and one final MoE run in the same report card.
+
+Item
+
+Table 11.6: What each ablation teaches and which chapter implemented the mechanism.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Close the experimental part by identifying what the
+book has demonstrated mechanically.
+Summarize one dense run and one final MoE run in the
+same report card.
+Reader checkpoint: identify whether a routing issue is
+code, loss, capacity, or data related.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+No new equation; reuse active-parameter and load-balance metrics.
+Listing 11.6: Planned code placeholder for chapter summary and handoff.
+def chapter_summary_and_handoff_placeholder(x, config):
+"""Chapter 11.6 placeholder.
+Planned purpose: generate_experiment_report.py producing Markdown and LaTeX table outputs.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: identify whether a routing issue is code, loss, capacity, or data related.
+The last chapter explains how these same mechanisms change at inference and production scale.
+
+(11.6)
+
+70
+
+CHAPTER 11. TRAINING, DIAGNOSTICS, AND CONTROLLED EXPERIMENTS
+
+Chapter 12
+
+Inference, performance, and scaling
+beyond the toy model
+This chapter covers
+• How MoE affects inference flow, batching, and active-parameter accounting.
+• Why expert parallelism and all-to-all communication appear at larger scale.
+• How to map MiniDeepSeekMoE concepts to production-scale MoE models responsibly.
+Connect the from-scratch implementation to systems concerns without turning the book into a distributedsystems text.
+
+12.1
+
+Autoregressive inference with sparse FFNs
+
+Explain what changes and what stays the same when a trained MoE model generates text one token at a time.
+Expert
+path A
+
+Router
+or mechanism
+
+Selected
+path B
+
+Output
+check
+
+Ch. 12.1: Autoregressive inference with sparse FFNs
+Figure 12.1: One-token inference path through attention cache and MoE layer.
+Generate one new token and trace attention, router, selected experts, and logits.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 12.1: Training-time versus inference-time routing tensors.
+Planned content
+Status
+Explain what changes and what stays the same when a
+trained MoE model generates text one token at a time.
+Generate one new token and trace attention, router, selected experts, and logits.
+Print selected experts for each generated token in a short
+sample.
+71
+
+Placeholder
+Placeholder
+Placeholder
+
+72
+
+CHAPTER 12. INFERENCE, PERFORMANCE, AND SCALING BEYOND THE TOY MODEL
+The planned mechanics should introduce the equation before the implementation listing.
+Per-step active expert calls equal layers-with-moe * K for one token.
+
+(12.1)
+
+Listing 12.1: Planned code placeholder for autoregressive inference with sparse FFNs.
+def autoregressive_inference_with_sparse_ffns_placeholder(x, config):
+"""Chapter 12.1 placeholder.
+Planned purpose: generate function with routing metrics optionally returned per step.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Print selected experts for each generated token in a short sample.
+Batching multiple requests complicates the expert batches.
+
+12.2
+
+Batching routed tokens at inference
+
+Show why MoE inference wants tokens for the same expert to be grouped efficiently.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 12.2: Batching routed tokens at inference
+Figure 12.2: Inference batch tokens packed into expert-specific microbatches.
+Two prompts in a batch route their next token to different experts.
+
+Item
+
+Table 12.2: Inference batching challenges: uneven loads, small expert batches, padding, latency.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Show why MoE inference wants tokens for the same expert to be grouped efficiently.
+Two prompts in a batch route their next token to different experts.
+Histogram expert batch sizes over a generated sequence.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Expert batch size distribution at generation step s.
+Listing 12.2: Planned code placeholder for batching routed tokens at inference.
+def batching_routed_tokens_at_inference_placeholder(x, config):
+"""Chapter 12.2 placeholder.
+Planned purpose: profile_inference_routes function collecting per-step expert batch sizes.
+
+(12.2)
+
+73
+
+12.3. COMPUTE, MEMORY, AND ACTIVE-PARAMETER ACCOUNTING
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Histogram expert batch sizes over a generated sequence.
+Compute and memory estimates clarify where the toy implementation stops scaling.
+
+12.3
+
+Compute, memory, and active-parameter accounting
+
+Give readers a sober way to discuss total parameters, active parameters, and practical memory costs.
+
+Diagnostic plot placeholder
+Replace with generated PDF during section development
+
+Figure 12.3: Stacked bars for total parameters and active parameters per token.
+Compare dense FFN, 16x2 MoE, and 64x6 teaching config parameter counts.
+Table 12.3: Total parameters, active parameters, estimated activation memory, and expert calls by config.
+Item
+Planned content
+Status
+Mechanism
+Mini-example
+Diagnostic
+
+Give readers a sober way to discuss total parameters,
+active parameters, and practical memory costs.
+Compare dense FFN, 16x2 MoE, and 64x6 teaching config parameter counts.
+Check estimates against model.count-parameters breakdown.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Active expert FFN parameters per token approximately K times one routed expert plus shared experts. (12.3)
+
+74
+
+CHAPTER 12. INFERENCE, PERFORMANCE, AND SCALING BEYOND THE TOY MODEL
+Listing 12.3: Planned code placeholder for compute memory and active parameter accounting.
+
+def compute_memory_and_active_parameter_accounting_placeholder(x, config):
+"""Chapter 12.3 placeholder.
+Planned purpose: estimate_moe_compute.py producing parameter and active-compute estimates.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Check estimates against model.count_parameters breakdown.
+At production scale, experts are often spread across devices, introducing communication.
+
+12.4
+
+Expert parallelism and all-to-all communication
+
+Explain the systems picture conceptually while keeping implementation out of scope.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 12.4: Expert parallelism and all-to-all communication
+Figure 12.4: Tokens routed across devices through an all-to-all exchange, expert compute, and return exchange.
+Two devices each host two experts; tokens must move to the device containing their selected experts.
+Table 12.4: Single-device MoE versus expert-parallel MoE responsibilities.
+Planned content
+Status
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Explain the systems picture conceptually while keeping
+implementation out of scope.
+Two devices each host two experts; tokens must move
+to the device containing their selected experts.
+Thought experiment table estimating routed activation
+traffic for a small config.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Communication volume depends on routed token count, D, K, and bytes per element.
+
+(12.4)
+
+Listing 12.4: Planned code placeholder for expert parallelism and all to all communication.
+def expert_parallelism_and_all_to_all_communication_placeholder(x, config):
+"""Chapter 12.4 placeholder.
+Planned purpose: Conceptual pseudocode for distributed dispatch without runnable distributed code.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+75
+
+12.5. MAPPING THE BOOK MODEL TO PRODUCTION MOE FAMILIES
+Checkpoint
+Thought experiment table estimating routed activation traffic for a small config.
+This systems view helps map the toy model to public large-MoE architecture descriptions.
+
+12.5
+
+Mapping the book model to production MoE families
+
+Connect MiniDeepSeekMoE pieces to broader MoE designs while staying honest about omitted details.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 12.5: Mapping the book model to production MoE families
+Figure 12.5: Concept map from book components to larger MoE system components.
+Map top-k routing, shared experts, fine-grained experts, and router bias to the final reference model vocabulary.
+
+Item
+
+Table 12.5: Book implementation feature, production analogue, and what remains out of scope.
+Planned content
+Status
+
+Mechanism
+Mini-example
+Diagnostic
+
+Connect MiniDeepSeekMoE pieces to broader MoE designs while staying honest about omitted details.
+Map top-k routing, shared experts, fine-grained experts,
+and router bias to the final reference model vocabulary.
+Reader checkpoint: identify which chapter implemented
+each production analogue.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Scaling identity: same layer contract, larger E, larger D, more devices.
+Listing 12.5: Planned code placeholder for mapping the book model to production MoE families.
+def mapping_the_book_model_to_production_moe_families_placeholder(x, config):
+"""Chapter 12.5 placeholder.
+Planned purpose: Config comparison snippet showing smoke, default, and larger teaching configs.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Reader checkpoint: identify which chapter implemented each production analogue.
+The book closes by summarizing the reusable mental model.
+
+(12.5)
+
+76
+
+CHAPTER 12. INFERENCE, PERFORMANCE, AND SCALING BEYOND THE TOY MODEL
+
+12.6
+
+Book summary and next steps
+
+End with a coherent picture of MoE as a route-execute-combine layer embedded in a decoder.
+
+Router
+or mechanism
+
+Expert
+path A
+Selected
+path B
+
+Output
+check
+
+Ch. 12.6: Book summary and next steps
+Figure 12.6: Complete route-execute-combine summary diagram with training and inference diagnostics around
+it.
+Trace one token through the final model using the vocabulary from every part of the book.
+
+Item
+Mechanism
+Mini-example
+Diagnostic
+
+Table 12.6: Reader capabilities after finishing the book and possible extensions.
+Planned content
+Status
+End with a coherent picture of MoE as a route-executecombine layer embedded in a decoder.
+Trace one token through the final model using the vocabulary from every part of the book.
+Final self-test: build, train smoke, inspect routing, sample text, and explain limitations.
+
+Placeholder
+Placeholder
+Placeholder
+
+The planned mechanics should introduce the equation before the implementation listing.
+Final MiniDeepSeekMoE layer equation repeated as the book endpoint.
+Listing 12.6: Planned code placeholder for book summary and next steps.
+def book_summary_and_next_steps_placeholder(x, config):
+"""Chapter 12.6 placeholder.
+Planned purpose: Extension checklist: add RMSNorm, alternate attention, larger datasets, or
+distributed dispatch.
+Replace this stub during section development.
+"""
+raise NotImplementedError("Implement this section’s code path.")
+
+Checkpoint
+Final self-test: build, train smoke, inspect routing, sample text, and explain limitations.
+No next chapter; point readers to appendices and experiments they can extend.
+
+(12.6)
+
+Appendix A
+
+LaTeX artifact and diagram rules
+Document the color map, input-only artifact rule, label conventions, and TikZ patterns.
+Note
+This appendix is planned in Phase 4 and should be expanded during section development.
+
+77
+
+78
+
+APPENDIX A. LATEX ARTIFACT AND DIAGRAM RULES
+
+Appendix B
+
+Tensor shape checklist
+Collect every tensor symbol and shape used in routing, dispatch, balancing, and diagnostics.
+Note
+This appendix is planned in Phase 4 and should be expanded during section development.
+
+79
+
+80
+
+APPENDIX B. TENSOR SHAPE CHECKLIST
+
+Appendix C
+
+Codebase smoke tests and
+reproducibility checklist
+Provide a compact checklist for validating notebooks, scripts, tests, figures, and LaTeX builds.
+Note
+This appendix is planned in Phase 4 and should be expanded during section development.
+
+81
+
+

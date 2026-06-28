@@ -1,0 +1,19 @@
+\chapter{Assembling MiniDeepSeekMoE end to end}
+\label{ch:ch10-assembling-minideepseekmoe-end-to-end}
+
+\ChapterCovers{
+\begin{itemize}
+  \item How configuration objects control dense, top-k, shared expert, and balancing options.
+  \item How the decoder block returns logits, losses, and routing metrics cleanly.
+  \item How smoke tests protect the full model from hidden routing regressions.
+\end{itemize}
+}
+
+Integrate the final MoE layer into a complete decoder-only language model.
+
+\input{chapters/ch10/sections/01-configuration-objects-and-model-variants}
+\input{chapters/ch10/sections/02-decoder-block-with-dense-prefix-and-moe-layers}
+\input{chapters/ch10/sections/03-forward-pass-outputs-and-loss-dictionary}
+\input{chapters/ch10/sections/04-training-and-sampling-scripts}
+\input{chapters/ch10/sections/05-full-model-smoke-tests}
+\input{chapters/ch10/sections/06-chapter-summary-and-handoff}

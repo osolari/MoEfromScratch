@@ -1,0 +1,13 @@
+chapter,chapter_num,chapter_title,standalone_path,skill_md_path,skill_name
+ch01,1,From dense compute to conditional compute,standalone_skill_mds/chapters/ch01.skill.md,individual_skill_dirs/chapters/ch01/SKILL.md,moe-ch01-developer
+ch02,2,A dense Transformer baseline from scratch,standalone_skill_mds/chapters/ch02.skill.md,individual_skill_dirs/chapters/ch02/SKILL.md,moe-ch02-developer
+ch03,3,"Experts, routers, and the first MoE layer",standalone_skill_mds/chapters/ch03.skill.md,individual_skill_dirs/chapters/ch03/SKILL.md,moe-ch03-developer
+ch04,4,Top-1 routing and Switch-style dispatch,standalone_skill_mds/chapters/ch04.skill.md,individual_skill_dirs/chapters/ch04/SKILL.md,moe-ch04-developer
+ch05,5,Top-2 routing and weighted expert combination,standalone_skill_mds/chapters/ch05.skill.md,individual_skill_dirs/chapters/ch05/SKILL.md,moe-ch05-developer
+ch06,6,"Vectorized dispatch, capacity, and routing efficiency",standalone_skill_mds/chapters/ch06.skill.md,individual_skill_dirs/chapters/ch06/SKILL.md,moe-ch06-developer
+ch07,7,Router training and load-balancing losses,standalone_skill_mds/chapters/ch07.skill.md,individual_skill_dirs/chapters/ch07/SKILL.md,moe-ch07-developer
+ch08,8,Shared experts and fine-grained routed experts,standalone_skill_mds/chapters/ch08.skill.md,individual_skill_dirs/chapters/ch08/SKILL.md,moe-ch08-developer
+ch09,9,Auxiliary-loss-free load balancing,standalone_skill_mds/chapters/ch09.skill.md,individual_skill_dirs/chapters/ch09/SKILL.md,moe-ch09-developer
+ch10,10,Assembling MiniDeepSeekMoE end to end,standalone_skill_mds/chapters/ch10.skill.md,individual_skill_dirs/chapters/ch10/SKILL.md,moe-ch10-developer
+ch11,11,"Training, diagnostics, and controlled experiments",standalone_skill_mds/chapters/ch11.skill.md,individual_skill_dirs/chapters/ch11/SKILL.md,moe-ch11-developer
+ch12,12,"Inference, performance, and scaling beyond the toy model",standalone_skill_mds/chapters/ch12.skill.md,individual_skill_dirs/chapters/ch12/SKILL.md,moe-ch12-developer

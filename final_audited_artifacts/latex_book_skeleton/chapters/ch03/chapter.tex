@@ -1,0 +1,19 @@
+\chapter{Experts, routers, and the first MoE layer}
+\label{ch:ch03-experts-routers-and-the-first-moe-layer}
+
+\ChapterCovers{
+\begin{itemize}
+  \item How an expert is just an FFN with an expert identity.
+  \item How a router turns token states into expert scores.
+  \item How a naive loop implementation clarifies dispatch before optimization.
+\end{itemize}
+}
+
+Introduce the MoE layer as a transparent replacement for the dense FFN.
+
+\input{chapters/ch03/sections/01-expert-mlps-as-named-ffns}
+\input{chapters/ch03/sections/02-router-scores-and-tensor-shapes}
+\input{chapters/ch03/sections/03-top-k-selection-without-dispatch}
+\input{chapters/ch03/sections/04-naive-token-by-token-dispatch}
+\input{chapters/ch03/sections/05-shape-and-gradient-checks}
+\input{chapters/ch03/sections/06-chapter-summary-and-handoff}

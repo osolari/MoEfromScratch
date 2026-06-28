@@ -1,0 +1,2594 @@
+[
+  {
+    "section": "1.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch01/fig-the-dense-ffn-bottleneck.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch01/tab-the-dense-ffn-bottleneck.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch01/lst-the-dense-ffn-bottleneck.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch01/eq-the-dense-ffn-bottleneck.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch01/fig-conditional-compute-as-the-central-idea.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch01/tab-conditional-compute-as-the-central-idea.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch01/lst-conditional-compute-as-the-central-idea.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch01/eq-conditional-compute-as-the-central-idea.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch01/fig-a-tiny-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch01/tab-a-tiny-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch01/lst-a-tiny-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch01/eq-a-tiny-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch01/fig-what-from-scratch-means-for-this-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch01/tab-what-from-scratch-means-for-this-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch01/lst-what-from-scratch-means-for-this-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch01/eq-what-from-scratch-means-for-this-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch01/fig-the-minideepseekmoe-build-ladder.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch01/tab-the-minideepseekmoe-build-ladder.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch01/lst-the-minideepseekmoe-build-ladder.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch01/eq-the-minideepseekmoe-build-ladder.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch01/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch01/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch01/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "1.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch01/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch02/fig-dataset-and-token-batches.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch02/tab-dataset-and-token-batches.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch02/lst-dataset-and-token-batches.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch02/eq-dataset-and-token-batches.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch02/fig-token-and-position-embeddings.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch02/tab-token-and-position-embeddings.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch02/lst-token-and-position-embeddings.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch02/eq-token-and-position-embeddings.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch02/fig-causal-self-attention-as-the-context-path.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch02/tab-causal-self-attention-as-the-context-path.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch02/lst-causal-self-attention-as-the-context-path.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch02/eq-causal-self-attention-as-the-context-path.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch02/fig-dense-feed-forward-block-as-the-replacement-target.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch02/tab-dense-feed-forward-block-as-the-replacement-target.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch02/lst-dense-feed-forward-block-as-the-replacement-target.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch02/eq-dense-feed-forward-block-as-the-replacement-target.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch02/fig-training-loop-and-sampling-baseline.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch02/tab-training-loop-and-sampling-baseline.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch02/lst-training-loop-and-sampling-baseline.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch02/eq-training-loop-and-sampling-baseline.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch02/fig-baseline-diagnostics-and-comparison-slots.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch02/tab-baseline-diagnostics-and-comparison-slots.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch02/lst-baseline-diagnostics-and-comparison-slots.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "2.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch02/eq-baseline-diagnostics-and-comparison-slots.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch03/fig-expert-mlps-as-named-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch03/tab-expert-mlps-as-named-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch03/lst-expert-mlps-as-named-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch03/eq-expert-mlps-as-named-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch03/fig-router-scores-and-tensor-shapes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch03/tab-router-scores-and-tensor-shapes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch03/lst-router-scores-and-tensor-shapes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch03/eq-router-scores-and-tensor-shapes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch03/fig-top-k-selection-without-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch03/tab-top-k-selection-without-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch03/lst-top-k-selection-without-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch03/eq-top-k-selection-without-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch03/fig-naive-token-by-token-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch03/tab-naive-token-by-token-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch03/lst-naive-token-by-token-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch03/eq-naive-token-by-token-dispatch.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch03/fig-shape-and-gradient-checks.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch03/tab-shape-and-gradient-checks.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch03/lst-shape-and-gradient-checks.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch03/eq-shape-and-gradient-checks.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch03/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch03/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch03/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "3.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch03/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch04/fig-why-top-1-routing-is-the-simplest-sparse-case.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch04/tab-why-top-1-routing-is-the-simplest-sparse-case.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch04/lst-why-top-1-routing-is-the-simplest-sparse-case.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch04/eq-why-top-1-routing-is-the-simplest-sparse-case.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch04/fig-assignment-masks-and-expert-buckets.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch04/tab-assignment-masks-and-expert-buckets.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch04/lst-assignment-masks-and-expert-buckets.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch04/eq-assignment-masks-and-expert-buckets.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch04/fig-dispatching-tokens-to-selected-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch04/tab-dispatching-tokens-to-selected-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch04/lst-dispatching-tokens-to-selected-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch04/eq-dispatching-tokens-to-selected-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch04/fig-capacity-and-dropped-tokens.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch04/tab-capacity-and-dropped-tokens.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch04/lst-capacity-and-dropped-tokens.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch04/eq-capacity-and-dropped-tokens.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch04/fig-load-histograms-and-failure-modes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch04/tab-load-histograms-and-failure-modes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch04/lst-load-histograms-and-failure-modes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch04/eq-load-histograms-and-failure-modes.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch04/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch04/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch04/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "4.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch04/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch05/fig-why-top-2-changes-the-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch05/tab-why-top-2-changes-the-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch05/lst-why-top-2-changes-the-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch05/eq-why-top-2-changes-the-routing-story.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch05/fig-normalizing-selected-router-scores.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch05/tab-normalizing-selected-router-scores.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch05/lst-normalizing-selected-router-scores.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch05/eq-normalizing-selected-router-scores.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch05/fig-dispatch-for-two-expert-paths-per-token.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch05/tab-dispatch-for-two-expert-paths-per-token.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch05/lst-dispatch-for-two-expert-paths-per-token.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch05/eq-dispatch-for-two-expert-paths-per-token.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch05/fig-comparing-top-1-and-top-2-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch05/tab-comparing-top-1-and-top-2-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch05/lst-comparing-top-1-and-top-2-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch05/eq-comparing-top-1-and-top-2-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch05/fig-numerical-stability-in-top-k-gates.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch05/tab-numerical-stability-in-top-k-gates.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch05/lst-numerical-stability-in-top-k-gates.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch05/eq-numerical-stability-in-top-k-gates.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch05/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch05/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch05/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "5.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch05/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch06/fig-flattened-tokens-as-the-dispatch-unit.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch06/tab-flattened-tokens-as-the-dispatch-unit.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch06/lst-flattened-tokens-as-the-dispatch-unit.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch06/eq-flattened-tokens-as-the-dispatch-unit.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch06/fig-expert-batch-construction.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch06/tab-expert-batch-construction.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch06/lst-expert-batch-construction.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch06/eq-expert-batch-construction.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch06/fig-capacity-factors-and-overflow-policy.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch06/tab-capacity-factors-and-overflow-policy.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch06/lst-capacity-factors-and-overflow-policy.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch06/eq-capacity-factors-and-overflow-policy.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch06/fig-unpacking-and-weighted-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch06/tab-unpacking-and-weighted-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch06/lst-unpacking-and-weighted-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch06/eq-unpacking-and-weighted-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch06/fig-equivalence-tests-against-the-naive-layer.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch06/tab-equivalence-tests-against-the-naive-layer.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch06/lst-equivalence-tests-against-the-naive-layer.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch06/eq-equivalence-tests-against-the-naive-layer.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch06/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch06/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch06/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "6.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch06/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch07/fig-expert-imbalance-as-a-training-problem.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch07/tab-expert-imbalance-as-a-training-problem.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch07/lst-expert-imbalance-as-a-training-problem.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch07/eq-expert-imbalance-as-a-training-problem.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch07/fig-auxiliary-load-balancing-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch07/tab-auxiliary-load-balancing-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch07/lst-auxiliary-load-balancing-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch07/eq-auxiliary-load-balancing-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch07/fig-integrating-auxiliary-loss-into-training.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch07/tab-integrating-auxiliary-loss-into-training.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch07/lst-integrating-auxiliary-loss-into-training.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch07/eq-integrating-auxiliary-loss-into-training.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch07/fig-router-score-scale-and-z-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch07/tab-router-score-scale-and-z-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch07/lst-router-score-scale-and-z-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch07/eq-router-score-scale-and-z-loss.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch07/fig-routing-dashboards-and-training-logs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch07/tab-routing-dashboards-and-training-logs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch07/lst-routing-dashboards-and-training-logs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch07/eq-routing-dashboards-and-training-logs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch07/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch07/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch07/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "7.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch07/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch08/fig-the-role-of-shared-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch08/tab-the-role-of-shared-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch08/lst-the-role-of-shared-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch08/eq-the-role-of-shared-experts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch08/fig-fine-grained-routed-expert-segmentation.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch08/tab-fine-grained-routed-expert-segmentation.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch08/lst-fine-grained-routed-expert-segmentation.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch08/eq-fine-grained-routed-expert-segmentation.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch08/fig-the-minideepseekmoe-layer-contract.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch08/tab-the-minideepseekmoe-layer-contract.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch08/lst-the-minideepseekmoe-layer-contract.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch08/eq-the-minideepseekmoe-layer-contract.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch08/fig-combining-shared-and-routed-outputs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch08/tab-combining-shared-and-routed-outputs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch08/lst-combining-shared-and-routed-outputs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch08/eq-combining-shared-and-routed-outputs.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch08/fig-specialization-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch08/tab-specialization-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch08/lst-specialization-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch08/eq-specialization-diagnostics.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch08/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch08/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch08/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "8.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch08/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch09/fig-the-limitation-of-auxiliary-balancing.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch09/tab-the-limitation-of-auxiliary-balancing.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch09/lst-the-limitation-of-auxiliary-balancing.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch09/eq-the-limitation-of-auxiliary-balancing.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch09/fig-router-bias-as-non-trainable-state.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch09/tab-router-bias-as-non-trainable-state.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch09/lst-router-bias-as-non-trainable-state.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch09/eq-router-bias-as-non-trainable-state.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch09/fig-biased-selection-and-unbiased-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch09/tab-biased-selection-and-unbiased-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch09/lst-biased-selection-and-unbiased-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch09/eq-biased-selection-and-unbiased-combine.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch09/fig-dynamic-bias-update-from-expert-load.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch09/tab-dynamic-bias-update-from-expert-load.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch09/lst-dynamic-bias-update-from-expert-load.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch09/eq-dynamic-bias-update-from-expert-load.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch09/fig-comparing-balancing-methods.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch09/tab-comparing-balancing-methods.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch09/lst-comparing-balancing-methods.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch09/eq-comparing-balancing-methods.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch09/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch09/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch09/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "9.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch09/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch10/fig-configuration-objects-and-model-variants.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch10/tab-configuration-objects-and-model-variants.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch10/lst-configuration-objects-and-model-variants.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch10/eq-configuration-objects-and-model-variants.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch10/fig-decoder-block-with-dense-prefix-and-moe-layers.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch10/tab-decoder-block-with-dense-prefix-and-moe-layers.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch10/lst-decoder-block-with-dense-prefix-and-moe-layers.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch10/eq-decoder-block-with-dense-prefix-and-moe-layers.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch10/fig-forward-pass-outputs-and-loss-dictionary.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch10/tab-forward-pass-outputs-and-loss-dictionary.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch10/lst-forward-pass-outputs-and-loss-dictionary.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch10/eq-forward-pass-outputs-and-loss-dictionary.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch10/fig-training-and-sampling-scripts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch10/tab-training-and-sampling-scripts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch10/lst-training-and-sampling-scripts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch10/eq-training-and-sampling-scripts.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch10/fig-full-model-smoke-tests.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch10/tab-full-model-smoke-tests.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch10/lst-full-model-smoke-tests.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch10/eq-full-model-smoke-tests.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch10/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch10/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch10/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "10.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch10/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch11/fig-experiment-design-for-a-from-scratch-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch11/tab-experiment-design-for-a-from-scratch-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch11/lst-experiment-design-for-a-from-scratch-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch11/eq-experiment-design-for-a-from-scratch-book.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch11/fig-dataset-preparation-and-reproducibility.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch11/tab-dataset-preparation-and-reproducibility.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch11/lst-dataset-preparation-and-reproducibility.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch11/eq-dataset-preparation-and-reproducibility.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch11/fig-loss-curves-and-routing-dashboards.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch11/tab-loss-curves-and-routing-dashboards.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch11/lst-loss-curves-and-routing-dashboards.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch11/eq-loss-curves-and-routing-dashboards.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch11/fig-ablation-matrix-dense-top-1-top-2-shared-and-bias-balanced.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch11/tab-ablation-matrix-dense-top-1-top-2-shared-and-bias-balanced.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch11/lst-ablation-matrix-dense-top-1-top-2-shared-and-bias-balanced.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch11/eq-ablation-matrix-dense-top-1-top-2-shared-and-bias-balanced.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch11/fig-interpreting-expert-behavior-carefully.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch11/tab-interpreting-expert-behavior-carefully.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch11/lst-interpreting-expert-behavior-carefully.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch11/eq-interpreting-expert-behavior-carefully.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch11/fig-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch11/tab-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch11/lst-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "11.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch11/eq-chapter-summary-and-handoff.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.1",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch12/fig-autoregressive-inference-with-sparse-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.1",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch12/tab-autoregressive-inference-with-sparse-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.1",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch12/lst-autoregressive-inference-with-sparse-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.1",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch12/eq-autoregressive-inference-with-sparse-ffns.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.2",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch12/fig-batching-routed-tokens-at-inference.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.2",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch12/tab-batching-routed-tokens-at-inference.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.2",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch12/lst-batching-routed-tokens-at-inference.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.2",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch12/eq-batching-routed-tokens-at-inference.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.3",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch12/fig-compute-memory-and-active-parameter-accounting.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.3",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch12/tab-compute-memory-and-active-parameter-accounting.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.3",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch12/lst-compute-memory-and-active-parameter-accounting.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.3",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch12/eq-compute-memory-and-active-parameter-accounting.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.4",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch12/fig-expert-parallelism-and-all-to-all-communication.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.4",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch12/tab-expert-parallelism-and-all-to-all-communication.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.4",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch12/lst-expert-parallelism-and-all-to-all-communication.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.4",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch12/eq-expert-parallelism-and-all-to-all-communication.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.5",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch12/fig-mapping-the-book-model-to-production-moe-families.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.5",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch12/tab-mapping-the-book-model-to-production-moe-families.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.5",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch12/lst-mapping-the-book-model-to-production-moe-families.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.5",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch12/eq-mapping-the-book-model-to-production-moe-families.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.6",
+    "artifact_type": "figure",
+    "path": "latex_book_skeleton/figures/ch12/fig-book-summary-and-next-steps.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.6",
+    "artifact_type": "table",
+    "path": "latex_book_skeleton/tables/ch12/tab-book-summary-and-next-steps.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.6",
+    "artifact_type": "listing",
+    "path": "latex_book_skeleton/listings/ch12/lst-book-summary-and-next-steps.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  },
+  {
+    "section": "12.6",
+    "artifact_type": "equation",
+    "path": "latex_book_skeleton/equations/ch12/eq-book-summary-and-next-steps.tex",
+    "exists": "True",
+    "has_caption_if_required": "True",
+    "has_label": "True",
+    "figure_contract_ok": "True"
+  }
+]

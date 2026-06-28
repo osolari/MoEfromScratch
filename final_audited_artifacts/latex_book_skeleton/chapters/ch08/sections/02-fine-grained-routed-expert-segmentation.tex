@@ -1,0 +1,22 @@
+\section{Fine-grained routed expert segmentation}
+\label{sec:ch08-fine-grained-routed-expert-segmentation}
+
+Show how more smaller experts can replace fewer larger experts while preserving readable code.
+
+\input{figures/ch08/fig-fine-grained-routed-expert-segmentation}
+
+Compare 4 large experts with hidden\_dim=1024 to 16 smaller experts with hidden\_dim=256.
+
+\input{tables/ch08/tab-fine-grained-routed-expert-segmentation}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch08/eq-fine-grained-routed-expert-segmentation}
+
+\input{listings/ch08/lst-fine-grained-routed-expert-segmentation}
+
+\begin{checkpointbox}
+Compute total and active expert parameters for several segmentations.
+\end{checkpointbox}
+
+The reference layer combines fine-grained routed experts with shared experts.

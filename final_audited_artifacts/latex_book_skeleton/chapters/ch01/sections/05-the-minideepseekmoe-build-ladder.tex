@@ -1,0 +1,22 @@
+\section{The MiniDeepSeekMoE build ladder}
+\label{sec:ch01-the-minideepseekmoe-build-ladder}
+
+Preview the book path from dense baseline to shared experts, fine-grained experts, and router-bias balancing.
+
+\input{figures/ch01/fig-the-minideepseekmoe-build-ladder}
+
+Use the smoke-test configuration with two layers, four routed experts, and one shared expert.
+
+\input{tables/ch01/tab-the-minideepseekmoe-build-ladder}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch01/eq-the-minideepseekmoe-build-ladder}
+
+\input{listings/ch01/lst-the-minideepseekmoe-build-ladder}
+
+\begin{checkpointbox}
+Milestone checklist that marks which diagnostics appear by each chapter.
+\end{checkpointbox}
+
+The first build step is a dense Transformer baseline that gives the MoE layer somewhere to live.

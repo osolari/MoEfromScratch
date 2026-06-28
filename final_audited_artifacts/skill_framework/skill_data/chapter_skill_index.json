@@ -1,0 +1,98 @@
+[
+  {
+    "chapter": "ch01",
+    "chapter_num": 1,
+    "chapter_title": "From dense compute to conditional compute",
+    "standalone_path": "standalone_skill_mds/chapters/ch01.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch01/SKILL.md",
+    "skill_name": "moe-ch01-developer"
+  },
+  {
+    "chapter": "ch02",
+    "chapter_num": 2,
+    "chapter_title": "A dense Transformer baseline from scratch",
+    "standalone_path": "standalone_skill_mds/chapters/ch02.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch02/SKILL.md",
+    "skill_name": "moe-ch02-developer"
+  },
+  {
+    "chapter": "ch03",
+    "chapter_num": 3,
+    "chapter_title": "Experts, routers, and the first MoE layer",
+    "standalone_path": "standalone_skill_mds/chapters/ch03.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch03/SKILL.md",
+    "skill_name": "moe-ch03-developer"
+  },
+  {
+    "chapter": "ch04",
+    "chapter_num": 4,
+    "chapter_title": "Top-1 routing and Switch-style dispatch",
+    "standalone_path": "standalone_skill_mds/chapters/ch04.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch04/SKILL.md",
+    "skill_name": "moe-ch04-developer"
+  },
+  {
+    "chapter": "ch05",
+    "chapter_num": 5,
+    "chapter_title": "Top-2 routing and weighted expert combination",
+    "standalone_path": "standalone_skill_mds/chapters/ch05.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch05/SKILL.md",
+    "skill_name": "moe-ch05-developer"
+  },
+  {
+    "chapter": "ch06",
+    "chapter_num": 6,
+    "chapter_title": "Vectorized dispatch, capacity, and routing efficiency",
+    "standalone_path": "standalone_skill_mds/chapters/ch06.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch06/SKILL.md",
+    "skill_name": "moe-ch06-developer"
+  },
+  {
+    "chapter": "ch07",
+    "chapter_num": 7,
+    "chapter_title": "Router training and load-balancing losses",
+    "standalone_path": "standalone_skill_mds/chapters/ch07.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch07/SKILL.md",
+    "skill_name": "moe-ch07-developer"
+  },
+  {
+    "chapter": "ch08",
+    "chapter_num": 8,
+    "chapter_title": "Shared experts and fine-grained routed experts",
+    "standalone_path": "standalone_skill_mds/chapters/ch08.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch08/SKILL.md",
+    "skill_name": "moe-ch08-developer"
+  },
+  {
+    "chapter": "ch09",
+    "chapter_num": 9,
+    "chapter_title": "Auxiliary-loss-free load balancing",
+    "standalone_path": "standalone_skill_mds/chapters/ch09.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch09/SKILL.md",
+    "skill_name": "moe-ch09-developer"
+  },
+  {
+    "chapter": "ch10",
+    "chapter_num": 10,
+    "chapter_title": "Assembling MiniDeepSeekMoE end to end",
+    "standalone_path": "standalone_skill_mds/chapters/ch10.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch10/SKILL.md",
+    "skill_name": "moe-ch10-developer"
+  },
+  {
+    "chapter": "ch11",
+    "chapter_num": 11,
+    "chapter_title": "Training, diagnostics, and controlled experiments",
+    "standalone_path": "standalone_skill_mds/chapters/ch11.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch11/SKILL.md",
+    "skill_name": "moe-ch11-developer"
+  },
+  {
+    "chapter": "ch12",
+    "chapter_num": 12,
+    "chapter_title": "Inference, performance, and scaling beyond the toy model",
+    "standalone_path": "standalone_skill_mds/chapters/ch12.skill.md",
+    "skill_md_path": "individual_skill_dirs/chapters/ch12/SKILL.md",
+    "skill_name": "moe-ch12-developer"
+  }
+]

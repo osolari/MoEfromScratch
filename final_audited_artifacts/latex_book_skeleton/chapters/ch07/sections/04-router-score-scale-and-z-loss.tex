@@ -1,0 +1,22 @@
+\section{Router score scale and z-loss}
+\label{sec:ch07-router-score-scale-and-z-loss}
+
+Introduce a simple regularizer for overly large router logits or scores.
+
+\input{figures/ch07/fig-router-score-scale-and-z-loss}
+
+Compare a modest logit row with a very large logit row that creates near-hard routing.
+
+\input{tables/ch07/tab-router-score-scale-and-z-loss}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch07/eq-router-score-scale-and-z-loss}
+
+\input{listings/ch07/lst-router-score-scale-and-z-loss}
+
+\begin{checkpointbox}
+Track router score max, entropy, and z-loss over training.
+\end{checkpointbox}
+
+The regularizers become useful only if the diagnostics are visible during training.

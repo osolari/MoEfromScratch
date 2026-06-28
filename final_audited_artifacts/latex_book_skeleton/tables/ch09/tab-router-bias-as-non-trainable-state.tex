@@ -1,0 +1,14 @@
+\begin{table}[H]
+\centering
+\caption{Router bias properties: shape, initialization, update timing, gradient status, checkpoint behavior.}
+\label{tab:ch09-router-bias-as-non-trainable-state}
+\begin{tabularx}{\textwidth}{p{0.22\textwidth}X p{0.22\textwidth}}
+\toprule
+Item & Planned content & Status \\
+\midrule
+Mechanism & Define router bias as a per-expert control signal updated outside backpropagation. & Placeholder \\
+Mini-example & Use four experts with bias values that rise for underused experts and fall for overused experts. & Placeholder \\
+Diagnostic & Assert router-bias.requires-grad is false and optimizer does not update it. & Placeholder \\
+\bottomrule
+\end{tabularx}
+\end{table}

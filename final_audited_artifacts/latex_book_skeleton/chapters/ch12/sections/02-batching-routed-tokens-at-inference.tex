@@ -1,0 +1,22 @@
+\section{Batching routed tokens at inference}
+\label{sec:ch12-batching-routed-tokens-at-inference}
+
+Show why MoE inference wants tokens for the same expert to be grouped efficiently.
+
+\input{figures/ch12/fig-batching-routed-tokens-at-inference}
+
+Two prompts in a batch route their next token to different experts.
+
+\input{tables/ch12/tab-batching-routed-tokens-at-inference}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch12/eq-batching-routed-tokens-at-inference}
+
+\input{listings/ch12/lst-batching-routed-tokens-at-inference}
+
+\begin{checkpointbox}
+Histogram expert batch sizes over a generated sequence.
+\end{checkpointbox}
+
+Compute and memory estimates clarify where the toy implementation stops scaling.

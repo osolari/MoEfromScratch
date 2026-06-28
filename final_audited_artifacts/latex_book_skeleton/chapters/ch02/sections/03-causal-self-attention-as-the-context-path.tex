@@ -1,0 +1,22 @@
+\section{Causal self-attention as the context path}
+\label{sec:ch02-causal-self-attention-as-the-context-path}
+
+Build enough attention to make the baseline a real decoder while keeping MoE focus on the FFN.
+
+\input{figures/ch02/fig-causal-self-attention-as-the-context-path}
+
+Trace a single attention head with B=1, T=4, D=8.
+
+\input{tables/ch02/tab-causal-self-attention-as-the-context-path}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch02/eq-causal-self-attention-as-the-context-path}
+
+\input{listings/ch02/lst-causal-self-attention-as-the-context-path}
+
+\begin{checkpointbox}
+Check that a token cannot attend to future positions.
+\end{checkpointbox}
+
+After attention mixes context, the dense FFN transforms each token independently.

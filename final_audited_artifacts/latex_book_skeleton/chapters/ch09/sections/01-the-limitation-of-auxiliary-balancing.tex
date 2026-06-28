@@ -1,0 +1,22 @@
+\section{The limitation of auxiliary balancing}
+\label{sec:ch09-the-limitation-of-auxiliary-balancing}
+
+Explain why a separate balancing mechanism is attractive after readers have implemented auxiliary losses.
+
+\input{figures/ch09/fig-the-limitation-of-auxiliary-balancing}
+
+Show total\_loss changes when aux\_coef changes even with the same LM loss.
+
+\input{tables/ch09/tab-the-limitation-of-auxiliary-balancing}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch09/eq-the-limitation-of-auxiliary-balancing}
+
+\input{listings/ch09/lst-the-limitation-of-auxiliary-balancing}
+
+\begin{checkpointbox}
+Compare LM loss and load balance separately, not only total loss.
+\end{checkpointbox}
+
+Router bias moves balance control into the selection rule rather than the loss.

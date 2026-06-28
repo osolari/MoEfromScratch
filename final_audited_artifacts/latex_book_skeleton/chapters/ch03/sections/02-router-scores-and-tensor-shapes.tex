@@ -1,0 +1,22 @@
+\section{Router scores and tensor shapes}
+\label{sec:ch03-router-scores-and-tensor-shapes}
+
+Define router logits, router probabilities, and the flattening convention used throughout the book.
+
+\input{figures/ch03/fig-router-scores-and-tensor-shapes}
+
+Flatten x from (B,T,D) to (N,D) and compute router\_logits with E=4 experts.
+
+\input{tables/ch03/tab-router-scores-and-tensor-shapes}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch03/eq-router-scores-and-tensor-shapes}
+
+\input{listings/ch03/lst-router-scores-and-tensor-shapes}
+
+\begin{checkpointbox}
+Assert that the expert dimension equals n\_experts and token dimension equals B*T.
+\end{checkpointbox}
+
+Scores become sparse when we select only the top experts per token.

@@ -1,0 +1,22 @@
+\section{Expert MLPs as named FFNs}
+\label{sec:ch03-expert-mlps-as-named-ffns}
+
+Demystify experts by deriving them directly from the dense FFN module.
+
+\input{figures/ch03/fig-expert-mlps-as-named-ffns}
+
+Clone the dense FFN four times and label the copies expert 0 through expert 3.
+
+\input{tables/ch03/tab-expert-mlps-as-named-ffns}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch03/eq-expert-mlps-as-named-ffns}
+
+\input{listings/ch03/lst-expert-mlps-as-named-ffns}
+
+\begin{checkpointbox}
+Run all experts on the same token and compare output shapes.
+\end{checkpointbox}
+
+Experts need a token-dependent selection mechanism: the router.

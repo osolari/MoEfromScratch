@@ -1,0 +1,22 @@
+\section{Dynamic bias update from expert load}
+\label{sec:ch09-dynamic-bias-update-from-expert-load}
+
+Add a simple no-gradient update that nudges underused experts up and overused experts down.
+
+\input{figures/ch09/fig-dynamic-bias-update-from-expert-load}
+
+Compare observed loads [8,2,1,1] to target load 3 and update each bias.
+
+\input{tables/ch09/tab-dynamic-bias-update-from-expert-load}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch09/eq-dynamic-bias-update-from-expert-load}
+
+\input{listings/ch09/lst-dynamic-bias-update-from-expert-load}
+
+\begin{checkpointbox}
+Track bias values over training beside expert loads.
+\end{checkpointbox}
+
+Now we can compare auxiliary balancing and bias balancing using the same model and metrics.

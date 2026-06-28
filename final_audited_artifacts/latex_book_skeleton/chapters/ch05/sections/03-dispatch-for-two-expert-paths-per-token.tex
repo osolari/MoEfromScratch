@@ -1,0 +1,22 @@
+\section{Dispatch for two expert paths per token}
+\label{sec:ch05-dispatch-for-two-expert-paths-per-token}
+
+Adapt the dispatch loop so each selected expert path contributes to the same output row.
+
+\input{figures/ch05/fig-dispatch-for-two-expert-paths-per-token}
+
+Token 0 goes to experts 1 and 3; both outputs are accumulated into output[0].
+
+\input{tables/ch05/tab-dispatch-for-two-expert-paths-per-token}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch05/eq-dispatch-for-two-expert-paths-per-token}
+
+\input{listings/ch05/lst-dispatch-for-two-expert-paths-per-token}
+
+\begin{checkpointbox}
+Check output changes when gates are manually swapped.
+\end{checkpointbox}
+
+Top-2 dispatch is correct but still slow; vectorization comes after the routing math is clear.

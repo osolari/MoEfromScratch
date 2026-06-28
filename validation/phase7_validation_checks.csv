@@ -1,0 +1,8 @@
+check,status,detail
+section_count,pass,72
+artifact_counts,pass,"{""figures_wrappers"": 72, ""tables_wrappers"": 72, ""listings_wrappers"": 72, ""equations_wrappers"": 72}"
+float_pinning,pass,"fig H=72, tab H=72"
+skill_package,pass,560740
+latex_compile,pass,85
+float_order_probe,pass,"[100303, 101549, 101815, 102976, 103260]"
+overall,pass,0 errors

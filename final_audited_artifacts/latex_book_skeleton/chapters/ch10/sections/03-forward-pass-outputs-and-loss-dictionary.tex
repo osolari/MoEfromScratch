@@ -1,0 +1,22 @@
+\section{Forward pass outputs and loss dictionary}
+\label{sec:ch10-forward-pass-outputs-and-loss-dictionary}
+
+Return logits and structured losses/metrics without making training code guess where values live.
+
+\input{figures/ch10/fig-forward-pass-outputs-and-loss-dictionary}
+
+Forward pass returns logits, lm\_loss, total\_loss, router\_metrics, and optional aux\_loss.
+
+\input{tables/ch10/tab-forward-pass-outputs-and-loss-dictionary}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch10/eq-forward-pass-outputs-and-loss-dictionary}
+
+\input{listings/ch10/lst-forward-pass-outputs-and-loss-dictionary}
+
+\begin{checkpointbox}
+Unit test for output keys under dense, auxiliary, and bias modes.
+\end{checkpointbox}
+
+Training and sampling scripts can now be shared across variants.

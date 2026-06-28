@@ -1,0 +1,22 @@
+\section{Conditional compute as the central idea}
+\label{sec:ch01-conditional-compute-as-the-central-idea}
+
+Introduce MoE as selective FFN computation rather than a mysterious new model family.
+
+\input{figures/ch01/fig-conditional-compute-as-the-central-idea}
+
+Route four tokens to two of four available experts and compare activated parameters against total parameters.
+
+\input{tables/ch01/tab-conditional-compute-as-the-central-idea}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch01/eq-conditional-compute-as-the-central-idea}
+
+\input{listings/ch01/lst-conditional-compute-as-the-central-idea}
+
+\begin{checkpointbox}
+Compute the active fraction for E=4, K=2 and E=16, K=2.
+\end{checkpointbox}
+
+Selective compute creates a new component: the router, which needs its own tensor contract.

@@ -1,0 +1,22 @@
+\section{Why top-2 changes the routing story}
+\label{sec:ch05-why-top-2-changes-the-routing-story}
+
+Explain top-2 routing as sparse ensemble behavior at the token level.
+
+\input{figures/ch05/fig-why-top-2-changes-the-routing-story}
+
+Use four tokens and four experts; each token chooses two experts with different weights.
+
+\input{tables/ch05/tab-why-top-2-changes-the-routing-story}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch05/eq-why-top-2-changes-the-routing-story}
+
+\input{listings/ch05/lst-why-top-2-changes-the-routing-story}
+
+\begin{checkpointbox}
+Compare active expert calls per token for K=1 and K=2.
+\end{checkpointbox}
+
+To make top-2 work, selected scores must become stable combine weights.

@@ -1,0 +1,22 @@
+\section{Token and position embeddings}
+\label{sec:ch02-token-and-position-embeddings}
+
+Implement the entry point that maps integer token IDs to dense vectors.
+
+\input{figures/ch02/fig-token-and-position-embeddings}
+
+Use vocab\_size=32, block\_size=8, and d\_model=16 to inspect embedding shapes.
+
+\input{tables/ch02/tab-token-and-position-embeddings}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch02/eq-token-and-position-embeddings}
+
+\input{listings/ch02/lst-token-and-position-embeddings}
+
+\begin{checkpointbox}
+Assert output shape and confirm gradients flow to both embedding tables.
+\end{checkpointbox}
+
+The embedded sequence now enters causal self-attention.

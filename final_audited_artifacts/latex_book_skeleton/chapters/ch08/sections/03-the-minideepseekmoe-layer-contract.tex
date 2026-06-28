@@ -1,0 +1,22 @@
+\section{The MiniDeepSeekMoE layer contract}
+\label{sec:ch08-the-minideepseekmoe-layer-contract}
+
+Define the final layer interface that later chapters assemble into the full model.
+
+\input{figures/ch08/fig-the-minideepseekmoe-layer-contract}
+
+Use D=128, E=4 routed experts, one shared expert, and K=2 in the smoke config.
+
+\input{tables/ch08/tab-the-minideepseekmoe-layer-contract}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch08/eq-the-minideepseekmoe-layer-contract}
+
+\input{listings/ch08/lst-the-minideepseekmoe-layer-contract}
+
+\begin{checkpointbox}
+Assert layer output shape equals input shape under smoke and default configs.
+\end{checkpointbox}
+
+The forward pass computes shared and routed paths side by side.

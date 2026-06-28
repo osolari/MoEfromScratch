@@ -1,0 +1,7 @@
+final_audited_artifacts/latex_book_skeleton/listings/ch01/lst-the-dense-ffn-bottleneck.tex
+final_audited_artifacts/latex_book_skeleton/listings/ch01/lst-the-minideepseekmoe-build-ladder.tex
+final_audited_artifacts/latex_book_skeleton/listings/ch03/lst-expert-mlps-as-named-ffns.tex
+final_audited_artifacts/latex_book_skeleton/listings/ch08/lst-the-minideepseekmoe-layer-contract.tex
+final_audited_artifacts/latex_book_skeleton/listings/ch10/lst-decoder-block-with-dense-prefix-and-moe-layers.tex
+final_audited_artifacts/latex_book_skeleton/listings/ch12/lst-autoregressive-inference-with-sparse-ffns.tex
+final_audited_artifacts/latex_book_skeleton/listings/ch12/lst-mapping-the-book-model-to-production-moe-families.tex

@@ -1,0 +1,20 @@
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=8mm]
+  \node[moe token] (tok1) at (0,0.45) {};
+  \node[moe token] (tok2) at (0,-0.45) {};
+  \node[moe router, right=14mm of tok1, yshift=-4.5mm, minimum width=22mm] (router) {Router\\or mechanism};
+  \node[moe expert, right=17mm of router, yshift=7mm, minimum width=22mm] (e1) {Expert\\path A};
+  \node[moe active expert, right=17mm of router, yshift=-7mm, minimum width=22mm] (e2) {Selected\\path B};
+  \node[moe output, right=18mm of router, xshift=29mm, minimum width=22mm] (out) {Output\\check};
+  \draw[moe route] (tok1) -- (router);
+  \draw[moe route] (tok2) -- (router);
+  \draw[moe faint arrow] (router) -- (e1);
+  \draw[moe active route] (router) -- (e2);
+  \draw[moe arrow] (e1) -- (out);
+  \draw[moe arrow] (e2) -- (out);
+  \node[align=center, text=BookDeepBlue] at (4.8,-2.0) {Ch. 8.1: The role of shared experts};
+\end{tikzpicture}
+\caption{Parallel shared path and routed path merging at the MoE output.}
+\label{fig:ch08-the-role-of-shared-experts}
+\end{figure}

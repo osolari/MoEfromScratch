@@ -1,0 +1,22 @@
+\section{Dataset and token batches}
+\label{sec:ch02-dataset-and-token-batches}
+
+Create the small next-token prediction pipeline used for every model variant.
+
+\input{figures/ch02/fig-dataset-and-token-batches}
+
+Load a short text corpus, tokenize it, and create B=2, T=8 training examples.
+
+\input{tables/ch02/tab-dataset-and-token-batches}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch02/eq-dataset-and-token-batches}
+
+\input{listings/ch02/lst-dataset-and-token-batches}
+
+\begin{checkpointbox}
+Print the first input-target pair and decode it to verify shifting.
+\end{checkpointbox}
+
+Token IDs become vectors through embeddings and positions.
