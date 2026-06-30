@@ -1,8 +1,11 @@
 /* ============================================================
    MoE Models from Scratch — book-style customization for
-   mkdocs-material. Modern-technical aesthetic: sans body, white
-   background, color accents pulled from the book's TikZ palette
-   (book/latex_book_skeleton/styles/colors.tex).
+   mkdocs-material, tuned toward the d2l.ai look:
+   - all-nav-in-left-sidebar tree with chapter numbers prominent
+   - centered narrow content column
+   - restrained academic colors (light background, blue accents)
+   - generous breathing room around math and code
+   - clean prev/next pagination at the bottom
    ============================================================ */
 
 :root {
@@ -21,126 +24,167 @@
   --moe-imbalance:    #E03030;
   --moe-muted:        #D0D0D0;
 
-  /* Override mkdocs-material primary / accent to match BookDeepBlue. */
+  /* d2l-ish neutral primary; saved purple for accents. */
   --md-primary-fg-color:                var(--book-deep-blue);
   --md-primary-fg-color--light:         #2a2a8a;
   --md-primary-fg-color--dark:          var(--book-navy);
   --md-primary-bg-color:                #ffffff;
 
-  --md-accent-fg-color:                 var(--moe-expert);
-  --md-accent-fg-color--transparent:    rgba(144, 80, 255, 0.10);
+  --md-accent-fg-color:                 #1f5fc6;
+  --md-accent-fg-color--transparent:    rgba(31, 95, 198, 0.10);
 
-  /* Slightly tighter body line-height + more generous paragraph spacing */
-  --md-typeset-line-height: 1.65;
+  --md-typeset-line-height: 1.7;
 }
 
-/* Dark scheme: brighten the accent and pull the surface slightly off-black. */
 [data-md-color-scheme="slate"] {
   --md-primary-fg-color:                #2a2a8a;
-  --md-accent-fg-color:                 #b48cff;
+  --md-accent-fg-color:                 #6ea0ff;
   --md-default-bg-color:                #11131a;
 }
 
 /* ----------- Body typography ----------- */
 
 .md-typeset {
-  font-feature-settings: "kern", "liga", "calt", "ss01";
-  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-feature-settings: "kern", "liga", "calt";
 }
 
-/* Slightly tighter content column for prose readability (~72ch). */
+/* Wider overall grid to give room for both sidebars + a centered
+   content column. */
 .md-grid {
-  max-width: 1280px;
+  max-width: 1440px;
 }
 .md-content__inner {
-  max-width: 72ch;
+  max-width: 76ch;
   margin: 0 auto;
   padding-top: 1.2rem;
 }
 
 /* ----------- Headings ----------- */
 
-/* Section H1 = "<chapter>.<section> Title". Lift to display weight. */
 .md-typeset h1 {
   font-weight: 700;
-  font-size: 2.05rem;
-  letter-spacing: -0.01em;
-  margin-top: 0.6rem;
-  margin-bottom: 1.4rem;
+  font-size: 2.1rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.4rem;
   color: var(--book-navy);
-  border-bottom: 1px solid var(--moe-muted);
-  padding-bottom: 0.55rem;
+  border-bottom: 1px solid #e8e8ee;
 }
 [data-md-color-scheme="slate"] .md-typeset h1 {
   color: #d6d6f5;
   border-bottom-color: #2a2a3a;
 }
 
-/* H2 with a left accent bar -- gives the chapter feel without numbering hacks. */
 .md-typeset h2 {
   font-weight: 700;
-  font-size: 1.45rem;
-  margin-top: 2.2rem;
-  margin-bottom: 0.9rem;
-  padding-left: 0.7rem;
-  border-left: 4px solid var(--moe-expert);
+  font-size: 1.4rem;
+  letter-spacing: -0.005em;
+  margin-top: 2rem;
+  margin-bottom: 0.7rem;
   color: var(--book-deep-blue);
 }
 [data-md-color-scheme="slate"] .md-typeset h2 {
   color: #c8c8ee;
-  border-left-color: #b48cff;
 }
 
 .md-typeset h3 {
   font-weight: 600;
-  font-size: 1.15rem;
-  margin-top: 1.6rem;
+  font-size: 1.12rem;
+  margin-top: 1.5rem;
   color: var(--book-deep-blue);
 }
 [data-md-color-scheme="slate"] .md-typeset h3 {
   color: #b8b8e8;
 }
 
+/* ----------- Left sidebar (chapter tree) ----------- */
+
+/* Sections-as-headings: top-level "1. Chapter title" gets a small
+   uppercase chapter label feel; section subitems indented under it. */
+.md-nav__title {
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--md-default-fg-color--light);
+}
+
+/* Section-style top-level entries become small caps headings. */
+.md-nav--lifted > .md-nav__list > .md-nav__item > .md-nav__link,
+.md-nav--secondary .md-nav__item--section > .md-nav__link {
+  font-weight: 700;
+  color: var(--book-navy);
+}
+[data-md-color-scheme="slate"] .md-nav--lifted > .md-nav__list > .md-nav__item > .md-nav__link,
+[data-md-color-scheme="slate"] .md-nav--secondary .md-nav__item--section > .md-nav__link {
+  color: #d6d6f5;
+}
+
+/* Nested section links: smaller, with chapter-number prefix in the
+   label (we already write "1.1 The dense FFN bottleneck" in the nav). */
+.md-nav__link {
+  font-size: 0.82rem;
+  margin: 0.18rem 0;
+}
+
+/* Active section: bold + accent bar on the left. d2l highlights the
+   current entry; we do the same. */
+.md-nav__link--active {
+  color: var(--moe-expert) !important;
+  font-weight: 600;
+  border-left: 3px solid var(--moe-expert);
+  padding-left: 0.5rem;
+  margin-left: -0.5rem;
+}
+[data-md-color-scheme="slate"] .md-nav__link--active {
+  color: #b48cff !important;
+  border-left-color: #b48cff;
+}
+
 /* ----------- Code blocks ----------- */
 
 .md-typeset pre > code,
 .md-typeset .highlight pre {
-  border: 1px solid #e0e0e8;
-  border-radius: 6px;
+  border: none;
+  border-radius: 4px;
   box-shadow: none;
-  font-size: 0.83rem;
-  line-height: 1.55;
+  background-color: #f7f7fb;
+  font-size: 0.84rem;
+  line-height: 1.6;
 }
 [data-md-color-scheme="slate"] .md-typeset pre > code,
 [data-md-color-scheme="slate"] .md-typeset .highlight pre {
-  border-color: #25283a;
+  background-color: #181b27;
 }
 
-/* Inline code: a touch of background; no border. */
 .md-typeset code {
-  background-color: var(--book-soft-fill);
+  background-color: #f4f4fa;
   border-radius: 3px;
-  padding: 0.05em 0.3em;
+  padding: 0.05em 0.32em;
   font-size: 0.88em;
+  color: #2a2a8a;
 }
 [data-md-color-scheme="slate"] .md-typeset code {
   background-color: #1c1f2c;
+  color: #b48cff;
 }
 
 /* ----------- Tables ----------- */
 
 .md-typeset table:not([class]) {
-  border: 1px solid var(--moe-muted);
-  border-radius: 6px;
+  border: 1px solid #e8e8ee;
+  border-radius: 4px;
   overflow: hidden;
-  font-size: 0.83rem;
+  font-size: 0.84rem;
   box-shadow: none;
 }
 .md-typeset table:not([class]) th {
-  background-color: var(--book-soft-fill);
+  background-color: #fafafd;
   color: var(--book-deep-blue);
   font-weight: 600;
-  border-bottom: 1px solid var(--moe-muted);
+  border-bottom: 1px solid #e8e8ee;
 }
 [data-md-color-scheme="slate"] .md-typeset table:not([class]) {
   border-color: #2a2a3a;
@@ -158,80 +202,57 @@
 
 /* ----------- Blockquote callouts: figure / diagnostic ----------- */
 
-/* All blockquotes get a left bar in the active-green; first-word
-   "**Figure**" or "**Diagnostic**" makes the role obvious. */
 .md-typeset blockquote {
-  border-left: 4px solid var(--moe-active);
-  background-color: rgba(112, 208, 80, 0.06);
+  border-left: 3px solid var(--moe-active);
+  background-color: rgba(112, 208, 80, 0.05);
   color: inherit;
-  padding: 0.85rem 1rem;
-  margin: 1.4rem 0;
-  border-radius: 4px;
+  padding: 0.7rem 1rem;
+  margin: 1.3rem 0;
+  border-radius: 3px;
 }
 [data-md-color-scheme="slate"] .md-typeset blockquote {
-  background-color: rgba(112, 208, 80, 0.08);
-}
-
-/* If a blockquote's content starts with the literal "**Diagnostic.**"
-   wrapper (we use it for every section's falsifiable check) we tint
-   the callout in capacity-gold instead. Implemented via an attribute
-   selector on the first <strong>. */
-.md-typeset blockquote:has(> p > strong:first-child:first-of-type) {
-  /* Pure CSS can't read the strong's text content directly to choose
-     a colour. We accept the green default; Diagnostic and Figure both
-     land there and stay distinguishable by the bold label. */
+  background-color: rgba(112, 208, 80, 0.07);
 }
 
 /* ----------- Math ----------- */
 
-mjx-container[display="true"] {
-  margin: 1rem 0 1.2rem 0;
-  overflow-x: auto;
+mjx-container {
+  font-size: 1.02em;
 }
-
-/* ----------- Top navigation tabs: subtle accent line under active tab ----------- */
-
-.md-tabs__link--active {
-  font-weight: 600;
+mjx-container[display="true"] {
+  margin: 1.3rem 0 1.5rem 0;
+  overflow-x: auto;
 }
 
 /* ----------- Cover page (index.md) ----------- */
 
 .book-cover {
-  margin: 1.5rem 0 1rem 0;
-  padding: 2.4rem 2rem 2rem 2rem;
-  background:
-    linear-gradient(135deg,
-      rgba(20, 20, 100, 0.04) 0%,
-      rgba(144, 80, 255, 0.06) 60%,
-      rgba(0, 167, 193, 0.05) 100%);
-  border-radius: 10px;
-  border: 1px solid var(--moe-muted);
+  margin: 1rem 0 1.8rem 0;
+  padding: 2.2rem 1.6rem 1.8rem 1.6rem;
+  background: #fbfbfe;
+  border: 1px solid #e8e8ee;
+  border-radius: 6px;
   text-align: center;
 }
 .book-cover h1 {
-  font-size: 2.7rem;
+  font-size: 2.5rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  margin: 0 0 0.6rem 0;
+  margin: 0 0 0.5rem 0;
   border-bottom: none;
   padding-bottom: 0;
   color: var(--book-navy);
 }
 .book-cover h3 {
   font-weight: 400;
-  font-size: 1.15rem;
-  line-height: 1.45;
+  font-size: 1.05rem;
+  line-height: 1.5;
   color: var(--book-deep-blue);
-  margin: 0.4rem auto 0 auto;
+  margin: 0.3rem auto 0 auto;
   max-width: 56ch;
 }
 [data-md-color-scheme="slate"] .book-cover {
-  background:
-    linear-gradient(135deg,
-      rgba(80, 80, 200, 0.08) 0%,
-      rgba(180, 140, 255, 0.10) 60%,
-      rgba(0, 167, 193, 0.08) 100%);
+  background: #15182a;
   border-color: #2a2a3a;
 }
 [data-md-color-scheme="slate"] .book-cover h1 { color: #d6d6f5; }
@@ -239,28 +260,27 @@ mjx-container[display="true"] {
 
 .book-cover-sub {
   max-width: 72ch;
-  margin: 0 auto 2.5rem auto;
+  margin: 0 auto 2.2rem auto;
 }
 
-/* The ToC "grid cards" come from mkdocs-material's grid extension.
-   Polish the chapter-card look so the cover reads as a book TOC. */
+/* ToC grid cards (chapter cards on the cover). */
 .md-typeset .grid.cards > ul > li,
 .md-typeset .grid.cards > div > div {
-  border: 1px solid var(--moe-muted);
-  border-radius: 8px;
-  padding: 1rem 1.1rem;
+  border: 1px solid #e8e8ee;
+  border-radius: 6px;
+  padding: 0.9rem 1.1rem;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .md-typeset .grid.cards > ul > li:hover,
 .md-typeset .grid.cards > div > div:hover {
   border-color: var(--moe-expert);
-  box-shadow: 0 2px 8px rgba(144, 80, 255, 0.10);
+  box-shadow: 0 1px 6px rgba(144, 80, 255, 0.08);
 }
 .md-typeset .grid.cards strong:first-child {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--moe-expert);
   margin-bottom: 0.3rem;
@@ -270,16 +290,21 @@ mjx-container[display="true"] {
   border-color: #2a2a3a;
 }
 .md-typeset .grid.cards ul li {
-  font-size: 0.88rem;
-  margin: 0.15rem 0;
+  font-size: 0.85rem;
+  margin: 0.1rem 0;
 }
 
 /* ----------- Breadcrumbs (navigation.path) ----------- */
 
 .md-path {
-  padding: 0.6rem 0 0.3rem 0;
-  font-size: 0.78rem;
-  color: var(--moe-muted);
+  padding: 0.7rem 0 0.4rem 0;
+  font-size: 0.77rem;
+  color: #7a7a8a;
+  border-bottom: 1px solid #f0f0f5;
+  margin-bottom: 1rem;
+}
+[data-md-color-scheme="slate"] .md-path {
+  border-bottom-color: #1f2230;
 }
 .md-path__link {
   color: var(--book-deep-blue);
@@ -291,12 +316,12 @@ mjx-container[display="true"] {
   color: var(--moe-expert);
 }
 
-/* ----------- Footer: pagination links (prev / next chapter) ----------- */
+/* ----------- Footer: prev / next chapter buttons ----------- */
 
 .md-footer__inner {
-  padding: 1.2rem 1rem;
-  background: var(--book-soft-fill);
-  border-top: 1px solid var(--moe-muted);
+  padding: 1rem;
+  background: #fafafd;
+  border-top: 1px solid #e8e8ee;
 }
 [data-md-color-scheme="slate"] .md-footer__inner {
   background: #15182a;
@@ -304,28 +329,28 @@ mjx-container[display="true"] {
 }
 .md-footer__link {
   flex-grow: 1;
-  padding: 1rem 1.2rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid var(--moe-muted);
+  padding: 0.85rem 1.1rem;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #e8e8ee;
   transition: background 0.15s, border-color 0.15s, transform 0.05s;
-  margin: 0 0.4rem;
+  margin: 0 0.35rem;
 }
 .md-footer__link:hover {
-  background: rgba(255, 255, 255, 0.85);
+  background: #fafafd;
   border-color: var(--moe-expert);
   transform: translateY(-1px);
 }
 [data-md-color-scheme="slate"] .md-footer__link {
-  background: rgba(255, 255, 255, 0.04);
+  background: #11131a;
   border-color: #2a2a3a;
 }
 [data-md-color-scheme="slate"] .md-footer__link:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #181b27;
   border-color: #b48cff;
 }
 .md-footer__direction {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -333,7 +358,7 @@ mjx-container[display="true"] {
   opacity: 1;
 }
 .md-footer__title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--book-deep-blue);
   opacity: 1;
@@ -342,10 +367,9 @@ mjx-container[display="true"] {
   color: #d6d6f5;
 }
 
-/* ----------- Subtle "edit this page" pencil ----------- */
-
+/* "View source on GitHub" / edit icons */
 .md-content__button[href] {
-  opacity: 0.55;
+  opacity: 0.5;
 }
 .md-content__button[href]:hover {
   opacity: 1;
