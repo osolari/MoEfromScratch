@@ -195,10 +195,151 @@ mjx-container[display="true"] {
   font-weight: 600;
 }
 
-/* ----------- Footer: pagination links ----------- */
+/* ----------- Cover page (index.md) ----------- */
+
+.book-cover {
+  margin: 1.5rem 0 1rem 0;
+  padding: 2.4rem 2rem 2rem 2rem;
+  background:
+    linear-gradient(135deg,
+      rgba(20, 20, 100, 0.04) 0%,
+      rgba(144, 80, 255, 0.06) 60%,
+      rgba(0, 167, 193, 0.05) 100%);
+  border-radius: 10px;
+  border: 1px solid var(--moe-muted);
+  text-align: center;
+}
+.book-cover h1 {
+  font-size: 2.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6rem 0;
+  border-bottom: none;
+  padding-bottom: 0;
+  color: var(--book-navy);
+}
+.book-cover h3 {
+  font-weight: 400;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--book-deep-blue);
+  margin: 0.4rem auto 0 auto;
+  max-width: 56ch;
+}
+[data-md-color-scheme="slate"] .book-cover {
+  background:
+    linear-gradient(135deg,
+      rgba(80, 80, 200, 0.08) 0%,
+      rgba(180, 140, 255, 0.10) 60%,
+      rgba(0, 167, 193, 0.08) 100%);
+  border-color: #2a2a3a;
+}
+[data-md-color-scheme="slate"] .book-cover h1 { color: #d6d6f5; }
+[data-md-color-scheme="slate"] .book-cover h3 { color: #b8b8e8; }
+
+.book-cover-sub {
+  max-width: 72ch;
+  margin: 0 auto 2.5rem auto;
+}
+
+/* The ToC "grid cards" come from mkdocs-material's grid extension.
+   Polish the chapter-card look so the cover reads as a book TOC. */
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid.cards > div > div {
+  border: 1px solid var(--moe-muted);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.md-typeset .grid.cards > ul > li:hover,
+.md-typeset .grid.cards > div > div:hover {
+  border-color: var(--moe-expert);
+  box-shadow: 0 2px 8px rgba(144, 80, 255, 0.10);
+}
+.md-typeset .grid.cards strong:first-child {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--moe-expert);
+  margin-bottom: 0.3rem;
+}
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li,
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > div > div {
+  border-color: #2a2a3a;
+}
+.md-typeset .grid.cards ul li {
+  font-size: 0.88rem;
+  margin: 0.15rem 0;
+}
+
+/* ----------- Breadcrumbs (navigation.path) ----------- */
+
+.md-path {
+  padding: 0.6rem 0 0.3rem 0;
+  font-size: 0.78rem;
+  color: var(--moe-muted);
+}
+.md-path__link {
+  color: var(--book-deep-blue);
+}
+[data-md-color-scheme="slate"] .md-path__link {
+  color: #b8b8e8;
+}
+.md-path__link:hover {
+  color: var(--moe-expert);
+}
+
+/* ----------- Footer: pagination links (prev / next chapter) ----------- */
 
 .md-footer__inner {
-  padding: 1rem 0;
+  padding: 1.2rem 1rem;
+  background: var(--book-soft-fill);
+  border-top: 1px solid var(--moe-muted);
+}
+[data-md-color-scheme="slate"] .md-footer__inner {
+  background: #15182a;
+  border-top-color: #2a2a3a;
+}
+.md-footer__link {
+  flex-grow: 1;
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid var(--moe-muted);
+  transition: background 0.15s, border-color 0.15s, transform 0.05s;
+  margin: 0 0.4rem;
+}
+.md-footer__link:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: var(--moe-expert);
+  transform: translateY(-1px);
+}
+[data-md-color-scheme="slate"] .md-footer__link {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: #2a2a3a;
+}
+[data-md-color-scheme="slate"] .md-footer__link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #b48cff;
+}
+.md-footer__direction {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--moe-expert);
+  opacity: 1;
+}
+.md-footer__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--book-deep-blue);
+  opacity: 1;
+}
+[data-md-color-scheme="slate"] .md-footer__title {
+  color: #d6d6f5;
 }
 
 /* ----------- Subtle "edit this page" pencil ----------- */

@@ -517,7 +517,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -618,10 +620,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-build-ladder" class="md-nav__link">
+  <a href="#a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The build ladder
+        A LaTeX-first technical book that builds MiniDeepSeekMoE-16x2 in PyTorch, one runnable section at a time.
       
     </span>
   </a>
@@ -629,10 +631,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-invariant-the-whole-book-protects" class="md-nav__link">
+  <a href="#table-of-contents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The invariant the whole book protects
+        Table of contents
       
     </span>
   </a>
@@ -644,17 +646,6 @@
     <span class="md-ellipsis">
       
         Where the code lives
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reading-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reading order
       
     </span>
   </a>
@@ -1949,7 +1940,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1968,10 +1961,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-build-ladder" class="md-nav__link">
+  <a href="#a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The build ladder
+        A LaTeX-first technical book that builds MiniDeepSeekMoE-16x2 in PyTorch, one runnable section at a time.
       
     </span>
   </a>
@@ -1979,10 +1972,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-invariant-the-whole-book-protects" class="md-nav__link">
+  <a href="#table-of-contents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The invariant the whole book protects
+        Table of contents
       
     </span>
   </a>
@@ -2000,17 +1993,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#reading-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reading order
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -2022,9 +2004,21 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+  
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
+  
+
 
 
   
@@ -2036,45 +2030,120 @@
   
 
 
+<div class="book-cover">
 <h1 id="moe-models-from-scratch">MoE Models from Scratch<a class="headerlink" href="#moe-models-from-scratch" title="Permanent link">&para;</a></h1>
-<p>A LaTeX-first technical book that builds a Mixture-of-Experts language model — <strong>MiniDeepSeekMoE-16x2</strong> — from scratch in PyTorch, one runnable section at a time.</p>
-<p>Every chapter is the same shape:</p>
+<h3 id="a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time">A LaTeX-first technical book that builds <strong>MiniDeepSeekMoE-16x2</strong> in PyTorch, one runnable section at a time.<a class="headerlink" href="#a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time" title="Permanent link">&para;</a></h3>
+</div>
+<div class="book-cover-sub">
+<p>Every section is a self-contained build step:</p>
 <blockquote>
-<p>problem opening → visual anchor → tensor / math mechanics → implementation listing → falsifiable diagnostic → bridge</p>
+<p><strong>problem opening</strong> → <strong>visual anchor</strong> → <strong>tensor / math mechanics</strong> → <strong>implementation listing</strong> → <strong>falsifiable diagnostic</strong> → <strong>bridge</strong></p>
 </blockquote>
-<p>Each section ships a <code>.tex</code> file (the production source), a co-located <code>.md</code> (this site), four standalone artifact wrappers (figure, table, listing, equation), and a runnable Python module + example script + pytest under <code>src/</code>, <code>examples/</code>, <code>tests/</code>.</p>
-<h2 id="the-build-ladder">The build ladder<a class="headerlink" href="#the-build-ladder" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>From dense compute to conditional compute</strong> — why the dense FFN is the bottleneck and what MoE actually replaces. <em>(complete)</em></li>
-<li><strong>A dense Transformer baseline from scratch</strong> — embeddings, attention, dense FFN, training loop.</li>
-<li><strong>Experts, routers, and the first MoE layer</strong> — the naive routed FFN.</li>
-<li><strong>Top-1 routing and Switch-style dispatch</strong> — assignment masks, capacity, dropped tokens.</li>
-<li><strong>Top-2 routing and weighted expert combination</strong> — normalized gates, the routing story made vectorized.</li>
-<li><strong>Vectorized dispatch, capacity, and routing efficiency</strong> — flattened batches, equivalence tests against the naive layer.</li>
-<li><strong>Router training and load-balancing losses</strong> — auxiliary loss, z-loss, routing dashboards.</li>
-<li><strong>Shared experts and fine-grained routed experts</strong> — the DeepSeekMoE-style expert structure.</li>
-<li><strong>Auxiliary-loss-free load balancing</strong> — the router-bias mechanism: biased selection, unbiased combine.</li>
-<li><strong>Assembling MiniDeepSeekMoE end to end</strong> — config object, full forward pass, training and sampling scripts.</li>
-<li><strong>Training, diagnostics, and controlled experiments</strong> — ablation matrix, loss curves, expert behaviour.</li>
-<li><strong>Inference, performance, and scaling beyond the toy model</strong> — active-parameter accounting, expert parallelism.</li>
-</ol>
-<h2 id="the-invariant-the-whole-book-protects">The invariant the whole book protects<a class="headerlink" href="#the-invariant-the-whole-book-protects" title="Permanent link">&para;</a></h2>
+<p>Each ships a <code>.tex</code> (production), a <code>.md</code> (this site), four standalone artifact wrappers (figure, table, listing, equation), and a runnable Python module + example script + pytest suite. The invariant the whole book protects:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>router bias affects expert selection only;
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>final combine weights are computed from unbiased selected scores.
 </code></pre></div>
-<p>The decoder interface stays <span class="arithmatex">\((B, T, D) \to (B, T, D)\)</span> at every step of the ladder.</p>
+<p>The decoder interface stays <span class="arithmatex">\((B, T, D) \to (B, T, D)\)</span> at every step.</p>
+</div>
+<h2 id="table-of-contents">Table of contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<div class="grid cards">
+<ul>
+<li>
+<p><strong>Chapter 1</strong> — From dense compute to conditional compute</p>
+<p>Why the dense FFN is the bottleneck; what MoE actually replaces. <strong>Complete.</strong></p>
+<p><a href="ch01/chapter/">:octicons-arrow-right-24: Read chapter 1</a></p>
+<ul>
+<li><a href="ch01/sections/01-the-dense-ffn-bottleneck/">1.1 The dense FFN bottleneck</a></li>
+<li><a href="ch01/sections/02-conditional-compute-as-the-central-idea/">1.2 Conditional compute as the central idea</a></li>
+<li><a href="ch01/sections/03-a-tiny-routing-story/">1.3 A tiny routing story</a></li>
+<li><a href="ch01/sections/04-what-from-scratch-means-for-this-book/">1.4 What from scratch means for this book</a></li>
+<li><a href="ch01/sections/05-the-minideepseekmoe-build-ladder/">1.5 The MiniDeepSeekMoE build ladder</a></li>
+<li><a href="ch01/sections/06-chapter-summary-and-handoff/">1.6 Chapter summary and handoff</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Chapter 2</strong> — A dense Transformer baseline from scratch</p>
+<p>Embed, attention, dense FFN, training loop, comparison-table schema. <strong>Complete.</strong></p>
+<p><a href="ch02/chapter/">:octicons-arrow-right-24: Read chapter 2</a></p>
+<ul>
+<li><a href="ch02/sections/01-dataset-and-token-batches/">2.1 Dataset and token batches</a></li>
+<li><a href="ch02/sections/02-token-and-position-embeddings/">2.2 Token and position embeddings</a></li>
+<li><a href="ch02/sections/03-causal-self-attention-as-the-context-path/">2.3 Causal self-attention as the context path</a></li>
+<li><a href="ch02/sections/04-dense-feed-forward-block-as-the-replacement-target/">2.4 Dense FFN as the replacement target</a></li>
+<li><a href="ch02/sections/05-training-loop-and-sampling-baseline/">2.5 Training loop and sampling baseline</a></li>
+<li><a href="ch02/sections/06-baseline-diagnostics-and-comparison-slots/">2.6 Baseline diagnostics and comparison slots</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Chapter 3</strong> — Experts, routers, and the first MoE layer</p>
+<p>Expert MLPs, router scores, naive dispatch. <strong>In progress.</strong></p>
+<p><a href="ch03/chapter/">:octicons-arrow-right-24: Read chapter 3</a></p>
+<ul>
+<li><a href="ch03/sections/01-expert-mlps-as-named-ffns/">3.1 Expert MLPs as named FFNs</a></li>
+<li>3.2 Router scores and tensor shapes <em>(planned)</em></li>
+<li>3.3 Top-k selection without dispatch <em>(planned)</em></li>
+<li>3.4 Naive token-by-token dispatch <em>(planned)</em></li>
+<li>3.5 Shape and gradient checks <em>(planned)</em></li>
+<li>3.6 Chapter summary and handoff <em>(planned)</em></li>
+</ul>
+</li>
+<li>
+<p><strong>Chapter 4</strong> — Top-1 routing and Switch-style dispatch</p>
+<p>Assignment masks, capacity, dropped tokens, load histograms.</p>
+<p><a href="ch04/chapter/">:octicons-arrow-right-24: Read chapter 4</a></p>
+</li>
+<li>
+<p><strong>Chapter 5</strong> — Top-2 routing and weighted expert combination</p>
+<p>Two-expert paths, normalized gates, comparing top-1 and top-2.</p>
+<p><a href="ch05/chapter/">:octicons-arrow-right-24: Read chapter 5</a></p>
+</li>
+<li>
+<p><strong>Chapter 6</strong> — Vectorized dispatch, capacity, and routing efficiency</p>
+<p>Flattened tokens, expert batches, equivalence tests against the naive layer.</p>
+<p><a href="ch06/chapter/">:octicons-arrow-right-24: Read chapter 6</a></p>
+</li>
+<li>
+<p><strong>Chapter 7</strong> — Router training and load-balancing losses</p>
+<p>Auxiliary load loss, z-loss, routing dashboards.</p>
+<p><a href="ch07/chapter/">:octicons-arrow-right-24: Read chapter 7</a></p>
+</li>
+<li>
+<p><strong>Chapter 8</strong> — Shared experts and fine-grained routed experts</p>
+<p>The DeepSeekMoE-style structure. Shared always-on path; segmented routed experts.</p>
+<p><a href="ch08/chapter/">:octicons-arrow-right-24: Read chapter 8</a></p>
+</li>
+<li>
+<p><strong>Chapter 9</strong> — Auxiliary-loss-free load balancing</p>
+<p>The router-bias mechanism: biased selection, unbiased combine.</p>
+<p><a href="ch09/chapter/">:octicons-arrow-right-24: Read chapter 9</a></p>
+</li>
+<li>
+<p><strong>Chapter 10</strong> — Assembling MiniDeepSeekMoE end-to-end</p>
+<p>Config object, full forward pass, training and sampling scripts.</p>
+<p><a href="ch10/chapter/">:octicons-arrow-right-24: Read chapter 10</a></p>
+</li>
+<li>
+<p><strong>Chapter 11</strong> — Training, diagnostics, and controlled experiments</p>
+<p>Ablation matrix, loss curves, expert behaviour.</p>
+<p><a href="ch11/chapter/">:octicons-arrow-right-24: Read chapter 11</a></p>
+</li>
+<li>
+<p><strong>Chapter 12</strong> — Inference, performance, and scaling beyond the toy model</p>
+<p>Active-parameter accounting, expert parallelism, all-to-all communication.</p>
+<p><a href="ch12/chapter/">:octicons-arrow-right-24: Read chapter 12</a></p>
+</li>
+</ul>
+</div>
 <h2 id="where-the-code-lives">Where the code lives<a class="headerlink" href="#where-the-code-lives" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Companion package: <a href="https://github.com/osolari/MoEfromScratch/tree/main/src/moe_from_scratch"><code>src/moe_from_scratch/</code></a></li>
-<li>Runnable per-section diagnostics: <a href="https://github.com/osolari/MoEfromScratch/tree/main/examples"><code>examples/chXX/</code></a></li>
+<li>Per-section runnable diagnostics: <a href="https://github.com/osolari/MoEfromScratch/tree/main/examples"><code>examples/chXX/</code></a></li>
 <li>Pytest suite: <a href="https://github.com/osolari/MoEfromScratch/tree/main/tests"><code>tests/chXX/</code></a></li>
 </ul>
-<p>Install with:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pytest<span class="w"> </span>-q
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span><span class="w">   </span><span class="c1"># one-time</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pytest<span class="w"> </span>-q<span class="w">                  </span><span class="c1"># all chapters</span>
 </code></pre></div>
-<h2 id="reading-order">Reading order<a class="headerlink" href="#reading-order" title="Permanent link">&para;</a></h2>
-<p>Start with <a href="ch01/chapter/">Chapter 1</a>. Within a chapter, follow the section list; the bridge sentence at the end of each section names the next unresolved question.</p>
+<p><a class="md-button md-button--primary" href="ch01/chapter/">Begin with Chapter 1 →</a></p>
 
 
 
@@ -2082,8 +2151,13 @@
 
 
 
+  
+  
 
 
+
+
+  
 
 
 
@@ -2106,6 +2180,8 @@
         <footer class="md-footer">
   
     
+      
+        
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
@@ -2154,7 +2230,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
