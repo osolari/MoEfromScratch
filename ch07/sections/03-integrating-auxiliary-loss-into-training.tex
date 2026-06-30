@@ -1,0 +1,22 @@
+\section{Integrating auxiliary loss into training}
+\label{sec:ch07-integrating-auxiliary-loss-into-training}
+
+Add routing losses to the model output dictionary without hiding the main language-model loss.
+
+\input{figures/ch07/fig-integrating-auxiliary-loss-into-training}
+
+Return lm\_loss, aux\_loss, total\_loss, and router\_metrics from one forward pass.
+
+\input{tables/ch07/tab-integrating-auxiliary-loss-into-training}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch07/eq-integrating-auxiliary-loss-into-training}
+
+\input{listings/ch07/lst-integrating-auxiliary-loss-into-training}
+
+\begin{checkpointbox}
+Log individual losses separately so balancing cannot hide LM degradation.
+\end{checkpointbox}
+
+Load balancing is one router signal; score scale can also create instability.

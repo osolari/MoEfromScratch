@@ -1,0 +1,30 @@
+\section{What from scratch means for this book}
+\label{sec:ch01-what-from-scratch-means-for-this-book}
+
+Sections~\ref{sec:ch01-conditional-compute-as-the-central-idea} and~\ref{sec:ch01-a-tiny-routing-story} introduced two new objects --- a router and a per-token gate --- and the temptation now is to reach for a library that wraps both behind a single call. We will not do that. The point of this book is the opposite: every tensor that crosses an MoE boundary is named, shaped, and assertable, and every line of model code mirrors a listing the reader has already read. A one-line library call hides the failure mode at the centre of MoE engineering (whose gates? which experts? how is the bias used?); a transparent router-dispatch-expert-combine pipeline exposes it. The price is that we write more code; the payoff is that we can debug what we wrote.
+
+\input{figures/ch01/fig-what-from-scratch-means-for-this-book}
+
+Figure~\ref{fig:ch01-what-from-scratch-means-for-this-book} draws the build as a three-rung ladder with a banner naming the contract and a strip naming the explicit out-of-scope. The build proceeds in three rungs. The first is the by-hand example we just finished in Section~\ref{sec:ch01-a-tiny-routing-story}: a $(4, 4)$ score matrix, top-$K$ chosen by inspection, gates printed as decimals. The second is vectorized PyTorch: the same logic written with \texttt{torch.topk}, \texttt{F.softmax}, batched dispatch into expert MLPs, and a weighted combine. The third is the assembled reference model and the things you do with it once it runs: training script, smoke tests, dashboards. We climb the ladder one rung at a time so each rung is testable on its own.
+
+Before declaring any new class, take inventory of what is already named. Sections~\ref{sec:ch01-the-dense-ffn-bottleneck}--\ref{sec:ch01-a-tiny-routing-story} introduced $B, T, D, H, N$; the constants $E$ (routed experts) and $K$ (top-$K$); and three tensors --- router scores $s \in \mathbb{R}^{N \times E}$, the index set $\mathcal{T}_t \subset \{1,\dots,E\}$ of size $K$, and the gate matrix $g \in \mathbb{R}^{N \times K}$. With those names settled, the rest of the book lives inside one promise: the MoE layer keeps the decoder interface intact.
+
+\input{tables/ch01/tab-what-from-scratch-means-for-this-book}
+
+That interface is the only equation Chapter~1 actually pins down --- everything else in the book is filling it in.
+
+\input{equations/ch01/eq-what-from-scratch-means-for-this-book}
+
+Equation~\ref{eq:ch01-what-from-scratch-means-for-this-book} says exactly two things. First, every \texttt{MoELayer} in this book is a drop-in replacement for the dense FFN of Section~\ref{sec:ch01-the-dense-ffn-bottleneck}: same input shape, same output shape. Second, this is not just a comment in a docstring --- the listing below builds it into a base class that wraps subclass implementations with a runtime assertion. A subclass that drops or duplicates tokens raises \texttt{RuntimeError} immediately; a caller that hands a wrong-rank tensor raises \texttt{ValueError}.
+
+\input{listings/ch01/lst-what-from-scratch-means-for-this-book}
+
+The listing declares the four objects every later chapter will fill in: \texttt{Router} (Chapter~3.2), \texttt{ExpertMLP} (Chapter~3.1), \texttt{MoELayer} (Chapters~3--6), and \texttt{MiniDeepSeekMoE} (Chapter~10). All four exist in \texttt{src/moe\_from\_scratch/ch01/from\_scratch\_skeleton.py} today and instantiate cleanly; their \texttt{forward} methods raise \texttt{NotImplementedError} until the chapter that builds them. The skeleton is what we hand to readers who jump to Chapter~7: they can read the interface without skimming Chapters~3--6.
+
+The diagnostic for this section is meta. Section 1.4 promises that every section in the book ships a fixed set of artifacts; the diagnostic is a function that verifies the promise on a real section. The example script under \texttt{examples/ch01/} runs \texttt{checklist\_from\_index} against the section index for Section~1.1 and asserts that all eleven items (section \texttt{.tex}, section \texttt{.md}, \texttt{chapter.tex}, \texttt{chapter.md}, figure, table, listing, equation, code, example, test) are present. It then runs the same check on Section~4.1 (the first section of Chapter~4, not yet drafted) and confirms that the checklist correctly reports \texttt{md} as missing, so a not-yet-drafted section cannot silently masquerade as done.
+
+\begin{checkpointbox}
+Checklist that every chapter must include shapes, a code path, and a verification artifact. Run \texttt{python examples/ch01/section\_1\_4\_from\_scratch\_contract.py} and verify Section~1.1 reports \texttt{OK} for all eleven items while Section~4.1 reports \texttt{missing = ['md', 'code', 'example', 'test']}. Then \texttt{pytest tests/ch01/ -q} should add at least 20 new tests covering skeleton instantiation, interface assertions, and the checklist's correctness against the live repository.
+\end{checkpointbox}
+
+With the boundary defined, we can plan the exact model we will build.

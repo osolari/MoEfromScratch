@@ -1,0 +1,22 @@
+\section{Configuration objects and model variants}
+\label{sec:ch10-configuration-objects-and-model-variants}
+
+Move from chapter-specific modules to a unified configuration-driven model.
+
+\input{figures/ch10/fig-configuration-objects-and-model-variants}
+
+Define DenseBaselineConfig, MiniDeepSeekMoESmokeConfig, and MiniDeepSeekMoE16x2Config.
+
+\input{tables/ch10/tab-configuration-objects-and-model-variants}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch10/eq-configuration-objects-and-model-variants}
+
+\input{listings/ch10/lst-configuration-objects-and-model-variants}
+
+\begin{checkpointbox}
+Print model summary and assert required fields exist.
+\end{checkpointbox}
+
+The decoder block can now instantiate dense or MoE FFN paths from config.

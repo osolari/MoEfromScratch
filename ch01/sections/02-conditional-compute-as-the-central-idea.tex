@@ -1,0 +1,30 @@
+\section{Conditional compute as the central idea}
+\label{sec:ch01-conditional-compute-as-the-central-idea}
+
+Section~\ref{sec:ch01-the-dense-ffn-bottleneck} ended on an uncomfortable number: every token in the batch pays $2 D H$ multiply-adds, and the only way to make the FFN ``smarter'' was to push $H$ up and pay more. Conditional compute attacks that constraint directly. Instead of one fixed FFN, place a bank of $E$ small FFNs inside the layer and choose, per token, which $K$ of them to run. The model now has many more parameters than before, but any individual token still pays for only $K$ of those experts. MoE is not a new model family --- it is a selective FFN.
+
+\input{figures/ch01/fig-conditional-compute-as-the-central-idea}
+
+Figure~\ref{fig:ch01-conditional-compute-as-the-central-idea} shows the picture in one frame: tokens enter, the router emits a score row per token, the top-$K$ routes are highlighted in green, and the unchosen routes stay muted. Take the same mini-example we used to measure the dense block ($N = 4$ tokens, $D = 8$, $H = 32$) and replace its single FFN with a bank of $E = 4$ experts. Each expert is a dense FFN of exactly the shape we already counted: $2 D H = 512$ parameters. Pick $K = 2$ experts per token and you have run two dense FFNs for each of the four tokens. Compare that against making the bank bigger ($E = 16$, $K = 2$ unchanged) and a useful asymmetry appears: the bank quadruples, but each token's compute does not move.
+
+Three numbers carry this section. The token count $N = B\,T$ and the FFN shape constants $D$ and $H$ are inherited from Section~\ref{sec:ch01-the-dense-ffn-bottleneck}. The two new constants are $E$, the number of experts in the bank, and $K$, the number of experts each token activates. The router's output is a tensor of shape $(N, E)$ of real-valued scores; selecting the top-$K$ entries per row produces an index tensor of shape $(N, K)$ that names which experts run for each token. The decoder interface $(B, T, D) \to (B, T, D)$ is untouched.
+
+\input{tables/ch01/tab-conditional-compute-as-the-central-idea}
+
+The accounting follows from the picture. The expert bank stores $E$ copies of the dense FFN, so its parameter count is $E$ times the dense number. For any one token, only $K$ of those experts contribute compute, so the activated parameter count per token is $K$ times the dense number. The ratio of these two quantities is the section's headline number, the \emph{active fraction} $\alpha = K/E$.
+
+\input{equations/ch01/eq-conditional-compute-as-the-central-idea}
+
+Equation~\ref{eq:ch01-conditional-compute-as-the-central-idea} is deliberately small because the trade it encodes is the central one. The total parameter bank $P_{\text{bank}}$ grows linearly in $E$; the activated parameters per token $P^{\text{token}}_{\text{active}}$ grow linearly in $K$. Set $K$ small and $E$ large and $\alpha$ shrinks: the bank gets sparser, not the per-token compute. Notice what the equation does \emph{not} promise. It does not promise wall-clock speedup --- that depends on dispatch and is the subject of Chapters~6 and~12. It does not promise fewer total parameters --- $E$ multiplies them. It promises one thing: per-token compute is decoupled from total parameter count.
+
+The cost formula has a one-line code analogue, and the smallest possible router output is one line of PyTorch. Both fragments below are in \texttt{src/moe\_from\_scratch/ch01/conditional\_compute.py} as \texttt{expert\_bank\_cost} and \texttt{topk\_expert\_ids}; the example script under \texttt{examples/ch01/} drives them with the mini-example.
+
+\input{listings/ch01/lst-conditional-compute-as-the-central-idea}
+
+The two \texttt{assert}s in the listing are the section's falsifiable check. With $E = 4$, $K = 2$, the active fraction is $0.5$; with $E = 16$, $K = 2$, it is $0.125$; and in both cases the activated MAD total is $4096$. Break the link between $\alpha$ and $K/E$ --- replace \texttt{top\_k / n\_experts} with \texttt{top\_k / n\_tokens}, say --- and the assertion fails immediately. The companion script prints both rows side by side, then samples random scores and routes the four tokens through \texttt{topk\_expert\_ids} so the reader sees that ``the router'' is, at this stage of the book, two lines of PyTorch returning a $(N, K)$ index tensor.
+
+\begin{checkpointbox}
+Compute the active fraction for $E = 4,\,K = 2$ and $E = 16,\,K = 2$. Run \texttt{python examples/ch01/section\_1\_2\_conditional\_compute.py} and verify $\alpha = 0.5$ in the first row, $\alpha = 0.125$ in the second, and \texttt{active\_mads} identical at $4096$ in both. Then run \texttt{pytest tests/ch01/ -q} and expect at least 14 additional tests covering the cost formulas and the top-$K$ chooser.
+\end{checkpointbox}
+
+Selective compute creates a new component: the router, which needs its own tensor contract.

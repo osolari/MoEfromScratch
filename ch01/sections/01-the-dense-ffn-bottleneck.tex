@@ -1,0 +1,30 @@
+\section{The dense FFN bottleneck}
+\label{sec:ch01-the-dense-ffn-bottleneck}
+
+A dense decoder layer has a sub-layer that almost every paper draws as a small unmarked box: the feed-forward network. It is a two-matrix block that lifts each token from width $D$ to a wider hidden space $H$ and projects it back. Once you count what that block actually does, it is the most expensive part of the layer, and it is the part that has nothing to do with the token's identity. Self-attention reuses information across positions. The dense FFN, by contrast, runs the same heavy computation for every token independently. That is the cost we want to make visible before we propose any sparsity.
+
+\input{figures/ch01/fig-the-dense-ffn-bottleneck}
+
+Figure~\ref{fig:ch01-the-dense-ffn-bottleneck} draws self-attention in muted gray and the FFN in saturated purple precisely because that is where the always-on compute lives. Fix the smallest example that still has the bottleneck in it. Take a four-token batch with $D = 8$ and an FFN expansion factor of $4$, so $H = 32$. Each token enters the FFN as a length-$8$ vector and walks through a $D{\times}H = 8{\times}32$ matrix, becomes a length-$32$ activation, and walks back through an $H{\times}D = 32{\times}8$ matrix. Count the multiply-adds along that walk and you are counting how much compute the layer charges this batch.
+
+Before writing the cost down, name the tensors. Let $B$ be the batch size, $T$ the sequence length, $D$ the model width, and $H$ the FFN hidden width. Flatten the batch and the sequence into a single token axis of length $N = B\,T$, so the block sees a token matrix of shape $(N, D)$. The up-projection $W_1$ has shape $(D, H)$ and the down-projection $W_2$ has shape $(H, D)$. The hidden activation is $h = \mathrm{GELU}(x W_1) \in \mathbb{R}^{N \times H}$; the output is $y = h W_2 \in \mathbb{R}^{N \times D}$. Everything stays in the decoder's $(B, T, D)$ interface, which is the invariant we promised to keep all the way to the end of the build ladder.
+
+\input{tables/ch01/tab-the-dense-ffn-bottleneck}
+
+The accounting is now mechanical. The up-projection costs $N D H$ multiply-adds (one for every entry of an $N{\times}H$ output, each accumulating $D$ products). The down-projection costs the symmetric $N H D$. Their sum is the cost of the block.
+
+\input{equations/ch01/eq-the-dense-ffn-bottleneck}
+
+Two things in equation~\ref{eq:ch01-the-dense-ffn-bottleneck} matter. First, the cost is the product of three independent knobs: the token count $N$, the model width $D$, and the hidden width $H$. Touching any of them moves cost linearly. Second, the cost has no token-specific term. There is no $i$ in the expression, no notion of ``which token is this''. The block charges the same compute for a punctuation token as for a high-information word.
+
+We can turn this into a tiny piece of runnable code that we will rely on across the book whenever we need to compare a dense baseline against a routed alternative. The function below mirrors the cost formula one-for-one; the matching PyTorch \texttt{DenseFFN} module lives next to it under \texttt{src/moe\_from\_scratch/ch01/} and is the block we will literally replace in Chapter~3.
+
+\input{listings/ch01/lst-the-dense-ffn-bottleneck}
+
+The \texttt{assert} in the listing is the section's falsifiable check: for the mini-example, the block stores $512$ parameters, spends $512$ multiply-adds per token, and $2048$ multiply-adds in total. Break the cost formula --- swap $2 D H$ for $D H$, say, or forget the down-projection --- and the assertion fails. The companion script under \texttt{examples/ch01/} repeats the mini-example, then sweeps $H \in \{16, 32, 64, 128, 256\}$ and prints a small table; the total MAD column strictly increases, with each doubling of $H$ doubling the total. That is the bottleneck made explicit: the dense FFN's cost goes up linearly with $H$, and every token in the batch pays the same multiplier.
+
+\begin{checkpointbox}
+A small cost table proving that increasing $H$ increases every token path. Run \texttt{python examples/ch01/section\_1\_1\_dense\_ffn\_cost.py} and verify that the printed MAD totals satisfy $1024 < 2048 < 4096 < 8192 < 16384$ for $H \in \{16, 32, 64, 128, 256\}$, and that \texttt{pytest tests/ch01/ -q} reports 11 passing tests.
+\end{checkpointbox}
+
+Once the bottleneck is visible, the next question is whether every token really needs the same FFN.

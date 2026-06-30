@@ -1,0 +1,22 @@
+\section{Normalizing selected router scores}
+\label{sec:ch05-normalizing-selected-router-scores}
+
+Turn top-2 scores into gates that sum to one for each token.
+
+\input{figures/ch05/fig-normalizing-selected-router-scores}
+
+Normalize selected scores [0.8, 0.2] and [0.51, 0.49] and compare combines.
+
+\input{tables/ch05/tab-normalizing-selected-router-scores}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch05/eq-normalizing-selected-router-scores}
+
+\input{listings/ch05/lst-normalizing-selected-router-scores}
+
+\begin{checkpointbox}
+Assert torch.allclose(gates.sum(-1), ones).
+\end{checkpointbox}
+
+The normalized gates weight two expert outputs per token.

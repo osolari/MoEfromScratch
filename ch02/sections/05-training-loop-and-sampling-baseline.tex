@@ -1,0 +1,32 @@
+\section{Training loop and sampling baseline}
+\label{sec:ch02-training-loop-and-sampling-baseline}
+
+Sections~\ref{sec:ch02-dataset-and-token-batches}--\ref{sec:ch02-dense-feed-forward-block-as-the-replacement-target} produced every piece the dense baseline needs: a $(B, T)$ batch loader with the shift identity, a $(B, T, D)$ embedding, a causally-masked $(B, T, D) \to (B, T, D)$ attention block, and the dense FFN sub-layer Chapter~3 will replace. The pieces have to actually \emph{train} before we can use them as a comparison anchor; until the dense model's loss curve and a sampled continuation exist, every MoE number later in the book is unmoored. This section wires the four pieces into a single \texttt{DenseLM}, runs the training loop for $200$ steps, and produces the first sample.
+
+\input{figures/ch02/fig-training-loop-and-sampling-baseline}
+
+Figure~\ref{fig:ch02-training-loop-and-sampling-baseline} draws the two harnesses on one page. The top row is the training loop: pull a $(B, T)$ batch, run the forward pass through the embed and the stack of decoder blocks, compute next-token cross-entropy, backpropagate, clip the gradient norm at $1.0$, step AdamW with $\eta = 10^{-2}$, repeat. The bottom row is sampling: crop the running prompt to $T_{\max}$, run the same forward, draw the next token via softmax + multinomial, append it, and repeat. Chapter~3 will swap the dense FFN inside the decoder block for an \texttt{MoELayer}; neither of these two harnesses changes by a single line.
+
+Take the chapter-2 anchor mini-example: $B = 2$, $T = 8$, $D = 16$, $H = 64$, $n_h = 2$ heads, $n_{\text{layers}} = 2$ decoder blocks, vocabulary $V = 19$ from the reference corpus. With those sizes the full \texttt{DenseLM} carries $7{,}040$ parameters: embedding tables $304 + 128 = 432$; per block, one QKV projection at $3 D^2 = 768$ plus one output projection at $D^2 = 256$ ($1024$ for attention) plus one FFN pair at $2 D H = 2048$ plus two LayerNorms at $2 D = 32$ each ($64$); two blocks give $2 \cdot 3{,}136 = 6{,}272$; the final LayerNorm adds $32$; the language-model head adds $D V = 304$. Summing: $432 + 6{,}272 + 32 + 304 = 7{,}040$.
+
+Name the new objects. We keep $B, T, D, H, V, T_{\max}$ from earlier sections. New here: $n_{\text{layers}}$, the number of decoder blocks; $\mathcal{L}(\theta)$, the next-token cross-entropy averaged over the $B \cdot T$ positions; $\eta$, the AdamW learning rate; and the gradient-norm clip $c$. Two helper functions support the loop: \texttt{train\_step(model, x, y, optimizer, grad\_clip)} performs one forward / backward / clip / step and returns the scalar loss, and \texttt{estimate\_loss(model, tokens, ...)} averages the loss over a few random batches with the model in eval mode.
+
+\input{tables/ch02/tab-training-loop-and-sampling-baseline}
+
+The loss is the standard next-token cross-entropy.
+
+\input{equations/ch02/eq-training-loop-and-sampling-baseline}
+
+Equation~\ref{eq:ch02-training-loop-and-sampling-baseline} has one subtlety worth flagging: the average is over $B \cdot T$ positions, not over $B$. Every position predicts a next token, so an $8$-step batch produces $16$ supervision signals per row, not one. With $V = 19$ vocabulary characters and a freshly initialised model, the logits are near-uniform and the loss starts at roughly $\ln V \approx 2.94$ nats; a working training loop pushes it well below that within a few hundred steps.
+
+The listing assembles the model and the training routine. The decoder block follows the standard pre-norm pattern (LayerNorm $\to$ attention $\to$ residual; LayerNorm $\to$ FFN $\to$ residual); the model stacks $n_{\text{layers}}$ of them between the embedding and the LM head. The single line worth circling is \texttt{self.ffn = DenseFFN(d\_model, hidden)} inside the block --- the Chapter-3 patch replaces \emph{only that line} with \texttt{self.ffn = MoELayer(d\_model, hidden, n\_experts, top\_k)}.
+
+\input{listings/ch02/lst-training-loop-and-sampling-baseline}
+
+The example script under \texttt{examples/ch02/} runs the full anchor: it builds the model ($7{,}040$ parameters), prints the initial train and val loss (close to $\ln V = 2.94$; measured $3.19$ and $3.16$ on this run), runs $200$ AdamW steps with seed-$1$ batches, and prints the train-step loss every $50$ steps. At step $200$ the train loss settles at $1.01$ nats and the validation loss at $1.05$ --- the model has not memorised but has clearly learned the chapter's letter statistics. Sampling $32$ characters from the prompt \texttt{"the "} with sample-seed $7$ produces \texttt{"the the car d the og oarn the fat sa"}: the model has picked up the corpus's habit of starting clauses with \texttt{the}, and every emitted character lives inside the $19$-character training vocabulary.
+
+\begin{checkpointbox}
+Track train and validation loss plus samples at fixed intervals. Run \texttt{python examples/ch02/section\_2\_5\_training\_loop\_and\_sampling.py} and verify the printed numbers: \texttt{model parameters: 7040}; \texttt{step 0: train\_loss = 3.1894    val\_loss = 3.1622    (ln(V) = 2.9444)}; \texttt{step 200: train\_loss = 1.0076    val\_loss = 1.0547}; the sample line starts with \texttt{"the the"} and contains $36$ characters total. Then \texttt{pytest tests/ch02/ -q} should add $19$ new tests (ch02 $72/72$) covering decoder-block shape and causality, full-model forward shape, initial-loss-near-ln-V, the single-batch overfit sanity, sampling-respects-context, deterministic \texttt{estimate\_loss}, and the end-to-end smoke-train drop on the reference corpus.
+\end{checkpointbox}
+
+Now that the dense baseline works, the next chapter isolates the expert and router pieces.

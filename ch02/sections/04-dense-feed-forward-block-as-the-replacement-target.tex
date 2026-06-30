@@ -1,0 +1,32 @@
+\section{Dense feed-forward block as the replacement target}
+\label{sec:ch02-dense-feed-forward-block-as-the-replacement-target}
+
+Section~\ref{sec:ch02-causal-self-attention-as-the-context-path} mixed positions across the sequence; what is left in a decoder layer is the per-token transformation that runs after attention. That block is the dense FFN of Section~\ref{sec:ch01-the-dense-ffn-bottleneck} --- the same class, the same constructor signature \texttt{DenseFFN(d\_model, hidden)}, the same $2 D H$ parameter count. Chapter~1 already counted what it costs; this section installs it inside the chapter-2 baseline and frames it as the \emph{replacement target}. Every MoE variant the rest of the book builds is a drop-in substitute for this object.
+
+\input{figures/ch02/fig-dense-feed-forward-block-as-the-replacement-target}
+
+Figure~\ref{fig:ch02-dense-feed-forward-block-as-the-replacement-target} draws the skeleton that survives unchanged into Chapter~3. Today (top row) a single \texttt{DenseFFN} sits between a \texttt{(B, T, D) $\to$ (B$\cdot$T, D)} flatten and the inverse unflatten; tomorrow (bottom row) the same skeleton wraps a bank of expert FFNs and a router picks $K$ of them per token. The $(B, T, D)$ tensor on either end of the skeleton does not move, which is the entire reason the FFN sub-layer can be swapped without touching attention, embeddings, or the training loop.
+
+Take the chapter-2 anchor mini-example: $B = 2$, $T = 8$, $D = 16$. Pick $H = 4 D = 64$, the standard expansion factor used throughout the book. The block stores $2 D H = 2048$ parameters and spends $2 D H = 2048$ multiply-adds per token, which is the cost we counted in Section~\ref{sec:ch01-the-dense-ffn-bottleneck} --- nothing has changed except where the module lives. For the full $B \cdot T = 16$ tokens of the anchor batch the dense FFN charges $2 N D H = 32{,}768$ multiply-adds.
+
+Name the new symbols. We keep $B, T, D, H, N$ from Section~\ref{sec:ch01-the-dense-ffn-bottleneck}. The only new objects here are the two helper functions: \texttt{flatten\_tokens(x)} returns the $(B \cdot T, D)$ view of $x$ along with the $(B, T)$ tuple needed to restore the shape, and \texttt{unflatten\_tokens(flat, (B, T))} is its inverse. We will use this pair literally unchanged when Chapter~6 vectorises dispatch.
+
+\input{tables/ch02/tab-dense-feed-forward-block-as-the-replacement-target}
+
+The block is one tensor equation written per-token.
+
+\input{equations/ch02/eq-dense-feed-forward-block-as-the-replacement-target}
+
+Equation~\ref{eq:ch02-dense-feed-forward-block-as-the-replacement-target} reads carefully: the subscript $(b, t)$ on the left and the right makes the per-token structure explicit. The right-hand side never indexes another row of the batch and never indexes another position in the sequence. Cross-token mixing is the job of attention; the FFN sub-layer is purely a token-wise non-linearity. That is the property the MoE replacement preserves --- the per-token \emph{transformation} can change from token to token, but the transformation is still per-token.
+
+The listing re-exports \texttt{DenseFFN} from Chapter~1 (the constructor signature is locked by Section~\ref{sec:ch01-chapter-summary-and-handoff}) and adds the flatten / unflatten pair.
+
+\input{listings/ch02/lst-dense-feed-forward-block-as-the-replacement-target}
+
+The example script under \texttt{examples/ch02/} threads the seed-$0$ anchor batch through embed $\to$ attention $\to$ dense FFN, prints the parameter count, and verifies two things at once: the output shape is exactly $(B, T, D)$, and the FFN output is byte-identical whether the input is given as a $(B, T, D)$ tensor or as a flattened $(B \cdot T, D)$ tensor followed by an unflatten. That equality is the strongest possible test of ``per-token'' --- any cross-token mixing inside the block, intentional or accidental, breaks it.
+
+\begin{checkpointbox}
+Confirm FFN preserves the final $D$ dimension. Run \texttt{python examples/ch02/section\_2\_4\_dense\_ffn\_replacement\_target.py} and verify the printed lines: \texttt{D=16  H=64  T=8  B=2}; \texttt{embed}, \texttt{attn}, and \texttt{ffn} all report shape $(2, 8, 16)$; \texttt{params: 2*D*H = 2048    counted = 2048    MADs/token = 2048    total MADs = 32768}; the byte-identical equivalence line prints; and the second configuration ($D=32$, $H=128$) reports $8192$ parameters with shape preserved. Then \texttt{pytest tests/ch02/ -q} should add $12$ new tests (ch02 $53/53$) covering the re-export identity, the flatten/unflatten round trip, per-token equivalence, and the $2 D H$ parameter formula on multiple configs.
+\end{checkpointbox}
+
+Attention and FFN combine inside a residual decoder block.

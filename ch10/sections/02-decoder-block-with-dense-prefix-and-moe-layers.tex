@@ -1,0 +1,22 @@
+\section{Decoder block with dense prefix and MoE layers}
+\label{sec:ch10-decoder-block-with-dense-prefix-and-moe-layers}
+
+Assemble layers so early dense computation can precede sparse MoE layers if configured.
+
+\input{figures/ch10/fig-decoder-block-with-dense-prefix-and-moe-layers}
+
+Use one dense prefix layer followed by MoE blocks in the default config.
+
+\input{tables/ch10/tab-decoder-block-with-dense-prefix-and-moe-layers}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch10/eq-decoder-block-with-dense-prefix-and-moe-layers}
+
+\input{listings/ch10/lst-decoder-block-with-dense-prefix-and-moe-layers}
+
+\begin{checkpointbox}
+List layer types during model initialization.
+\end{checkpointbox}
+
+The model forward pass must carry routing metrics out of each MoE layer.

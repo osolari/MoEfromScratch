@@ -1,0 +1,32 @@
+\section{Token and position embeddings}
+\label{sec:ch02-token-and-position-embeddings}
+
+Section~\ref{sec:ch02-dataset-and-token-batches} produced $(B, T)$ tensors of integer token IDs. Every downstream module --- attention, the dense FFN of Section~\ref{sec:ch02-dense-feed-forward-block-as-the-replacement-target}, and the MoE replacements in Chapters~3--10 --- expects floats, not integers, and expects the decoder interface $(B, T, D)$ that Chapter~1 promised. The embedding step bridges the two. It is also the first place the model width $D$ from Chapter~1 actually appears.
+
+\input{figures/ch02/fig-token-and-position-embeddings}
+
+Figure~\ref{fig:ch02-token-and-position-embeddings} shows the two table lookups side by side: each integer in \texttt{input\_ids} indexes one row of the token table $E_{\text{tok}}$, the positions $0, 1, \dots, T{-}1$ index one row of the position table $E_{\text{pos}}$, and the two $(D,)$ vectors are summed elementwise. The position lookup is the only piece of information that distinguishes the same token appearing at two different times in the sequence --- without it, a Transformer is permutation-invariant.
+
+Keep the chapter-2 anchor mini-example: $B = 2$, $T = 8$. Section~\ref{sec:ch02-dataset-and-token-batches} produced a $(2, 8)$ \texttt{input\_ids} batch with vocabulary size $V = 19$ from the reference corpus. Pick the model width $D = 16$ and the maximum context length $T_{\max} = 8$ (the same as the block size we used for batching), and the two embedding tables hold $V D + T_{\max} D = 19 \cdot 16 + 8 \cdot 16 = 304 + 128 = 432$ parameters.
+
+Name the new symbols. We keep $B$ (batch size), $T$ (sequence length), and $V$ (vocab size) from Section~\ref{sec:ch02-dataset-and-token-batches}. The model width $D$ enters the book here for the first time as a live tensor dimension (it was declared in Chapter~1 but no module had it yet). One more constant appears: $T_{\max}$, the maximum context length the position table supports; a $(B, T)$ batch with $T \le T_{\max}$ slices into the top $T$ rows of $E_{\text{pos}}$.
+
+\input{tables/ch02/tab-token-and-position-embeddings}
+
+The forward pass is one tensor equation that names every shape.
+
+\input{equations/ch02/eq-token-and-position-embeddings}
+
+Equation~\ref{eq:ch02-token-and-position-embeddings} packs the entire step into one line, but two details matter. First, the position lookup is shared across the batch: $E_{\text{pos}}[t]$ depends only on the position index $t$, not on the row $b$, so the same $T$ vectors are added to every row of the batch (broadcast). Second, the sum is the only operator that connects the two tables. Drop one summand and the corresponding table receives no gradient at all --- which is exactly what the diagnostic checks.
+
+The implementation mirrors the equation one line at a time. It lives in \texttt{src/moe\_from\_scratch/ch02/embedding.py} as \texttt{TokenPositionEmbedding}, an \texttt{nn.Module} whose constructor takes the three sizes ($V$, $D$, $T_{\max}$) and whose forward returns a $(B, T, D)$ tensor.
+
+\input{listings/ch02/lst-token-and-position-embeddings}
+
+The example script under \texttt{examples/ch02/} threads the seed-$0$ batch from Section~\ref{sec:ch02-dataset-and-token-batches} into the module, prints the parameter counts ($304 + 128 = 432$), checks the output shape, runs \texttt{x.sum().backward()}, and verifies that both \texttt{embed.token\_embed.weight.grad} and \texttt{embed.position\_embed.weight.grad} have non-zero $\ell_1$ norm. With this batch and seed both grads have $\ell_1$ norm exactly $256$ (each summand contributes $B \cdot T = 16$ ones to $B \cdot T \cdot D = 256$ entries). The \texttt{pytest} suite under \texttt{tests/ch02/} adds the closed-form check $x_{b,t} = E_{\text{tok}}[\mathrm{ids}_{b,t}] + E_{\text{pos}}[t]$, asserts that the same token at two different positions produces different embeddings, and verifies that only the rows of $E_{\text{tok}}$ corresponding to observed token IDs receive non-zero gradient.
+
+\begin{checkpointbox}
+Assert output shape and confirm gradients flow to both embedding tables. Run \texttt{python examples/ch02/section\_2\_2\_token\_and\_position\_embeddings.py} and verify the printed lines: \texttt{V=19, D=16, T\_max=8}; \texttt{total = 432} parameters; \texttt{x.shape = (2, 8, 16)}; $|\text{token grad}|_1 = 256$ and $|\text{pos grad}|_1 = 256$. Then \texttt{pytest tests/ch02/ -q} should add at least $12$ new tests (ch02 $23/23$) covering size validation, forward shape, the same-token-different-position contrast, and the row-selective gradient pattern.
+\end{checkpointbox}
+
+The embedded sequence now enters causal self-attention.

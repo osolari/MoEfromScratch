@@ -1,0 +1,56 @@
+\section{Baseline diagnostics and comparison slots}
+\label{sec:ch02-baseline-diagnostics-and-comparison-slots}
+
+Section~\ref{sec:ch02-training-loop-and-sampling-baseline} trained the dense baseline and printed two numbers --- a train loss and a sampled continuation. Two numbers is not yet a baseline: a baseline is the row of a comparison table whose schema every later variant agrees to fill in. Without that shared schema, the Chapter~11 ablation matrix becomes a pile of ad-hoc print statements, and the central MoE claim --- ``\emph{total} parameters grow with $E$, \emph{active} parameters per token stay near the dense number'' --- has no consistent column to live in. This section locks the schema, fills its first row, and ships the chapter-2 glossary.
+
+\input{figures/ch02/fig-baseline-diagnostics-and-comparison-slots}
+
+Figure~\ref{fig:ch02-baseline-diagnostics-and-comparison-slots} draws the data flow. On the left, the seven fields of \texttt{BaselineMetrics}. On the right, the first row, filled by the chapter-2 anchor: $7{,}040$ total parameters, the same $7{,}040$ active per token (every parameter is touched per token in a dense model), train loss $1.0076$, val loss $1.0547$, a positive throughput, and the sampled continuation from Section~\ref{sec:ch02-training-loop-and-sampling-baseline}. Below, the empty rows Chapters~3--10 will fill: top-$1$ naive, top-$2$ naive, top-$2$ with capacity, top-$2$ with auxiliary load loss, top-$2$ with shared experts, and the auxiliary-loss-free bias-balanced variant.
+
+Take the chapter-2 anchor mini-example: the model is the $7{,}040$-parameter \texttt{DenseLM} from Section~\ref{sec:ch02-training-loop-and-sampling-baseline}, trained for $200$ seed-$1$ AdamW steps. The new symbols in this section are field names rather than tensor dimensions: $P_{\text{total}}$ for total parameters, $P^{\text{token}}_{\text{active}}$ for parameters touched per token, $\rho$ for forward-only throughput in tokens / second, $s$ for the sampled prefix string. For a dense model $P^{\text{token}}_{\text{active}} = P_{\text{total}}$ exactly; the Chapter~3 MoE rows will be the first time the two columns diverge.
+
+\input{tables/ch02/tab-baseline-diagnostics-and-comparison-slots}
+
+A row of the comparison table is just the tuple of fields with one invariant.
+
+\input{equations/ch02/eq-baseline-diagnostics-and-comparison-slots}
+
+Equation~\ref{eq:ch02-baseline-diagnostics-and-comparison-slots} writes the schema as a tuple and ends with the only invariant that survives across all variants: $P^{\text{token}}_{\text{active}} \le P_{\text{total}}$. The dataclass constructor refuses any row that violates it; an MoE row that reports more active per-token compute than the bank itself stores is a bug, not a configuration. The full row for the dense baseline has $P^{\text{token}}_{\text{active}} = P_{\text{total}}$ as a tight equality, which is what makes the baseline ``the most expensive everything is active'' anchor.
+
+The listing implements the schema and the three helpers that fill it. The \texttt{estimate\_active\_parameters} body is one line today --- it returns the total --- but the comment flags the MoE override that lands in Chapter~3.
+
+\input{listings/ch02/lst-baseline-diagnostics-and-comparison-slots}
+
+The example script under \texttt{examples/ch02/} runs the chapter-2 anchor end-to-end one more time, fills out \texttt{BaselineMetrics}, asserts the deterministic fields (total $= 7040$, active $=$ total, train $\approx 1.0076$, val $\approx 1.0547$, sample begins with \texttt{"the the"}), and prints the formatted single-row table. That printed line is literally the first row of every comparison table the rest of the book will produce.
+
+Before the chapter closes, write the new vocabulary down. Chapter~1's glossary covered $\{B, T, D, H, N, E, K, S, \alpha, x, s, \mathcal{T}_t, g, b, y\}$; Chapter~2 added the following:
+
+\medskip
+\noindent
+\begin{tabular}{p{0.13\textwidth} p{0.34\textwidth} p{0.16\textwidth} p{0.30\textwidth}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Shape} & \textbf{Code object} \\
+\midrule
+$V$                            & vocabulary size                          & scalar          & \texttt{tokenizer.vocab\_size} \\
+$N_{\text{train}}, N_{\text{val}}$ & train / val token-stream lengths       & scalars         & \texttt{split.train.numel()} \\
+$T_{\max}$                     & maximum context length                   & scalar          & \texttt{config.context\_length} \\
+$n_h$                          & number of attention heads                & scalar          & \texttt{config.n\_heads} \\
+$d_{\text{head}}$              & per-head channel width $D / n_h$         & scalar          & \texttt{attn.d\_head} \\
+$M$                            & additive causal mask ($-\infty$ above diag.) & $(T_{\max}, T_{\max})$ bool & \texttt{attn.causal\_mask} \\
+$n_{\text{layers}}$            & number of decoder blocks                 & scalar          & \texttt{config.n\_layers} \\
+$\mathcal{L}(\theta)$          & next-token cross-entropy avg over $B\,T$ & scalar          & \texttt{model.loss(x, y)} \\
+$\eta$                         & AdamW learning rate                      & scalar          & \texttt{optimizer.defaults["lr"]} \\
+$c$                            & gradient-norm clip                       & scalar          & \texttt{grad\_clip} \\
+$P_{\text{total}}$             & total learnable parameters               & scalar          & \texttt{count\_parameters(model)} \\
+$P^{\text{token}}_{\text{active}}$ & parameters touched per token         & scalar          & \texttt{estimate\_active\_parameters(model)} \\
+$\rho$                         & forward-only throughput                   & scalar (tok/s) & \texttt{measure\_tokens\_per\_sec(\dots)} \\
+$s$                            & sampled continuation prefix              & string          & \texttt{tokenizer.decode(model.sample(\dots))} \\
+\bottomrule
+\end{tabular}
+\medskip
+
+\begin{checkpointbox}
+Write the first baseline row in the experiment comparison table. Run \texttt{python examples/ch02/section\_2\_6\_baseline\_diagnostics.py} and verify the printed row: \texttt{DenseLM-anchor    7040    7040    1.0076  1.0547   $\rho$   'the the car d the og oarn the fat sa'}. Then \texttt{pytest tests/ch02/ -q} should add $14$ new tests (ch02 $86/86$) covering parameter counting, active-equals-total for dense, throughput positivity and training-mode restoration, the dataclass invariant ($P^{\text{token}}_{\text{active}} \le P_{\text{total}}$), and the multi-row stacking that lets later chapters extend the table.
+\end{checkpointbox}
+
+The next chapter replaces the dense FFN with a small expert bank and a router.

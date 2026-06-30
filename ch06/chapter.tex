@@ -1,0 +1,19 @@
+\chapter{Vectorized dispatch, capacity, and routing efficiency}
+\label{ch:ch06-vectorized-dispatch-capacity-and-routing-efficiency}
+
+\ChapterCovers{
+\begin{itemize}
+  \item How flattened tokens and expert batches make MoE dispatch vectorizable.
+  \item How capacity limits create predictable tensor sizes and overflow behavior.
+  \item How to test equivalence between naive and vectorized implementations.
+\end{itemize}
+}
+
+Move from readable loops to scalable tensor operations without changing the MoE math.
+
+\input{chapters/ch06/sections/01-flattened-tokens-as-the-dispatch-unit}
+\input{chapters/ch06/sections/02-expert-batch-construction}
+\input{chapters/ch06/sections/03-capacity-factors-and-overflow-policy}
+\input{chapters/ch06/sections/04-unpacking-and-weighted-combine}
+\input{chapters/ch06/sections/05-equivalence-tests-against-the-naive-layer}
+\input{chapters/ch06/sections/06-chapter-summary-and-handoff}

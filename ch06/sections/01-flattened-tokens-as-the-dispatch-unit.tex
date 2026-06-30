@@ -1,0 +1,22 @@
+\section{Flattened tokens as the dispatch unit}
+\label{sec:ch06-flattened-tokens-as-the-dispatch-unit}
+
+Standardize on N=B*T flattened tokens so routing code ignores batch layout until the final reshape.
+
+\input{figures/ch06/fig-flattened-tokens-as-the-dispatch-unit}
+
+Flatten B=2, T=3, D=4 into N=6 token rows and recover B,T,D afterward.
+
+\input{tables/ch06/tab-flattened-tokens-as-the-dispatch-unit}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch06/eq-flattened-tokens-as-the-dispatch-unit}
+
+\input{listings/ch06/lst-flattened-tokens-as-the-dispatch-unit}
+
+\begin{checkpointbox}
+Round-trip flatten/unflatten equality check.
+\end{checkpointbox}
+
+Flat token rows can be sorted or bucketed by expert assignment.

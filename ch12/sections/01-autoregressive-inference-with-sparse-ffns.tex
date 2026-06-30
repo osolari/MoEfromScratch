@@ -1,0 +1,22 @@
+\section{Autoregressive inference with sparse FFNs}
+\label{sec:ch12-autoregressive-inference-with-sparse-ffns}
+
+Explain what changes and what stays the same when a trained MoE model generates text one token at a time.
+
+\input{figures/ch12/fig-autoregressive-inference-with-sparse-ffns}
+
+Generate one new token and trace attention, router, selected experts, and logits.
+
+\input{tables/ch12/tab-autoregressive-inference-with-sparse-ffns}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch12/eq-autoregressive-inference-with-sparse-ffns}
+
+\input{listings/ch12/lst-autoregressive-inference-with-sparse-ffns}
+
+\begin{checkpointbox}
+Print selected experts for each generated token in a short sample.
+\end{checkpointbox}
+
+Batching multiple requests complicates the expert batches.

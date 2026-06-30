@@ -1,0 +1,22 @@
+\section{Naive token-by-token dispatch}
+\label{sec:ch03-naive-token-by-token-dispatch}
+
+Implement dispatch with loops first so the control flow is unmistakable.
+
+\input{figures/ch03/fig-naive-token-by-token-dispatch}
+
+For each token and selected expert, call the expert and add gate-weighted output.
+
+\input{tables/ch03/tab-naive-token-by-token-dispatch}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch03/eq-naive-token-by-token-dispatch}
+
+\input{listings/ch03/lst-naive-token-by-token-dispatch}
+
+\begin{checkpointbox}
+Compare output shape to dense FFN output and inspect gates per token.
+\end{checkpointbox}
+
+The naive layer works, but the router choices are still fragile; top-1 routing exposes this clearly.

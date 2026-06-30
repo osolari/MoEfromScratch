@@ -1,0 +1,22 @@
+\section{Router bias as non-trainable state}
+\label{sec:ch09-router-bias-as-non-trainable-state}
+
+Define router bias as a per-expert control signal updated outside backpropagation.
+
+\input{figures/ch09/fig-router-bias-as-non-trainable-state}
+
+Use four experts with bias values that rise for underused experts and fall for overused experts.
+
+\input{tables/ch09/tab-router-bias-as-non-trainable-state}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch09/eq-router-bias-as-non-trainable-state}
+
+\input{listings/ch09/lst-router-bias-as-non-trainable-state}
+
+\begin{checkpointbox}
+Assert router\_bias.requires\_grad is false and optimizer does not update it.
+\end{checkpointbox}
+
+The key implementation detail is that bias changes selection but not final gates.

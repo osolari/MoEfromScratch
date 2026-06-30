@@ -1,0 +1,22 @@
+\section{Auxiliary load-balancing loss}
+\label{sec:ch07-auxiliary-load-balancing-loss}
+
+Implement the classic balancing baseline as a transparent, measurable loss term.
+
+\input{figures/ch07/fig-auxiliary-load-balancing-loss}
+
+Compute expert load fractions and probability fractions for E=4 experts.
+
+\input{tables/ch07/tab-auxiliary-load-balancing-loss}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch07/eq-auxiliary-load-balancing-loss}
+
+\input{listings/ch07/lst-auxiliary-load-balancing-loss}
+
+\begin{checkpointbox}
+Check loss is lower for balanced synthetic routing than collapsed routing.
+\end{checkpointbox}
+
+Auxiliary loss enters the total training objective with a coefficient.

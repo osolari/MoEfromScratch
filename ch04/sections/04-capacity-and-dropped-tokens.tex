@@ -1,0 +1,22 @@
+\section{Capacity and dropped tokens}
+\label{sec:ch04-capacity-and-dropped-tokens}
+
+Introduce the capacity factor and the consequences of too many tokens choosing the same expert.
+
+\input{figures/ch04/fig-capacity-and-dropped-tokens}
+
+Set capacity=2 for four experts and show what happens when four tokens select expert 0.
+
+\input{tables/ch04/tab-capacity-and-dropped-tokens}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch04/eq-capacity-and-dropped-tokens}
+
+\input{listings/ch04/lst-capacity-and-dropped-tokens}
+
+\begin{checkpointbox}
+Report dropped\_token\_count and per-expert accepted counts.
+\end{checkpointbox}
+
+Capacity exposes routing imbalance; histograms make the imbalance easy to see.

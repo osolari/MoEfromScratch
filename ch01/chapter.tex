@@ -1,0 +1,19 @@
+\chapter{From dense compute to conditional compute}
+\label{ch:ch01-from-dense-compute-to-conditional-compute}
+
+\ChapterCovers{
+\begin{itemize}
+  \item Why dense Transformer feed-forward layers dominate parameter and compute growth.
+  \item How conditional compute changes the cost story without changing the decoder interface.
+  \item The MiniDeepSeekMoE roadmap that the rest of the book implements.
+\end{itemize}
+}
+
+Motivate MoE from the dense FFN bottleneck and establish the build ladder.
+
+\input{chapters/ch01/sections/01-the-dense-ffn-bottleneck}
+\input{chapters/ch01/sections/02-conditional-compute-as-the-central-idea}
+\input{chapters/ch01/sections/03-a-tiny-routing-story}
+\input{chapters/ch01/sections/04-what-from-scratch-means-for-this-book}
+\input{chapters/ch01/sections/05-the-minideepseekmoe-build-ladder}
+\input{chapters/ch01/sections/06-chapter-summary-and-handoff}

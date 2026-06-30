@@ -1,0 +1,22 @@
+\section{Comparing top-1 and top-2 diagnostics}
+\label{sec:ch05-comparing-top-1-and-top-2-diagnostics}
+
+Use the same metrics to show how K changes load, drop rate, and routing entropy.
+
+\input{figures/ch05/fig-comparing-top-1-and-top-2-diagnostics}
+
+Run the same random batch through top-1 and top-2 routers with the same scores.
+
+\input{tables/ch05/tab-comparing-top-1-and-top-2-diagnostics}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch05/eq-comparing-top-1-and-top-2-diagnostics}
+
+\input{listings/ch05/lst-comparing-top-1-and-top-2-diagnostics}
+
+\begin{checkpointbox}
+Save a comparison table and one histogram per routing mode.
+\end{checkpointbox}
+
+Once routing variants share diagnostics, the next challenge is making dispatch less loop-heavy.

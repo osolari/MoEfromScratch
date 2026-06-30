@@ -1,0 +1,22 @@
+\section{Compute, memory, and active-parameter accounting}
+\label{sec:ch12-compute-memory-and-active-parameter-accounting}
+
+Give readers a sober way to discuss total parameters, active parameters, and practical memory costs.
+
+\input{figures/ch12/fig-compute-memory-and-active-parameter-accounting}
+
+Compare dense FFN, 16x2 MoE, and 64x6 teaching config parameter counts.
+
+\input{tables/ch12/tab-compute-memory-and-active-parameter-accounting}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch12/eq-compute-memory-and-active-parameter-accounting}
+
+\input{listings/ch12/lst-compute-memory-and-active-parameter-accounting}
+
+\begin{checkpointbox}
+Check estimates against model.count\_parameters breakdown.
+\end{checkpointbox}
+
+At production scale, experts are often spread across devices, introducing communication.

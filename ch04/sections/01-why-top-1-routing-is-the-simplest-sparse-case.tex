@@ -1,0 +1,22 @@
+\section{Why top-1 routing is the simplest sparse case}
+\label{sec:ch04-why-top-1-routing-is-the-simplest-sparse-case}
+
+Use one-expert-per-token routing to reduce the dispatch problem to assignment plus combine.
+
+\input{figures/ch04/fig-why-top-1-routing-is-the-simplest-sparse-case}
+
+Route six tokens to four experts with K=1 and mark each token assignment.
+
+\input{tables/ch04/tab-why-top-1-routing-is-the-simplest-sparse-case}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch04/eq-why-top-1-routing-is-the-simplest-sparse-case}
+
+\input{listings/ch04/lst-why-top-1-routing-is-the-simplest-sparse-case}
+
+\begin{checkpointbox}
+Verify each token has one expert and one scalar gate.
+\end{checkpointbox}
+
+The single expert ID can be converted into an assignment mask.

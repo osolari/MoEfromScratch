@@ -1,0 +1,22 @@
+\section{The role of shared experts}
+\label{sec:ch08-the-role-of-shared-experts}
+
+Explain the always-on expert path as a way to separate common processing from routed specialization.
+
+\input{figures/ch08/fig-the-role-of-shared-experts}
+
+Every token goes through one shared expert while also routing to two routed experts.
+
+\input{tables/ch08/tab-the-role-of-shared-experts}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch08/eq-the-role-of-shared-experts}
+
+\input{listings/ch08/lst-the-role-of-shared-experts}
+
+\begin{checkpointbox}
+Verify shared experts receive gradients for every token, not only selected tokens.
+\end{checkpointbox}
+
+Routed experts can also be made finer-grained to increase specialization options.

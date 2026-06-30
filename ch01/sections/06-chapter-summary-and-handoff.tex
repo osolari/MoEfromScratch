@@ -1,0 +1,28 @@
+\section{Chapter summary and handoff}
+\label{sec:ch01-chapter-summary-and-handoff}
+
+Section~\ref{sec:ch01-the-minideepseekmoe-build-ladder} named the destination --- \textsc{MiniDeepSeekMoE-16x2} --- and the twelve-rung path to it. Before climbing, take stock: Chapter~1 introduced fifteen symbols, four skeleton classes, two configurations, a twelve-rung build ladder, and one decoder-interface invariant. The risk now is that any of that drifts as the implementation gets bigger. This section closes the chapter by writing the vocabulary down in one place, locking the skeleton constructors with a runtime signature check, and answering the question that determines whether the build ladder is well-posed at all: \emph{which part of the dense decoder block are we actually replacing?}
+
+\input{figures/ch01/fig-chapter-summary-and-handoff}
+
+Figure~\ref{fig:ch01-chapter-summary-and-handoff} is the chapter on one page: tokens enter on the left, the router-top-$K$-softmax pipeline lives in the middle, the output exits on the right, and a side panel names what stays the same (residual, attention, $(B,T,D)$ interface) and what gets replaced (the dense FFN, and only that). The four-token example from Section~\ref{sec:ch01-a-tiny-routing-story} carries every symbol the rest of the book needs. With $N = 4$ tokens, $E = 4$ experts, and $K = 2$, that example produced a score tensor $s$ of shape $(N, E) = (4, 4)$, an index set $\mathcal{T}_t$ of shape $(N, K) = (4, 2)$, a gate tensor $g$ of shape $(N, K) = (4, 2)$ with rows summing to one, and an output tensor of shape $(N, D) = (4, 4)$ that --- because the experts were one-hot --- literally read out the gate matrix. Chapters~2--10 will replace each of those tensors with a real computation, but the symbols and shapes will not move.
+
+\input{tables/ch01/tab-chapter-summary-and-handoff}
+
+The shape pipeline of the layer fits in one equation.
+
+\input{equations/ch01/eq-chapter-summary-and-handoff}
+
+Equation~\ref{eq:ch01-chapter-summary-and-handoff} reads left-to-right: tokens $x$ go into the router and become scores $s$; top-$K$ selects an index set $\mathcal{T}$; softmax over the selected entries produces gates $g$; the weighted combine of expert outputs lands at $y$, of the same shape as $x$. Every arrow is the title of a section we have already seen.
+
+The chapter is held together by two pieces of code. The first locks the constructors of the four skeleton classes so that later chapters cannot quietly change the contract; the second answers the reader checkpoint by walking the decoder paths and asserting that only one is replaced.
+
+\input{listings/ch01/lst-chapter-summary-and-handoff}
+
+The signature check uses \texttt{inspect.signature} on \texttt{Router.\_\_init\_\_}, \texttt{ExpertMLP.\_\_init\_\_}, \texttt{MoELayer.\_\_init\_\_}, and \texttt{MiniDeepSeekMoE.\_\_init\_\_} and raises \texttt{AssertionError} on any drift. The replacement check returns \texttt{True} when exactly one decoder path is marked replaced and that path is the FFN; if a future chapter ever marks attention or the residual as replaceable, the predicate will fail and the diagnostic will catch the contradiction with the chapter-level invariant.
+
+\begin{checkpointbox}
+Reader checkpoint: identify which part of the dense model will be replaced by MoE. Run \texttt{python examples/ch01/section\_1\_6\_chapter\_summary.py} and verify that the glossary lists 15 symbols, the four-token story prints with $s\!\in\!(4,4)$, $\mathcal{T}\!\in\!(4,2)$, $g\!\in\!(4,2)$, $y\!\in\!(4,4)$, the signature check passes silently, and the replacement plan reports \texttt{REPLACED} only on the \texttt{FFN} row. Then \texttt{pytest tests/ch01/ -q} should report at least 11 new tests (89 total in Chapter~1) covering glossary integrity, signature parity, and the FFN-only predicate.
+\end{checkpointbox}
+
+Next we build the dense decoder baseline so the replacement is meaningful.

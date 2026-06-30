@@ -1,0 +1,22 @@
+\section{Load histograms and failure modes}
+\label{sec:ch04-load-histograms-and-failure-modes}
+
+Make expert collapse and underuse visible with simple diagnostics.
+
+\input{figures/ch04/fig-load-histograms-and-failure-modes}
+
+Create a synthetic router that sends most tokens to one expert and plot the load.
+
+\input{tables/ch04/tab-load-histograms-and-failure-modes}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch04/eq-load-histograms-and-failure-modes}
+
+\input{listings/ch04/lst-load-histograms-and-failure-modes}
+
+\begin{checkpointbox}
+Save a histogram and a warning if max load is much larger than average load.
+\end{checkpointbox}
+
+Top-1 is simple but brittle; top-2 routing gives each token a backup path and a weighted combine.

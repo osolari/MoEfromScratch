@@ -1,0 +1,32 @@
+\section{Causal self-attention as the context path}
+\label{sec:ch02-causal-self-attention-as-the-context-path}
+
+Section~\ref{sec:ch02-token-and-position-embeddings} produced a $(B, T, D)$ sequence in which every position carries its own embedded representation but no two positions can yet see each other. A decoder language model needs exactly one path that mixes information across positions --- and exactly one rule that prevents that mixing from reaching forward in time. Self-attention is that path; the causal mask is that rule. Chapter~1 promised the FFN sub-layer would be the only thing we eventually swap for MoE; that promise relies on attention staying a fixed, minimal piece of the baseline, which is what we build here.
+
+\input{figures/ch02/fig-causal-self-attention-as-the-context-path}
+
+Figure~\ref{fig:ch02-causal-self-attention-as-the-context-path} shows the central step on one $T \times T$ slice. The raw scores $Q K^{\top}/\sqrt{d_{\text{head}}}$ are added to a mask whose strict upper triangle is $-\infty$ (red cells); the row-wise softmax then drives those entries to exactly $0$ (gray cells on the bottom-right grid) while the lower-triangular weights (gold) sum to one per row. Row $t$ becomes a probability distribution over positions $\{0, \dots, t\}$ only.
+
+Take the chapter-2 anchor mini-example: $B = 2$, $T = 8$, $D = 16$. Pick $n_h = 2$ attention heads, so $d_{\text{head}} = D / n_h = 8$. One QKV projection (a single linear of width $3D$) plus one output projection (linear of width $D$) is all the parameter mass we need for this section --- $4 D^2 = 1024$ weights.
+
+Name the new symbols. We keep $B, T, D$ from Section~\ref{sec:ch02-token-and-position-embeddings} and $T_{\max}$ from the embedding's position table. Three new symbols enter: $n_h$, the number of heads; $d_{\text{head}} = D / n_h$, the per-head channel width (the constructor refuses any $D$ not divisible by $n_h$); and $M \in \mathbb{R}^{T \times T}$, the additive causal mask whose upper triangle is $-\infty$ and lower triangle (including the diagonal) is $0$. The mask is registered as a buffer, not a parameter --- it moves to the right device but never receives a gradient.
+
+\input{tables/ch02/tab-causal-self-attention-as-the-context-path}
+
+The block's tensor equation reads in one line.
+
+\input{equations/ch02/eq-causal-self-attention-as-the-context-path}
+
+Equation~\ref{eq:ch02-causal-self-attention-as-the-context-path} reads strictly left-to-right and the order matters: the mask $M$ is \emph{added} to the scaled scores \emph{before} softmax, so the $-\infty$ entries become exact zeros in the probability matrix --- not small numbers that round to zero. Applying the mask after softmax (a common bug) would leave the probabilities renormalised over all $T$ positions, then zero out the upper triangle without renormalising; the row sums would no longer equal one and gradients would still propagate from future tokens.
+
+The implementation in \texttt{src/moe\_from\_scratch/ch02/attention.py} packs the equation into a small \texttt{nn.Module}. Two utility moves are worth flagging: a single \texttt{Linear(D, 3D)} produces $Q$, $K$, $V$ in one matmul (then \texttt{chunk}), and the \texttt{(B, T, D) $\to$ (B, n\_h, T, d\_head)} reshape happens by \texttt{view} + \texttt{transpose}, so heads run in parallel without an explicit loop.
+
+\input{listings/ch02/lst-causal-self-attention-as-the-context-path}
+
+The section's diagnostic is the strongest possible end-to-end test of the mask: \emph{perturbing the input at position $t$ must leave every output at positions $s < t$ byte-identical}. If the mask is missing, on the wrong axis, applied after softmax, or registered with the wrong shape, future-token information leaks back into the past and this diagnostic fires immediately. The example script under \texttt{examples/ch02/} runs the chapter anchor batch through embeddings and then through \texttt{CausalSelfAttention}, perturbs only $x[:, T{-}1, :]$ by a fresh random vector, and verifies that $\max_{t < T-1} \lVert y_t - y_t' \rVert_\infty = 0$ exactly while the last-position drift is positive (so the perturbation is felt where it should be).
+
+\begin{checkpointbox}
+Check that a token cannot attend to future positions. Run \texttt{python examples/ch02/section\_2\_3\_causal\_self\_attention.py} and verify the printed lines: \texttt{D=16  n\_heads=2  d\_head=8  T\_max=8}; attention input and output shapes both equal $(2, 8, 16)$; row sums of the attention weights equal $1.0$ everywhere; strict-upper-triangle attention weight is exactly $0$; \texttt{max |y - y'|} at positions $0..T{-}2$ is $0.000\mathrm{e}{+}00$ and at position $T{-}1$ is positive. Then \texttt{pytest tests/ch02/ -q} should add $18$ new tests (ch02 $41/41$) covering construction, shape preservation, attention-row sums, the strict-upper-triangle property, the first-token-attends-only-to-itself check, the no-future-leak property at every $t$, gradient flow through QKV and the output projection, and the mask-is-a-buffer-not-a-parameter check.
+\end{checkpointbox}
+
+After attention mixes context, the dense FFN transforms each token independently.

@@ -1,0 +1,19 @@
+\chapter{Auxiliary-loss-free load balancing}
+\label{ch:ch09-auxiliary-loss-free-load-balancing}
+
+\ChapterCovers{
+\begin{itemize}
+  \item Why it is useful to separate load-balancing control from the language-model objective.
+  \item How dynamic router bias changes expert selection without becoming a trainable parameter.
+  \item How to compare auxiliary-loss and bias-balancing behavior with identical diagnostics.
+\end{itemize}
+}
+
+Replace auxiliary balancing with a router-bias mechanism that affects selection but not combine weights.
+
+\input{chapters/ch09/sections/01-the-limitation-of-auxiliary-balancing}
+\input{chapters/ch09/sections/02-router-bias-as-non-trainable-state}
+\input{chapters/ch09/sections/03-biased-selection-and-unbiased-combine}
+\input{chapters/ch09/sections/04-dynamic-bias-update-from-expert-load}
+\input{chapters/ch09/sections/05-comparing-balancing-methods}
+\input{chapters/ch09/sections/06-chapter-summary-and-handoff}

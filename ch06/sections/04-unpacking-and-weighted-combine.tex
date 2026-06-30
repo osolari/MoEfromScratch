@@ -1,0 +1,22 @@
+\section{Unpacking and weighted combine}
+\label{sec:ch06-unpacking-and-weighted-combine}
+
+Scatter expert-batch outputs back to token rows and apply route weights correctly.
+
+\input{figures/ch06/fig-unpacking-and-weighted-combine}
+
+One token receives two routes; one overflow route is skipped while the accepted route contributes.
+
+\input{tables/ch06/tab-unpacking-and-weighted-combine}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch06/eq-unpacking-and-weighted-combine}
+
+\input{listings/ch06/lst-unpacking-and-weighted-combine}
+
+\begin{checkpointbox}
+Compare vectorized output to naive output when capacity is large enough for no overflow.
+\end{checkpointbox}
+
+The implementation is faster, but correctness tests must guard against silent routing mistakes.

@@ -1,0 +1,22 @@
+\section{Combining shared and routed outputs}
+\label{sec:ch08-combining-shared-and-routed-outputs}
+
+Implement the forward pass that sums shared expert output and weighted routed output.
+
+\input{figures/ch08/fig-combining-shared-and-routed-outputs}
+
+Trace one token through shared expert s0 and routed experts e2/e7.
+
+\input{tables/ch08/tab-combining-shared-and-routed-outputs}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch08/eq-combining-shared-and-routed-outputs}
+
+\input{listings/ch08/lst-combining-shared-and-routed-outputs}
+
+\begin{checkpointbox}
+Ablate shared\_out to zero and routed\_out to zero to confirm both paths affect output.
+\end{checkpointbox}
+
+With two expert paths, diagnostics should separate shared and routed behavior.

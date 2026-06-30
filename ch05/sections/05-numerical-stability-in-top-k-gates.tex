@@ -1,0 +1,22 @@
+\section{Numerical stability in top-k gates}
+\label{sec:ch05-numerical-stability-in-top-k-gates}
+
+Prevent gate normalization edge cases before they become training bugs.
+
+\input{figures/ch05/fig-numerical-stability-in-top-k-gates}
+
+Use tiny selected scores and demonstrate epsilon-safe normalization.
+
+\input{tables/ch05/tab-numerical-stability-in-top-k-gates}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch05/eq-numerical-stability-in-top-k-gates}
+
+\input{listings/ch05/lst-numerical-stability-in-top-k-gates}
+
+\begin{checkpointbox}
+Unit tests for finite gates and gradients under small scores.
+\end{checkpointbox}
+
+Now that top-2 is correct, we can rewrite the dispatch to scale beyond tiny examples.

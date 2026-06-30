@@ -1,0 +1,32 @@
+\section{Dataset and token batches}
+\label{sec:ch02-dataset-and-token-batches}
+
+Chapter~\ref{ch:ch01-from-dense-compute-to-conditional-compute} ended with a contract: MoE will replace the FFN sub-layer of a dense decoder block, keep the $(B, T, D)$ decoder interface, and stay falsifiable at every rung of the ladder. Before the first expert can be wired in, that dense block needs an input to consume. This chapter builds the dense baseline; this section builds its data pipeline. The whole pipeline lives behind one function, \texttt{get\_batch}, which returns a $(B, T)$ tensor of input token IDs and a parallel $(B, T)$ tensor of target IDs shifted by one position. Every later model variant in the book --- top-1, top-2, shared experts, MiniDeepSeekMoE --- consumes batches with exactly these shapes.
+
+\input{figures/ch02/fig-dataset-and-token-batches}
+
+Figure~\ref{fig:ch02-dataset-and-token-batches} draws the four stages we will implement in this section: raw text $\to$ tokenized stream $\to$ train / val split $\to$ random-offset slicing into a $(B, T)$ \texttt{input} window and a $(B, T)$ \texttt{target} window. The faint arrows between the two windows show the one-position shift that defines the next-token objective.
+
+Take the chapter's anchor mini-example: $B = 2$ samples, $T = 8$ tokens per sample. We tokenize a short corpus, split tail $10\%$ for validation, sample two random start offsets from the train half, and slice two parallel windows of length $T$ at each offset. The reference corpus is deliberately written from \texttt{cat}, \texttt{sat}, \texttt{code}, \texttt{runs} (the four words from Section~\ref{sec:ch01-a-tiny-routing-story}) so the reader can carry the same vocabulary across chapters.
+
+Name the new symbols before writing the equation. We keep $B$ (batch size) and $T$ (sequence length, also called the block size) from Chapter~1. Two new constants enter the book here: $V$, the vocabulary size --- the number of distinct token IDs the tokenizer emits, used as the row count of the embedding matrix in Section~\ref{sec:ch02-token-and-position-embeddings} and the column count of the language-model head; and $N_{\text{tokens}} = N_{\text{train}} + N_{\text{val}}$, the length of the token stream after splitting. The model width $D$ from Chapter~1 has not appeared yet --- it enters at the embedding step.
+
+\input{tables/ch02/tab-dataset-and-token-batches}
+
+The next-token objective is purely an indexing relation between two slices of the same stream.
+
+\input{equations/ch02/eq-dataset-and-token-batches}
+
+Equation~\ref{eq:ch02-dataset-and-token-batches} says exactly one thing: \texttt{input} and \texttt{target} are slices of the same token stream that differ by a single position. The boxed identity \texttt{target[t] == input[t+1]} for $t \in \{0, \dots, T{-}2\}$ is the section's falsifiable diagnostic. Break the \texttt{+1} on the target slice --- accidentally pass the same start offset for both --- and the identity fails on every row.
+
+The listing realises the equation in seven lines of PyTorch. It mirrors \texttt{src/moe\_from\_scratch/ch02/dataset.py} exactly, including the function name \texttt{get\_batch} and the keyword-only \texttt{generator} parameter we use to make the example script reproducible.
+
+\input{listings/ch02/lst-dataset-and-token-batches}
+
+Running the example script under \texttt{examples/ch02/} on the reference corpus prints a 19-character vocabulary, 162 train tokens, 18 val tokens, and then a $(2, 8)$ batch. With seed $0$ the first input row decodes to \texttt{"an on th"} and the corresponding target row decodes to \texttt{"n on the"} --- the target is the input shifted left by one character, which is exactly what the equation promises. The final \texttt{assert} in the script checks the shift identity on \emph{both} rows of the batch at once via \texttt{torch.equal(target[:, :-1], input[:, 1:])}; the \texttt{pytest} suite under \texttt{tests/ch02/} adds an independent random-seed check and rejects bad inputs (zero \texttt{block\_size}, $2$-D \texttt{tokens}, etc.).
+
+\begin{checkpointbox}
+Print the first input-target pair and decode it to verify shifting. Run \texttt{python examples/ch02/section\_2\_1\_dataset\_and\_token\_batches.py} and verify the printed lines: \texttt{vocab} has $19$ characters; \texttt{train tokens: 162; val tokens: 18}; the seed-$0$ first input row decodes to \texttt{"an on th"} and the first target row decodes to \texttt{"n on the"}; the closing assertion \texttt{target[:, t] == input[:, t+1]} passes. Then \texttt{pytest tests/ch02/ -q} should report at least $11$ new tests (ch02 $11/11$) covering the tokenizer round trip, train/val split shapes, batch shapes, the shift identity, seed determinism, and input validation.
+\end{checkpointbox}
+
+Token IDs become vectors through embeddings and positions.

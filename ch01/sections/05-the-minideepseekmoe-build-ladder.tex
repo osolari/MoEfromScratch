@@ -1,0 +1,30 @@
+\section{The MiniDeepSeekMoE build ladder}
+\label{sec:ch01-the-minideepseekmoe-build-ladder}
+
+Section~\ref{sec:ch01-what-from-scratch-means-for-this-book} declared four skeleton classes and an interface invariant; what it did not do is name the order in which we fill them in or the model we are aiming at. This section does both. The target model is \textsc{MiniDeepSeekMoE-16x2}: six decoder layers, model width $256$, sixteen routed experts per MoE layer with top-$K{=}2$, one shared expert that always runs. We will not write that model first. We will start from a much smaller smoke configuration --- two layers, four routed experts, one shared expert --- and grow it one rung at a time, keeping a runnable diagnostic at every rung.
+
+\input{figures/ch01/fig-the-minideepseekmoe-build-ladder}
+
+Figure~\ref{fig:ch01-the-minideepseekmoe-build-ladder} colours the rungs by build phase: gray for the dense baseline, purple for routed top-$K$, gold for capacity and load, green for shared experts and bias balancing, red for evaluation and inference. Begin at the bottom of the ladder. Chapter~2 builds the dense Transformer baseline: tokenizer, embeddings, causal self-attention, the dense FFN whose cost we already counted in Section~\ref{sec:ch01-the-dense-ffn-bottleneck}, and a training loop that runs on a laptop. The MoE layer has nowhere to live without that scaffold, and Chapter~2's diagnostic --- a loss curve that decreases on a tiny dataset --- becomes the comparison point for every later experiment. From there the ladder climbs through routed experts (Ch.~3--6), training stabilisers (Ch.~7), shared and fine-grained experts (Ch.~8), and auxiliary-loss-free balancing (Ch.~9) before the full model is assembled in Chapter~10. Chapters~11 and~12 are evaluation and inference rather than construction; they consume the model rather than add to it.
+
+The notation does not change at the top of the ladder; it only adds two symbols. We keep $B, T, D, N, E, K$ from earlier sections. Chapter~8 introduces $S$, the number of shared experts (always $\ge 0$; the book uses $S=1$). Chapter~9 introduces a router-bias buffer $b \in \mathbb{R}^E$ that nudges expert selection without entering the gate-weighted combine. The full forward equation for one MoE layer follows.
+
+\input{equations/ch01/eq-the-minideepseekmoe-build-ladder}
+
+Equation~\ref{eq:ch01-the-minideepseekmoe-build-ladder} packs the entire build into one line. The residual $x_t$ comes from Chapter~2. The shared-expert sum $\sum_{j=1}^{S} \mathrm{shared}_j(x_t)$ comes online in Chapter~8 and runs for every token regardless of routing. The routed-expert combine $\sum_{i \in \mathcal{T}_t} g_{t,i}\,\mathrm{routed}_i(x_t)$ is built up across Chapters~3--6, weighted by gates that we already computed by hand in Section~\ref{sec:ch01-a-tiny-routing-story}. The two annotations under $\mathcal{T}_t$ and $g_{t,i}$ are the only subtle part: the top-$K$ selection uses the \emph{biased} score $s_{t,i} + b_i$ (Chapter~9), but the gates are softmax over the \emph{unbiased} selected scores $s_{t,i}$. That asymmetry is the MiniDeepSeekMoE invariant we will protect for the rest of the book.
+
+\input{tables/ch01/tab-the-minideepseekmoe-build-ladder}
+
+The table maps each chapter to its build step and its falsifiable diagnostic. The diagnostic column matters: Section~\ref{sec:ch01-what-from-scratch-means-for-this-book} promised that every section ships a runnable check, and the build ladder promises that every chapter ships one of these milestone diagnostics on top of the section-level ones.
+
+Both configurations are declared today. The smoke configuration is what the example script for this section instantiates so we can read off the active fraction and the activated-parameter count; \textsc{MiniDeepSeekMoE-16x2} is declared alongside it as a forward reference.
+
+\input{listings/ch01/lst-the-minideepseekmoe-build-ladder}
+
+The constructor in the listing enforces every constraint Section~\ref{sec:ch01-what-from-scratch-means-for-this-book} said the interface needs: positive sizes, $K \le E$, $S \ge 0$, $D$ divisible by the number of attention heads. The example script under \texttt{examples/ch01/} prints both configurations, the active fraction $K/E$, and the chapter milestones in order; the matching tests under \texttt{tests/ch01/} pin those numbers down so a future config edit cannot silently drift.
+
+\begin{checkpointbox}
+Milestone checklist that marks which diagnostics appear by each chapter. Run \texttt{python examples/ch01/section\_1\_5\_build\_ladder.py} and verify the printed active fractions ($0.5$ for the smoke config; $0.125$ for \textsc{MiniDeepSeekMoE-16x2}), the activated expert-parameter counts $\bigl(K+S\bigr)\cdot 2 D H$ for both, and the twelve milestone rows in chapter order $1 \to 12$. Then \texttt{pytest tests/ch01/ -q} should add at least 20 new tests covering config invariants, parameter-scaling properties, and milestone integrity.
+\end{checkpointbox}
+
+The first build step is a dense Transformer baseline that gives the MoE layer somewhere to live.

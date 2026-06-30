@@ -1,0 +1,22 @@
+\section{Assignment masks and expert buckets}
+\label{sec:ch04-assignment-masks-and-expert-buckets}
+
+Convert token expert IDs into per-expert token groups.
+
+\input{figures/ch04/fig-assignment-masks-and-expert-buckets}
+
+Bucket six token indices into four expert lists.
+
+\input{tables/ch04/tab-assignment-masks-and-expert-buckets}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch04/eq-assignment-masks-and-expert-buckets}
+
+\input{listings/ch04/lst-assignment-masks-and-expert-buckets}
+
+\begin{checkpointbox}
+Sum the mask across experts to confirm each token is assigned once.
+\end{checkpointbox}
+
+Once tokens are bucketed, expert modules process only their assigned tokens.

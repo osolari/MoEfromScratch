@@ -1,0 +1,43 @@
+\section{A tiny routing story}
+\label{sec:ch01-a-tiny-routing-story}
+
+Section~\ref{sec:ch01-conditional-compute-as-the-central-idea} ended with a slogan --- run $K$ of $E$ experts per token --- but the slogan did not say what data flows between the router, the experts, and the combine. Before we open any model code, walk one batch through that picture by hand. Use four tokens, four experts, and the smallest non-trivial setting, top-$K = 2$. Every number in this section is materialised; the section's contract is the resulting set of tensor shapes.
+
+\input{figures/ch01/fig-a-tiny-routing-story}
+
+Pick four words: \texttt{[cat, sat, code, runs]}. They are stand-ins, so we will not embed them; instead we hand-code a $(4, 4)$ router-score matrix that says how much each word ``wants'' each expert. The dense FFN of Section~\ref{sec:ch01-the-dense-ffn-bottleneck} had no such matrix: every token went through the same block. The MoE layer needs one, and Figure~\ref{fig:ch01-a-tiny-routing-story} shows where it sits in the data flow.
+
+Name the tensors before we start writing them. Let $N$ be the flattened token count and $E$ the expert count (here $N = E = 4$). The router emits a score tensor $s \in \mathbb{R}^{N \times E}$ with $s_{t,i}$ the score of token $t$ for expert $i$. Apply $\operatorname{top}{-}K$ over the last axis to get a selection $\mathcal{T}_t \subset \{1, \dots, E\}$ of size $K = 2$ per token; that gives an index tensor of shape $(N, K)$ and a values tensor of the same shape. Run softmax over only the selected values (not all $E$) and you have a gate tensor $g \in \mathbb{R}^{N \times K}$ whose rows sum to one. The combine $y_t = \sum_{i \in \mathcal{T}_t} g_{t,i} \, \mathrm{expert}_i(x_t)$ then produces an output of shape $(N, D)$. The decoder interface $(B, T, D)$ is intact.
+
+\input{tables/ch01/tab-a-tiny-routing-story}
+
+The equation is the only thing the rest of the book needs to remember from this section.
+
+\input{equations/ch01/eq-a-tiny-routing-story}
+
+Equation~\ref{eq:ch01-a-tiny-routing-story} has three steps in one line. The first picks indices; nothing has been weighted yet. The second normalises the $K$ selected scores into a per-token probability distribution; the unselected $E - K$ experts contribute zero. The third combines the chosen experts' outputs with those weights. The crucial detail is that the softmax is taken \emph{after} top-$K$, only over the selected entries. Taking the softmax first and then sub-selecting would leave the gates summing to something less than one, which is the failure mode the table calls out.
+
+The listing below realises the equation as a handful of lines of PyTorch and matches \texttt{src/moe\_from\_scratch/ch01/routing\_story.py}. The experts are kept deliberately fake --- one-hot vectors $e_i \in \mathbb{R}^E$ --- so that $y_t$ literally writes the gate vector into the columns chosen by $\mathcal{T}_t$, and the diagnostic is a single \texttt{allclose}.
+
+\input{listings/ch01/lst-a-tiny-routing-story}
+
+Running the script under \texttt{examples/ch01/} prints the score matrix, the top-$K$ indices, and the gate matrix:
+%
+\begin{center}\small\begin{tabular}{r|cc|cc}
+\hline
+token & \multicolumn{2}{c|}{\textbf{indices}} & \multicolumn{2}{c}{\textbf{gates}} \\
+\hline
+\texttt{cat}  & 0 & 2 & 0.622 & 0.378 \\
+\texttt{sat}  & 1 & 3 & 0.818 & 0.182 \\
+\texttt{code} & 2 & 1 & 0.690 & 0.310 \\
+\texttt{runs} & 3 & 1 & 0.769 & 0.231 \\
+\hline
+\end{tabular}\end{center}
+%
+Every row of the gate column sums to one. With one-hot expert outputs, the combined tensor is the same matrix rewritten into the columns named by \texttt{indices}; rows still sum to one. That last property is the section's diagnostic: any error in the softmax-over-selected step (taking it over all $E$, normalising twice, forgetting to gather the selected values) breaks it.
+
+\begin{checkpointbox}
+Check that gates for each token sum to one after top-$K$ normalization. Run \texttt{python examples/ch01/section\_1\_3\_a\_tiny\_routing\_story.py} and verify the printed ``Row sums of gates'' line is all ones, then \texttt{pytest tests/ch01/ -q} should report at least 10 new tests covering shape, sum-to-one, top-$K$ identity, and the combine read-out.
+\end{checkpointbox}
+
+This toy flow becomes the shape contract for every later implementation.

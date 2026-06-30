@@ -1,0 +1,19 @@
+\chapter{Top-2 routing and weighted expert combination}
+\label{ch:ch05-top-2-routing-and-weighted-expert-combination}
+
+\ChapterCovers{
+\begin{itemize}
+  \item How top-2 routing keeps sparse compute while reducing one-expert brittleness.
+  \item How selected scores become normalized gates for weighted expert outputs.
+  \item How to compare top-1 and top-2 layers with the same diagnostics.
+\end{itemize}
+}
+
+Generalize sparse routing so each token can combine two expert transformations.
+
+\input{chapters/ch05/sections/01-why-top-2-changes-the-routing-story}
+\input{chapters/ch05/sections/02-normalizing-selected-router-scores}
+\input{chapters/ch05/sections/03-dispatch-for-two-expert-paths-per-token}
+\input{chapters/ch05/sections/04-comparing-top-1-and-top-2-diagnostics}
+\input{chapters/ch05/sections/05-numerical-stability-in-top-k-gates}
+\input{chapters/ch05/sections/06-chapter-summary-and-handoff}

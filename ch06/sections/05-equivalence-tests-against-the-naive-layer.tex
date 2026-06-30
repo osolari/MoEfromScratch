@@ -1,0 +1,22 @@
+\section{Equivalence tests against the naive layer}
+\label{sec:ch06-equivalence-tests-against-the-naive-layer}
+
+Prove the vectorized implementation matches the simple implementation in the no-overflow case.
+
+\input{figures/ch06/fig-equivalence-tests-against-the-naive-layer}
+
+Use fixed router scores and identical expert weights for both layers.
+
+\input{tables/ch06/tab-equivalence-tests-against-the-naive-layer}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch06/eq-equivalence-tests-against-the-naive-layer}
+
+\input{listings/ch06/lst-equivalence-tests-against-the-naive-layer}
+
+\begin{checkpointbox}
+Fail if max\_abs\_diff exceeds tolerance in no-overflow settings.
+\end{checkpointbox}
+
+With efficient dispatch available, we can focus on the training losses that shape router behavior.

@@ -1,0 +1,22 @@
+\section{Dispatching tokens to selected experts}
+\label{sec:ch04-dispatching-tokens-to-selected-experts}
+
+Run each expert only on the tokens assigned to it and scatter outputs back to token order.
+
+\input{figures/ch04/fig-dispatching-tokens-to-selected-experts}
+
+Expert 0 receives token rows [0,3], expert 1 receives [1], and empty experts are skipped.
+
+\input{tables/ch04/tab-dispatching-tokens-to-selected-experts}
+
+The planned mechanics should introduce the equation before the implementation listing.
+
+\input{equations/ch04/eq-dispatching-tokens-to-selected-experts}
+
+\input{listings/ch04/lst-dispatching-tokens-to-selected-experts}
+
+\begin{checkpointbox}
+Assert output rows return to the original token order.
+\end{checkpointbox}
+
+Routing can overload an expert, so we need to define expert capacity.

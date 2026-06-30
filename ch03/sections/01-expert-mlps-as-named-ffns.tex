@@ -1,0 +1,30 @@
+\section{Expert MLPs as named FFNs}
+\label{sec:ch03-expert-mlps-as-named-ffns}
+
+Section~\ref{sec:ch02-baseline-diagnostics-and-comparison-slots} closed the dense baseline as the first row of the comparison table. The MoE rows that the next eight chapters will add to that table differ from the dense row in exactly one place: the FFN sub-layer. This section makes the smallest possible move toward that difference --- it clones the dense FFN four times and labels the copies expert $0$ through expert $3$. No router yet, no selection logic, no dispatch. The point of starting here is to show that an ``expert'' is not a new kind of object; it is the FFN from Section~\ref{sec:ch02-dense-feed-forward-block-as-the-replacement-target}, instantiated $E$ times under a list-indexed name.
+
+\input{figures/ch03/fig-expert-mlps-as-named-ffns}
+
+Figure~\ref{fig:ch03-expert-mlps-as-named-ffns} shows the move on one page. On the left, Chapter~2's single \texttt{DenseFFN}. On the right, four \texttt{ExpertMLP} instances stacked in an \texttt{ExpertBank}, each with its own $W_1^{(i)}$ and $W_2^{(i)}$ but the same shape contract as the dense block. Today every expert sees every token (the faint arrows from $x$ fan out to all four); Section~\ref{sec:ch03-router-scores-and-tensor-shapes} will replace those fans with a sparse selection.
+
+Take the chapter-3 anchor mini-example: keep the chapter-2 shape constants $B = 2$, $T = 8$, $D = 16$, $H = 64$ and add $E = 4$ experts. The bank stores $E \cdot 2 D H = 4 \cdot 2{,}048 = 8{,}192$ parameters, the four-times-larger version of the $2{,}048$-parameter dense FFN. The \emph{total} column of the comparison table moves; the \emph{active per token} column will catch up only when a router lands.
+
+Name the new objects. We keep $B, T, D, H$ from earlier chapters. The constants $E$ (the number of routed experts, declared in Section~\ref{sec:ch01-conditional-compute-as-the-central-idea}) and $K$ (the top-$K$ choice, declared in the same section) finally enter live code; for this section we use $E = 4$ and have not yet introduced selection, so $K$ does not appear until Section~\ref{sec:ch03-top-k-selection-without-dispatch}. One new code object: \texttt{ExpertBank}, an \texttt{nn.ModuleList} of $E$ \texttt{ExpertMLP} instances exposed through \texttt{bank[i]} for any expert index $i \in \{0, \dots, E-1\}$ and through \texttt{forward\_all(x)} as a diagnostic helper that runs every expert on the same input.
+
+\input{tables/ch03/tab-expert-mlps-as-named-ffns}
+
+A single expert is identical, line for line, to the dense FFN of Section~\ref{sec:ch02-dense-feed-forward-block-as-the-replacement-target}.
+
+\input{equations/ch03/eq-expert-mlps-as-named-ffns}
+
+Equation~\ref{eq:ch03-expert-mlps-as-named-ffns} is the dense-FFN equation from Section~\ref{sec:ch01-the-dense-ffn-bottleneck} with a per-expert superscript on the weights. Nothing else changes. In particular, the constructor signature \texttt{ExpertMLP(d\_model, hidden)} is the one locked in Section~\ref{sec:ch01-chapter-summary-and-handoff}: \texttt{ch03.ExpertMLP} is a subclass of the Chapter~1 skeleton, so \texttt{isinstance(expert, ch01.ExpertMLP)} holds and \texttt{check\_signatures()} from Section~\ref{sec:ch01-chapter-summary-and-handoff} still passes after Chapter~3 lands. The 'expert' framing is purely organisational --- which expert this MLP represents is the position of its module in the bank's list, not a field stored inside the module.
+
+\input{listings/ch03/lst-expert-mlps-as-named-ffns}
+
+The diagnostic for this section is the strongest possible no-collusion check: run every expert on the same input and verify that (a) each output preserves the $(B, T, D)$ shape, and (b) no two experts produce the same output. Property (b) is what makes the bank useful --- if random initialisation collapsed every expert onto the same function, dispatch would be meaningless. With $E = 4$ and seed $0$ all $\binom{4}{2} = 6$ pairs produce distinct outputs on a fresh $(B, T, D)$ batch.
+
+\begin{checkpointbox}
+Run all experts on the same token and compare output shapes. Run \texttt{python examples/ch03/section\_3\_1\_expert\_mlps\_as\_named\_ffns.py} and verify the printed lines: \texttt{E=4  D=16  H=64  T=8  B=2}; \texttt{bank parameters: counted = 8192    formula = E * 2 * D * H = 8192}; \texttt{ExpertMLP.\_\_init\_\_ signature: ('self', 'd\_model', 'hidden')}; \texttt{forward\_all(x).shape = (4, 2, 8, 16)    expected = (4, 2, 8, 16)}; \texttt{distinct expert outputs on x: 6 / 6 pairs differ}. Then \texttt{pytest tests/ch03/ -q} should add at least $17$ new tests (ch03 $17/17$) covering the locked Chapter-1 signature, parameter scaling in $E$, the \texttt{forward\_all} shape contract, independence of expert parameters, and the row-selective gradient pattern when only one expert runs.
+\end{checkpointbox}
+
+Experts need a token-dependent selection mechanism: the router.
