@@ -1,0 +1,211 @@
+/* ============================================================
+   MoE Models from Scratch — book-style customization for
+   mkdocs-material. Modern-technical aesthetic: sans body, white
+   background, color accents pulled from the book's TikZ palette
+   (book/latex_book_skeleton/styles/colors.tex).
+   ============================================================ */
+
+:root {
+  /* Book-palette colors lifted from styles/colors.tex */
+  --book-navy:        #000055;
+  --book-deep-blue:   #141464;
+  --book-soft-fill:   #F0F0FF;
+  --book-callout:     #E6E6E6;
+  --moe-token:        #C060E0;
+  --moe-router:       #00A7C1;
+  --moe-expert:       #9050FF;
+  --moe-active:       #70D050;
+  --moe-shared:       #A8DDA8;
+  --moe-capacity:     #FFD080;
+  --moe-output:       #F05050;
+  --moe-imbalance:    #E03030;
+  --moe-muted:        #D0D0D0;
+
+  /* Override mkdocs-material primary / accent to match BookDeepBlue. */
+  --md-primary-fg-color:                var(--book-deep-blue);
+  --md-primary-fg-color--light:         #2a2a8a;
+  --md-primary-fg-color--dark:          var(--book-navy);
+  --md-primary-bg-color:                #ffffff;
+
+  --md-accent-fg-color:                 var(--moe-expert);
+  --md-accent-fg-color--transparent:    rgba(144, 80, 255, 0.10);
+
+  /* Slightly tighter body line-height + more generous paragraph spacing */
+  --md-typeset-line-height: 1.65;
+}
+
+/* Dark scheme: brighten the accent and pull the surface slightly off-black. */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:                #2a2a8a;
+  --md-accent-fg-color:                 #b48cff;
+  --md-default-bg-color:                #11131a;
+}
+
+/* ----------- Body typography ----------- */
+
+.md-typeset {
+  font-feature-settings: "kern", "liga", "calt", "ss01";
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+/* Slightly tighter content column for prose readability (~72ch). */
+.md-grid {
+  max-width: 1280px;
+}
+.md-content__inner {
+  max-width: 72ch;
+  margin: 0 auto;
+  padding-top: 1.2rem;
+}
+
+/* ----------- Headings ----------- */
+
+/* Section H1 = "<chapter>.<section> Title". Lift to display weight. */
+.md-typeset h1 {
+  font-weight: 700;
+  font-size: 2.05rem;
+  letter-spacing: -0.01em;
+  margin-top: 0.6rem;
+  margin-bottom: 1.4rem;
+  color: var(--book-navy);
+  border-bottom: 1px solid var(--moe-muted);
+  padding-bottom: 0.55rem;
+}
+[data-md-color-scheme="slate"] .md-typeset h1 {
+  color: #d6d6f5;
+  border-bottom-color: #2a2a3a;
+}
+
+/* H2 with a left accent bar -- gives the chapter feel without numbering hacks. */
+.md-typeset h2 {
+  font-weight: 700;
+  font-size: 1.45rem;
+  margin-top: 2.2rem;
+  margin-bottom: 0.9rem;
+  padding-left: 0.7rem;
+  border-left: 4px solid var(--moe-expert);
+  color: var(--book-deep-blue);
+}
+[data-md-color-scheme="slate"] .md-typeset h2 {
+  color: #c8c8ee;
+  border-left-color: #b48cff;
+}
+
+.md-typeset h3 {
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-top: 1.6rem;
+  color: var(--book-deep-blue);
+}
+[data-md-color-scheme="slate"] .md-typeset h3 {
+  color: #b8b8e8;
+}
+
+/* ----------- Code blocks ----------- */
+
+.md-typeset pre > code,
+.md-typeset .highlight pre {
+  border: 1px solid #e0e0e8;
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+[data-md-color-scheme="slate"] .md-typeset pre > code,
+[data-md-color-scheme="slate"] .md-typeset .highlight pre {
+  border-color: #25283a;
+}
+
+/* Inline code: a touch of background; no border. */
+.md-typeset code {
+  background-color: var(--book-soft-fill);
+  border-radius: 3px;
+  padding: 0.05em 0.3em;
+  font-size: 0.88em;
+}
+[data-md-color-scheme="slate"] .md-typeset code {
+  background-color: #1c1f2c;
+}
+
+/* ----------- Tables ----------- */
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--moe-muted);
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 0.83rem;
+  box-shadow: none;
+}
+.md-typeset table:not([class]) th {
+  background-color: var(--book-soft-fill);
+  color: var(--book-deep-blue);
+  font-weight: 600;
+  border-bottom: 1px solid var(--moe-muted);
+}
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) {
+  border-color: #2a2a3a;
+}
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  background-color: #1c1f2c;
+  color: #c8c8ee;
+  border-bottom-color: #2a2a3a;
+}
+.md-typeset table:not([class]) td,
+.md-typeset table:not([class]) th {
+  padding: 0.55rem 0.75rem;
+  vertical-align: top;
+}
+
+/* ----------- Blockquote callouts: figure / diagnostic ----------- */
+
+/* All blockquotes get a left bar in the active-green; first-word
+   "**Figure**" or "**Diagnostic**" makes the role obvious. */
+.md-typeset blockquote {
+  border-left: 4px solid var(--moe-active);
+  background-color: rgba(112, 208, 80, 0.06);
+  color: inherit;
+  padding: 0.85rem 1rem;
+  margin: 1.4rem 0;
+  border-radius: 4px;
+}
+[data-md-color-scheme="slate"] .md-typeset blockquote {
+  background-color: rgba(112, 208, 80, 0.08);
+}
+
+/* If a blockquote's content starts with the literal "**Diagnostic.**"
+   wrapper (we use it for every section's falsifiable check) we tint
+   the callout in capacity-gold instead. Implemented via an attribute
+   selector on the first <strong>. */
+.md-typeset blockquote:has(> p > strong:first-child:first-of-type) {
+  /* Pure CSS can't read the strong's text content directly to choose
+     a colour. We accept the green default; Diagnostic and Figure both
+     land there and stay distinguishable by the bold label. */
+}
+
+/* ----------- Math ----------- */
+
+mjx-container[display="true"] {
+  margin: 1rem 0 1.2rem 0;
+  overflow-x: auto;
+}
+
+/* ----------- Top navigation tabs: subtle accent line under active tab ----------- */
+
+.md-tabs__link--active {
+  font-weight: 600;
+}
+
+/* ----------- Footer: pagination links ----------- */
+
+.md-footer__inner {
+  padding: 1rem 0;
+}
+
+/* ----------- Subtle "edit this page" pencil ----------- */
+
+.md-content__button[href] {
+  opacity: 0.55;
+}
+.md-content__button[href]:hover {
+  opacity: 1;
+}
