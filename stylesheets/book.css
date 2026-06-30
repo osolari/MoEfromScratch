@@ -263,6 +263,96 @@ mjx-container[display="true"] {
   margin: 0 auto 2.2rem auto;
 }
 
+/* ----------- Cover illustration (SVG) ----------- */
+
+.book-cover-illustration {
+  margin: 1.4rem auto 1rem auto;
+  max-width: 780px;
+}
+.book-cover-illustration img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+[data-md-color-scheme="slate"] .book-cover-illustration img {
+  /* Lift contrast slightly on dark background */
+  filter: brightness(0.95) contrast(1.05);
+}
+
+/* ----------- Author cards ----------- */
+
+.book-authors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 1.3rem auto 0.4rem auto;
+  max-width: 780px;
+}
+.book-author-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e8e8ee;
+  border-radius: 8px;
+  min-width: 260px;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.book-author-card:hover {
+  border-color: var(--moe-expert);
+  box-shadow: 0 1px 6px rgba(144, 80, 255, 0.08);
+}
+[data-md-color-scheme="slate"] .book-author-card {
+  background: #15182a;
+  border-color: #2a2a3a;
+}
+.book-author-avatar {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--book-deep-blue), var(--moe-expert));
+  color: #ffffff;
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.book-author-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.book-author-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--book-navy);
+}
+[data-md-color-scheme="slate"] .book-author-name { color: #d6d6f5; }
+.book-author-role {
+  font-size: 0.78rem;
+  color: #7a7a8a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.05rem;
+}
+.book-author-link {
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  color: var(--moe-expert);
+  text-decoration: none;
+}
+.book-author-link:hover {
+  text-decoration: underline;
+}
+
 /* ToC grid cards (chapter cards on the cover). */
 .md-typeset .grid.cards > ul > li,
 .md-typeset .grid.cards > div > div {
