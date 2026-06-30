@@ -1980,25 +1980,79 @@
 <h1 id="moe-models-from-scratch">MoE Models from Scratch<a class="headerlink" href="#moe-models-from-scratch" title="Permanent link">&para;</a></h1>
 <h3 id="a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time">A LaTeX-first technical book that builds <strong>MiniDeepSeekMoE-16x2</strong> in PyTorch, one runnable section at a time.<a class="headerlink" href="#a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time" title="Permanent link">&para;</a></h3>
 <figure class="book-cover-illustration">
-<p><img alt="Tokens flow into a router which selects two of four experts per token" src="assets/cover.svg" /></p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" role="img" aria-labelledby="cover-title cover-desc">
+<title id="cover-title">MoE Models from Scratch — cover illustration</title>
+<desc id="cover-desc">Four tokens flow into a router which selects two of four experts.</desc>
+<defs>
+<marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#141464"/></marker>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#A0A0B0"/></marker>
+<marker id="arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5cb83a"/></marker>
+</defs>
+<rect x="0" y="0" width="900" height="320" rx="14" fill="#fbfbfe"/>
+<g transform="translate(50,40)">
+<text x="0" y="0" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#141464">N tokens</text>
+<circle cx="20" cy="40"  r="14" fill="#C060E0" stroke="#7a3aa0" stroke-width="1.5"/>
+<circle cx="20" cy="90"  r="14" fill="#C060E0" stroke="#7a3aa0" stroke-width="1.5"/>
+<circle cx="20" cy="140" r="14" fill="#C060E0" stroke="#7a3aa0" stroke-width="1.5"/>
+<circle cx="20" cy="190" r="14" fill="#C060E0" stroke="#7a3aa0" stroke-width="1.5"/>
+<text x="50" y="44"  font-family="Inter, system-ui, sans-serif" font-size="12" fill="#5a5a6a">t₀</text>
+<text x="50" y="94"  font-family="Inter, system-ui, sans-serif" font-size="12" fill="#5a5a6a">t₁</text>
+<text x="50" y="144" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#5a5a6a">t₂</text>
+<text x="50" y="194" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#5a5a6a">t₃</text>
+<text x="0" y="240" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#7a7a8a" font-style="italic">shape (B, T, D)</text>
+</g>
+<g transform="translate(280,80)">
+<rect x="0" y="0" width="200" height="120" rx="10" fill="#00A7C1" fill-opacity="0.16" stroke="#007a92" stroke-width="2"/>
+<text x="100" y="42" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#005266">Router</text>
+<text x="100" y="70" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#005266">s ∈ ℝᴺˣᴱ</text>
+<text x="100" y="92" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#005266" font-style="italic">scores → top-K</text>
+<text x="100" y="108" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#005266">+ softmax over selected</text>
+</g>
+<g transform="translate(600,40)">
+<text x="0" y="0" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#141464">E experts</text>
+<rect x="0" y="20" width="200" height="36" rx="6" fill="#9050FF" fill-opacity="0.10" stroke="#9050FF" stroke-width="1.5"/>
+<text x="14" y="44" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#5a3a8a">Expert 0</text>
+<text x="186" y="44" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#7a7a8a">W₁⁽⁰⁾, W₂⁽⁰⁾</text>
+<rect x="0" y="65" width="200" height="36" rx="6" fill="#70D050" fill-opacity="0.28" stroke="#5cb83a" stroke-width="2"/>
+<text x="14" y="89" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#2a6b1a">Expert 1</text>
+<text x="186" y="89" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#2a6b1a">W₁⁽¹⁾, W₂⁽¹⁾</text>
+<rect x="0" y="110" width="200" height="36" rx="6" fill="#70D050" fill-opacity="0.28" stroke="#5cb83a" stroke-width="2"/>
+<text x="14" y="134" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#2a6b1a">Expert 2</text>
+<text x="186" y="134" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#2a6b1a">W₁⁽²⁾, W₂⁽²⁾</text>
+<rect x="0" y="155" width="200" height="36" rx="6" fill="#9050FF" fill-opacity="0.10" stroke="#9050FF" stroke-width="1.5"/>
+<text x="14" y="179" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#5a3a8a">Expert 3</text>
+<text x="186" y="179" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#7a7a8a">W₁⁽³⁾, W₂⁽³⁾</text>
+<text x="0" y="220" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#7a7a8a" font-style="italic">top-K = 2 active per token</text>
+</g>
+<g stroke="#141464" stroke-width="1.5" fill="none" marker-end="url(#arrow-blue)">
+<line x1="84" y1="80"  x2="278" y2="120"/>
+<line x1="84" y1="130" x2="278" y2="140"/>
+<line x1="84" y1="180" x2="278" y2="160"/>
+<line x1="84" y1="230" x2="278" y2="180"/>
+</g>
+<g stroke="#A0A0B0" stroke-width="1.2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrow-muted)">
+<line x1="482" y1="130" x2="598" y2="78"/>
+<line x1="482" y1="170" x2="598" y2="213"/>
+</g>
+<g stroke="#5cb83a" stroke-width="2.2" fill="none" marker-end="url(#arrow-active)">
+<line x1="482" y1="140" x2="598" y2="123"/>
+<line x1="482" y1="160" x2="598" y2="168"/>
+</g>
+<g transform="translate(450,290)">
+<text x="0" y="0" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#141464"><tspan font-weight="700">router bias</tspan><tspan dx="6">affects expert selection only;</tspan><tspan dx="6" font-weight="700">final combine weights</tspan><tspan dx="6">use unbiased selected scores.</tspan></text>
+</g>
+</svg>
 </figure>
 <div class="book-authors">
 <div class="book-author-card">
-<div class="highlight"><pre><span></span><code>&lt;div class=&quot;book-author-avatar&quot;&gt;OS
-</code></pre></div>
+<div class="book-author-avatar">OS</div>
+<div class="book-author-meta">
+<div class="book-author-name">Omid Solari</div>
+<div class="book-author-role">Maintainer</div>
+<a class="book-author-link" href="https://github.com/osolari" target="_blank" rel="noopener">github.com/osolari</a>
 </div>
-<div class="highlight"><pre><span></span><code>&lt;div class=&quot;book-author-meta&quot;&gt;
-  &lt;div class=&quot;book-author-name&quot;&gt;Omid Solari
-</code></pre></div>
 </div>
-<div class="highlight"><pre><span></span><code>  &lt;div class=&quot;book-author-role&quot;&gt;Maintainer
-</code></pre></div>
 </div>
-<div class="highlight"><pre><span></span><code>  &lt;a class=&quot;book-author-link&quot; href=&quot;https://github.com/osolari&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;github.com/osolari&lt;/a&gt;
-&lt;/div&gt;
-</code></pre></div>
-<p></div>
-</div></p>
 </div>
 <div class="book-cover-sub">
 <p>Every section is a self-contained build step:</p>
@@ -2017,7 +2071,7 @@
 <li>
 <p><strong>Chapter 1</strong> — From dense compute to conditional compute</p>
 <p>Why the dense FFN is the bottleneck; what MoE actually replaces. <strong>Complete.</strong></p>
-<p><a href="ch01/chapter/">:octicons-arrow-right-24: Read chapter 1</a></p>
+<p><a href="ch01/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 1</a></p>
 <ul>
 <li><a href="ch01/sections/01-the-dense-ffn-bottleneck/">1.1 The dense FFN bottleneck</a></li>
 <li><a href="ch01/sections/02-conditional-compute-as-the-central-idea/">1.2 Conditional compute as the central idea</a></li>
@@ -2030,7 +2084,7 @@
 <li>
 <p><strong>Chapter 2</strong> — A dense Transformer baseline from scratch</p>
 <p>Embed, attention, dense FFN, training loop, comparison-table schema. <strong>Complete.</strong></p>
-<p><a href="ch02/chapter/">:octicons-arrow-right-24: Read chapter 2</a></p>
+<p><a href="ch02/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 2</a></p>
 <ul>
 <li><a href="ch02/sections/01-dataset-and-token-batches/">2.1 Dataset and token batches</a></li>
 <li><a href="ch02/sections/02-token-and-position-embeddings/">2.2 Token and position embeddings</a></li>
@@ -2043,7 +2097,7 @@
 <li>
 <p><strong>Chapter 3</strong> — Experts, routers, and the first MoE layer</p>
 <p>Expert MLPs, router scores, naive dispatch. <strong>In progress.</strong></p>
-<p><a href="ch03/chapter/">:octicons-arrow-right-24: Read chapter 3</a></p>
+<p><a href="ch03/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 3</a></p>
 <ul>
 <li><a href="ch03/sections/01-expert-mlps-as-named-ffns/">3.1 Expert MLPs as named FFNs</a></li>
 <li>3.2 Router scores and tensor shapes <em>(planned)</em></li>
@@ -2056,47 +2110,47 @@
 <li>
 <p><strong>Chapter 4</strong> — Top-1 routing and Switch-style dispatch</p>
 <p>Assignment masks, capacity, dropped tokens, load histograms.</p>
-<p><a href="ch04/chapter/">:octicons-arrow-right-24: Read chapter 4</a></p>
+<p><a href="ch04/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 4</a></p>
 </li>
 <li>
 <p><strong>Chapter 5</strong> — Top-2 routing and weighted expert combination</p>
 <p>Two-expert paths, normalized gates, comparing top-1 and top-2.</p>
-<p><a href="ch05/chapter/">:octicons-arrow-right-24: Read chapter 5</a></p>
+<p><a href="ch05/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 5</a></p>
 </li>
 <li>
 <p><strong>Chapter 6</strong> — Vectorized dispatch, capacity, and routing efficiency</p>
 <p>Flattened tokens, expert batches, equivalence tests against the naive layer.</p>
-<p><a href="ch06/chapter/">:octicons-arrow-right-24: Read chapter 6</a></p>
+<p><a href="ch06/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 6</a></p>
 </li>
 <li>
 <p><strong>Chapter 7</strong> — Router training and load-balancing losses</p>
 <p>Auxiliary load loss, z-loss, routing dashboards.</p>
-<p><a href="ch07/chapter/">:octicons-arrow-right-24: Read chapter 7</a></p>
+<p><a href="ch07/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 7</a></p>
 </li>
 <li>
 <p><strong>Chapter 8</strong> — Shared experts and fine-grained routed experts</p>
 <p>The DeepSeekMoE-style structure. Shared always-on path; segmented routed experts.</p>
-<p><a href="ch08/chapter/">:octicons-arrow-right-24: Read chapter 8</a></p>
+<p><a href="ch08/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 8</a></p>
 </li>
 <li>
 <p><strong>Chapter 9</strong> — Auxiliary-loss-free load balancing</p>
 <p>The router-bias mechanism: biased selection, unbiased combine.</p>
-<p><a href="ch09/chapter/">:octicons-arrow-right-24: Read chapter 9</a></p>
+<p><a href="ch09/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 9</a></p>
 </li>
 <li>
 <p><strong>Chapter 10</strong> — Assembling MiniDeepSeekMoE end-to-end</p>
 <p>Config object, full forward pass, training and sampling scripts.</p>
-<p><a href="ch10/chapter/">:octicons-arrow-right-24: Read chapter 10</a></p>
+<p><a href="ch10/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 10</a></p>
 </li>
 <li>
 <p><strong>Chapter 11</strong> — Training, diagnostics, and controlled experiments</p>
 <p>Ablation matrix, loss curves, expert behaviour.</p>
-<p><a href="ch11/chapter/">:octicons-arrow-right-24: Read chapter 11</a></p>
+<p><a href="ch11/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 11</a></p>
 </li>
 <li>
 <p><strong>Chapter 12</strong> — Inference, performance, and scaling beyond the toy model</p>
 <p>Active-parameter accounting, expert parallelism, all-to-all communication.</p>
-<p><a href="ch12/chapter/">:octicons-arrow-right-24: Read chapter 12</a></p>
+<p><a href="ch12/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 12</a></p>
 </li>
 </ul>
 </div>

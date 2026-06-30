@@ -353,13 +353,28 @@ mjx-container[display="true"] {
   text-decoration: underline;
 }
 
-/* ToC grid cards (chapter cards on the cover). */
+/* ToC grid cards (chapter cards on the cover). Material does not always
+   ship the grid layout CSS by default, so define it explicitly. */
+.md-typeset .grid.cards > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 0.8rem;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
 .md-typeset .grid.cards > ul > li,
 .md-typeset .grid.cards > div > div {
+  margin: 0;
   border: 1px solid #e8e8ee;
   border-radius: 6px;
   padding: 0.9rem 1.1rem;
   transition: border-color 0.15s, box-shadow 0.15s;
+  background: #ffffff;
+}
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li,
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > div > div {
+  background: #15182a;
 }
 .md-typeset .grid.cards > ul > li:hover,
 .md-typeset .grid.cards > div > div:hover {
