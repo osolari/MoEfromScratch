@@ -223,9 +223,7 @@
           
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -324,10 +322,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time" class="md-nav__link">
+  <a href="#how-to-read-this-book" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A LaTeX-first technical book that builds MiniDeepSeekMoE-16x2 in PyTorch, one runnable section at a time.
+        How to read this book
       
     </span>
   </a>
@@ -335,21 +333,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#table-of-contents" class="md-nav__link">
+  <a href="#running-the-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Table of contents
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-the-code-lives" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where the code lives
+        Running the code
       
     </span>
   </a>
@@ -1878,9 +1865,7 @@
             
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1899,10 +1884,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time" class="md-nav__link">
+  <a href="#how-to-read-this-book" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A LaTeX-first technical book that builds MiniDeepSeekMoE-16x2 in PyTorch, one runnable section at a time.
+        How to read this book
       
     </span>
   </a>
@@ -1910,21 +1895,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#table-of-contents" class="md-nav__link">
+  <a href="#running-the-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Table of contents
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-the-code-lives" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where the code lives
+        Running the code
       
     </span>
   </a>
@@ -1944,8 +1918,6 @@
               
                 
 
-  
-
 
 
   
@@ -1955,8 +1927,6 @@
               <article class="md-content__inner md-typeset">
                 
                   
-  
-
 
 
   
@@ -1976,9 +1946,8 @@
   
 
 
-<div class="book-cover">
-<h1 id="moe-models-from-scratch">MoE Models from Scratch<a class="headerlink" href="#moe-models-from-scratch" title="Permanent link">&para;</a></h1>
-<h3 id="a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time">A LaTeX-first technical book that builds <strong>MiniDeepSeekMoE-16x2</strong> in PyTorch, one runnable section at a time.<a class="headerlink" href="#a-latex-first-technical-book-that-builds-minideepseekmoe-16x2-in-pytorch-one-runnable-section-at-a-time" title="Permanent link">&para;</a></h3>
+<div class="book-hero">
+<div class="book-hero-illustration">
 <figure class="book-cover-illustration">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" role="img" aria-labelledby="cover-title cover-desc">
 <title id="cover-title">MoE Models from Scratch — cover illustration</title>
@@ -2038,132 +2007,41 @@
 <line x1="482" y1="140" x2="598" y2="123"/>
 <line x1="482" y1="160" x2="598" y2="168"/>
 </g>
-<g transform="translate(450,290)">
-<text x="0" y="0" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#141464"><tspan font-weight="700">router bias</tspan><tspan dx="6">affects expert selection only;</tspan><tspan dx="6" font-weight="700">final combine weights</tspan><tspan dx="6">use unbiased selected scores.</tspan></text>
-</g>
 </svg>
 </figure>
+</div>
+<div class="book-hero-text">
+<h1 id="moe-models-from-scratch">MoE Models from Scratch<a class="headerlink" href="#moe-models-from-scratch" title="Permanent link">&para;</a></h1>
+<p>A LaTeX-first technical book that builds <strong>MiniDeepSeekMoE-16x2</strong> in PyTorch, one runnable section at a time.</p>
+<p>Each section ships a <code>.tex</code> and a <code>.md</code>, four standalone artifact wrappers (figure, table, listing, equation), and a runnable Python module + example script + pytest suite. The decoder interface stays <span class="arithmatex">\((B, T, D) \to (B, T, D)\)</span> at every step, and the invariant the whole book protects is:</p>
+<blockquote>
+<p>router bias affects expert selection only; final combine weights use unbiased selected scores.</p>
+</blockquote>
+<p><a class="md-button md-button--primary" href="ch01/chapter/">Start reading: Chapter 1 →</a>
+<a class="md-button" href="https://github.com/osolari/MoEfromScratch">GitHub repository</a></p>
 <div class="book-authors">
 <div class="book-author-card">
 <div class="book-author-avatar">OS</div>
 <div class="book-author-meta">
 <div class="book-author-name">Omid Solari</div>
-<div class="book-author-role">Maintainer</div>
+<div class="book-author-role">Author &amp; Maintainer</div>
 <a class="book-author-link" href="https://github.com/osolari" target="_blank" rel="noopener">github.com/osolari</a>
 </div>
 </div>
 </div>
 </div>
-<div class="book-cover-sub">
-<p>Every section is a self-contained build step:</p>
+</div>
+<h2 id="how-to-read-this-book">How to read this book<a class="headerlink" href="#how-to-read-this-book" title="Permanent link">&para;</a></h2>
+<p>Every section is one build step in the same shape:</p>
 <blockquote>
 <p><strong>problem opening</strong> → <strong>visual anchor</strong> → <strong>tensor / math mechanics</strong> → <strong>implementation listing</strong> → <strong>falsifiable diagnostic</strong> → <strong>bridge</strong></p>
 </blockquote>
-<p>Each ships a <code>.tex</code> (production), a <code>.md</code> (this site), four standalone artifact wrappers (figure, table, listing, equation), and a runnable Python module + example script + pytest suite. The invariant the whole book protects:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>router bias affects expert selection only;
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>final combine weights are computed from unbiased selected scores.
+<p>The chapter tree on the left is the table of contents. Start at Chapter 1 if you want the full build; jump into any section directly if you already know where the gap in your mental model is. Chapters 1–2 establish the dense baseline and the from-scratch contract; Chapters 3–6 build the MoE layer; Chapters 7–10 add load balancing, shared experts, and the auxiliary-loss-free trick; Chapters 11–12 train, evaluate, and scale.</p>
+<h2 id="running-the-code">Running the code<a class="headerlink" href="#running-the-code" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pytest<span class="w"> </span>-q
 </code></pre></div>
-<p>The decoder interface stays <span class="arithmatex">\((B, T, D) \to (B, T, D)\)</span> at every step.</p>
-</div>
-<h2 id="table-of-contents">Table of contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><strong>Chapter 1</strong> — From dense compute to conditional compute</p>
-<p>Why the dense FFN is the bottleneck; what MoE actually replaces. <strong>Complete.</strong></p>
-<p><a href="ch01/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 1</a></p>
-<ul>
-<li><a href="ch01/sections/01-the-dense-ffn-bottleneck/">1.1 The dense FFN bottleneck</a></li>
-<li><a href="ch01/sections/02-conditional-compute-as-the-central-idea/">1.2 Conditional compute as the central idea</a></li>
-<li><a href="ch01/sections/03-a-tiny-routing-story/">1.3 A tiny routing story</a></li>
-<li><a href="ch01/sections/04-what-from-scratch-means-for-this-book/">1.4 What from scratch means for this book</a></li>
-<li><a href="ch01/sections/05-the-minideepseekmoe-build-ladder/">1.5 The MiniDeepSeekMoE build ladder</a></li>
-<li><a href="ch01/sections/06-chapter-summary-and-handoff/">1.6 Chapter summary and handoff</a></li>
-</ul>
-</li>
-<li>
-<p><strong>Chapter 2</strong> — A dense Transformer baseline from scratch</p>
-<p>Embed, attention, dense FFN, training loop, comparison-table schema. <strong>Complete.</strong></p>
-<p><a href="ch02/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 2</a></p>
-<ul>
-<li><a href="ch02/sections/01-dataset-and-token-batches/">2.1 Dataset and token batches</a></li>
-<li><a href="ch02/sections/02-token-and-position-embeddings/">2.2 Token and position embeddings</a></li>
-<li><a href="ch02/sections/03-causal-self-attention-as-the-context-path/">2.3 Causal self-attention as the context path</a></li>
-<li><a href="ch02/sections/04-dense-feed-forward-block-as-the-replacement-target/">2.4 Dense FFN as the replacement target</a></li>
-<li><a href="ch02/sections/05-training-loop-and-sampling-baseline/">2.5 Training loop and sampling baseline</a></li>
-<li><a href="ch02/sections/06-baseline-diagnostics-and-comparison-slots/">2.6 Baseline diagnostics and comparison slots</a></li>
-</ul>
-</li>
-<li>
-<p><strong>Chapter 3</strong> — Experts, routers, and the first MoE layer</p>
-<p>Expert MLPs, router scores, naive dispatch. <strong>In progress.</strong></p>
-<p><a href="ch03/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 3</a></p>
-<ul>
-<li><a href="ch03/sections/01-expert-mlps-as-named-ffns/">3.1 Expert MLPs as named FFNs</a></li>
-<li>3.2 Router scores and tensor shapes <em>(planned)</em></li>
-<li>3.3 Top-k selection without dispatch <em>(planned)</em></li>
-<li>3.4 Naive token-by-token dispatch <em>(planned)</em></li>
-<li>3.5 Shape and gradient checks <em>(planned)</em></li>
-<li>3.6 Chapter summary and handoff <em>(planned)</em></li>
-</ul>
-</li>
-<li>
-<p><strong>Chapter 4</strong> — Top-1 routing and Switch-style dispatch</p>
-<p>Assignment masks, capacity, dropped tokens, load histograms.</p>
-<p><a href="ch04/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 4</a></p>
-</li>
-<li>
-<p><strong>Chapter 5</strong> — Top-2 routing and weighted expert combination</p>
-<p>Two-expert paths, normalized gates, comparing top-1 and top-2.</p>
-<p><a href="ch05/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 5</a></p>
-</li>
-<li>
-<p><strong>Chapter 6</strong> — Vectorized dispatch, capacity, and routing efficiency</p>
-<p>Flattened tokens, expert batches, equivalence tests against the naive layer.</p>
-<p><a href="ch06/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 6</a></p>
-</li>
-<li>
-<p><strong>Chapter 7</strong> — Router training and load-balancing losses</p>
-<p>Auxiliary load loss, z-loss, routing dashboards.</p>
-<p><a href="ch07/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 7</a></p>
-</li>
-<li>
-<p><strong>Chapter 8</strong> — Shared experts and fine-grained routed experts</p>
-<p>The DeepSeekMoE-style structure. Shared always-on path; segmented routed experts.</p>
-<p><a href="ch08/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 8</a></p>
-</li>
-<li>
-<p><strong>Chapter 9</strong> — Auxiliary-loss-free load balancing</p>
-<p>The router-bias mechanism: biased selection, unbiased combine.</p>
-<p><a href="ch09/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 9</a></p>
-</li>
-<li>
-<p><strong>Chapter 10</strong> — Assembling MiniDeepSeekMoE end-to-end</p>
-<p>Config object, full forward pass, training and sampling scripts.</p>
-<p><a href="ch10/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 10</a></p>
-</li>
-<li>
-<p><strong>Chapter 11</strong> — Training, diagnostics, and controlled experiments</p>
-<p>Ablation matrix, loss curves, expert behaviour.</p>
-<p><a href="ch11/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 11</a></p>
-</li>
-<li>
-<p><strong>Chapter 12</strong> — Inference, performance, and scaling beyond the toy model</p>
-<p>Active-parameter accounting, expert parallelism, all-to-all communication.</p>
-<p><a href="ch12/chapter/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read chapter 12</a></p>
-</li>
-</ul>
-</div>
-<h2 id="where-the-code-lives">Where the code lives<a class="headerlink" href="#where-the-code-lives" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Companion package: <a href="https://github.com/osolari/MoEfromScratch/tree/main/src/moe_from_scratch"><code>src/moe_from_scratch/</code></a></li>
-<li>Per-section runnable diagnostics: <a href="https://github.com/osolari/MoEfromScratch/tree/main/examples"><code>examples/chXX/</code></a></li>
-<li>Pytest suite: <a href="https://github.com/osolari/MoEfromScratch/tree/main/tests"><code>tests/chXX/</code></a></li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span><span class="w">   </span><span class="c1"># one-time</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pytest<span class="w"> </span>-q<span class="w">                  </span><span class="c1"># all chapters</span>
-</code></pre></div>
-<p><a class="md-button md-button--primary" href="ch01/chapter/">Begin with Chapter 1 →</a></p>
+<p>The companion package lives at <a href="https://github.com/osolari/MoEfromScratch/tree/main/src/moe_from_scratch"><code>src/moe_from_scratch/</code></a>; per-section diagnostics at <a href="https://github.com/osolari/MoEfromScratch/tree/main/examples"><code>examples/chXX/</code></a>; the test suite at <a href="https://github.com/osolari/MoEfromScratch/tree/main/tests"><code>tests/chXX/</code></a>.</p>
 
 
 
@@ -2171,13 +2049,8 @@
 
 
 
-  
-  
 
 
-
-
-  
 
 
 
@@ -2200,8 +2073,6 @@
         <footer class="md-footer">
   
     
-      
-        
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         

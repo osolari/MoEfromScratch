@@ -224,50 +224,68 @@ mjx-container[display="true"] {
   overflow-x: auto;
 }
 
-/* ----------- Cover page (index.md) ----------- */
+/* ----------- Cover page (index.md): d2l-style two-column hero ----------- */
 
-.book-cover {
-  margin: 1rem 0 1.8rem 0;
-  padding: 2.2rem 1.6rem 1.8rem 1.6rem;
-  background: #fbfbfe;
-  border: 1px solid #e8e8ee;
-  border-radius: 6px;
-  text-align: center;
+.book-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+  margin: 0.8rem 0 2.4rem 0;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid #e8e8ee;
 }
-.book-cover h1 {
-  font-size: 2.5rem;
+[data-md-color-scheme="slate"] .book-hero {
+  border-bottom-color: #2a2a3a;
+}
+@media (max-width: 960px) {
+  .book-hero {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+}
+.book-hero-illustration {
+  min-width: 0;
+}
+.book-hero-text {
+  min-width: 0;
+}
+.book-hero-text h1 {
+  font-size: 2.3rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  margin: 0 0 0.5rem 0;
+  line-height: 1.15;
+  margin: 0 0 0.7rem 0;
   border-bottom: none;
   padding-bottom: 0;
   color: var(--book-navy);
 }
-.book-cover h3 {
-  font-weight: 400;
-  font-size: 1.05rem;
-  line-height: 1.5;
+[data-md-color-scheme="slate"] .book-hero-text h1 { color: #d6d6f5; }
+.book-hero-text p {
+  font-size: 1rem;
+  line-height: 1.55;
   color: var(--book-deep-blue);
-  margin: 0.3rem auto 0 auto;
-  max-width: 56ch;
+  margin: 0 0 0.9rem 0;
 }
-[data-md-color-scheme="slate"] .book-cover {
-  background: #15182a;
-  border-color: #2a2a3a;
+[data-md-color-scheme="slate"] .book-hero-text p { color: #b8b8e8; }
+.book-hero-text blockquote {
+  margin: 0.6rem 0 1.2rem 0;
 }
-[data-md-color-scheme="slate"] .book-cover h1 { color: #d6d6f5; }
-[data-md-color-scheme="slate"] .book-cover h3 { color: #b8b8e8; }
-
-.book-cover-sub {
-  max-width: 72ch;
-  margin: 0 auto 2.2rem auto;
+.book-hero-text .md-button {
+  margin: 0.4rem 0.5rem 0.4rem 0;
 }
 
 /* ----------- Cover illustration (SVG) ----------- */
 
 .book-cover-illustration {
-  margin: 1.4rem auto 1rem auto;
-  max-width: 780px;
+  margin: 0;
+  max-width: 100%;
+}
+.book-cover-illustration svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
 }
 .book-cover-illustration img {
   width: 100%;
@@ -275,20 +293,20 @@ mjx-container[display="true"] {
   display: block;
   border-radius: 6px;
 }
+[data-md-color-scheme="slate"] .book-cover-illustration svg,
 [data-md-color-scheme="slate"] .book-cover-illustration img {
-  /* Lift contrast slightly on dark background */
   filter: brightness(0.95) contrast(1.05);
 }
 
-/* ----------- Author cards ----------- */
+/* ----------- Author cards (left-aligned inside hero) ----------- */
 
 .book-authors {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.9rem;
-  margin: 1.3rem auto 0.4rem auto;
-  max-width: 780px;
+  margin: 1.3rem 0 0.2rem 0;
+  max-width: 100%;
 }
 .book-author-card {
   display: flex;
